@@ -3,8 +3,13 @@ package ui;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+
+    private static final String ALLTASK_COMMAND = "all task";
+    private static final String ALLOVERDUE_COMMAND = "all overdue";
+
     private static ArrayList<Task> tasks;
     private static Task taskCPSC210;
     private static Task taskWRDS150;
@@ -12,6 +17,9 @@ public class Main {
     private static Task task0DayLeft;
     private static Task task1DayOverdue;
     private static Task task5DayOverdue;
+    private static Scanner input;
+    private static boolean isRunning;
+
 
 
     public static void main(String[] args) {
@@ -26,9 +34,9 @@ public class Main {
         task1DayOverdue.setDayUntilDue(-1);
         task5DayOverdue = new Task("This task should OVERDUE 10 day");
         task5DayOverdue.setDayUntilDue(-5);
+        isRunning = true;
+        input = new Scanner(System.in);
 
-
-        System.out.println("Welcome! Here is your TODO list");
         addTask(taskCPSC210);
         addTask(taskWRDS150);
         addTask(task1DayLeft);
@@ -37,6 +45,12 @@ public class Main {
         addTask(task5DayOverdue);
         printAllTask();
         printAllOverdueTask();
+
+
+
+
+        handleUserInput();
+        System.out.println("Have a good day!");
 
 
     }
@@ -72,6 +86,48 @@ public class Main {
         int count = num - 1;
         System.out.println("Done, you have " + count + " OVERDUE task in total!!!");
         System.out.println();
+    }
+
+    public static void handleUserInput() {
+        System.out.println("Welcome to your TODO list, how can I help you?");
+        printInstruction();
+        String str;
+
+        while(isRunning) {
+            if (input.hasNext()) {
+                str = input.nextLine();
+                processInput(str);
+            }
+        }
+
+
+    }
+
+    public static void printInstruction() {
+        System.out.println("\nEnter " + "name of your task" + " to add new task in to your TODO list");
+        System.out.println("Enter " + ALLTASK_COMMAND + " to see all of your tasks.");
+        System.out.println("Enter " + ALLOVERDUE_COMMAND + " to see all of your OVERDUE tasks.");
+    }
+
+
+
+
+    public static void processInput(String str) {
+        if(str.length() > 0) {
+            switch(str) {
+                case ALLTASK_COMMAND:
+                    printAllTask();
+                    break;
+                case ALLOVERDUE_COMMAND:
+                    printAllOverdueTask();
+                    break;
+                default:
+                    addTask(new Task(str));
+                    break;
+
+
+            }
+        }
     }
 
 }
