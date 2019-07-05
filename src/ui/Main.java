@@ -54,7 +54,8 @@ public class Main {
             System.out.println(num + " : " + t.getTaskName());
             num = num + 1;
         }
-        System.out.println("Done, you have " + num + " task in total");
+        int count = num - 1;
+        System.out.println("Done, you have " + count + " task in total");
         System.out.println();
     }
 
@@ -68,7 +69,8 @@ public class Main {
                 num = num + 1;
             }
         }
-        System.out.println("Done, you have " + num + " OVERDUE task in total!!!");
+        int count = num - 1;
+        System.out.println("Done, you have " + count + " OVERDUE task in total!!!");
         System.out.println();
     }
 
