@@ -5,10 +5,10 @@ import model.Task;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class TodoListUsage {
 
-    private static final String ALLTASK_COMMAND = "all task";
-    private static final String ALLOVERDUE_COMMAND = "all overdue";
+    private static final String ALLTASK_COMMAND = "all";
+    private static final String ALLOVERDUE_COMMAND = "overdue";
 
     private static ArrayList<Task> tasks;
     private static Task taskCPSC210;
