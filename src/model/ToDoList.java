@@ -2,13 +2,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ToDoList {
-    List<Task> tasks;
+    private List<Task> tasks;
 
 
     // MODIFIES: this
-    // EFFECTS: create a ToDoList object with empty task list
+    // EFFECTS: create a ToDoList object with empty tasks list
     public ToDoList() {
         tasks = new ArrayList<>();
     }
@@ -44,7 +45,7 @@ public class ToDoList {
     //          return null if can not find
     public Task findTask(String taskName) {
         for (Task t: tasks) {
-            if(t.getTaskName() == taskName) {
+            if(t.getTaskName().equals(taskName)) {
                 System.out.println("Found task: " + taskName);
                 return t;
             }
@@ -56,7 +57,7 @@ public class ToDoList {
 
 
     // EFFECTS: print all task inside todolist in format: Number : task name
-    public void printAllTask() {
+    public void printAllTasks() {
         System.out.println();
         System.out.println("----------Here is all of your tasks----------");
         int num = 1;
@@ -64,25 +65,20 @@ public class ToDoList {
             System.out.println(num + " : " + t.getTaskName());
             num = num + 1;
         }
-        int count = num - 1;
-        System.out.println("Done, you have " + count + " task in total");
+        System.out.println("Done, you have " + tasks.size() + " task in total");
         System.out.println();
     }
 
     // EFFECTS: Return names of all tasks in the ToDOList in a String
-    public String getAllTaskString() {
-        String result = "";
-        for (Task t: tasks) {
-            result = result + "\n" + t.getTaskName();
-        }
-        return result;
+    public String getAllTaskAsString() {
+        return tasks.stream().map(Task::getTaskName).collect(Collectors.joining("\n"));
     }
 
 
 
     // EFFECTS: print all overdue tasks inside todolist in format:
     //          OVERDUE Task num : task name
-    public void printAllOverdueTask() {
+    public void printAllOverdueTasks() {
         System.out.println();
         System.out.println("---!!!Here is all of your OVERDUE tasks!!----");
         int num = 1;
@@ -92,8 +88,7 @@ public class ToDoList {
                 num = num + 1;
             }
         }
-        int count = num - 1;
-        System.out.println("Done, you have " + count + " OVERDUE task in total!!!");
+        System.out.println("Done, you have " + tasks.size() + " OVERDUE task in total!!!");
         System.out.println();
     }
 
@@ -102,7 +97,7 @@ public class ToDoList {
     // EFFECTS: return true if todoList contain task with given name, false otherwise
     public boolean contains(String taskName) {
         for (Task t: tasks) {
-            if (t.getTaskName() == taskName) {
+            if (t.getTaskName().equals(taskName)) {
                 return true;
             }
         }

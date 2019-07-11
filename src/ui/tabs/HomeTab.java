@@ -1,4 +1,4 @@
-package ui.Tabs;
+package ui.tabs;
 
 import ui.ButtonNames;
 import ui.ToDoListUsage;
@@ -55,7 +55,7 @@ public class HomeTab extends Tab{
             public void actionPerformed(ActionEvent e) {
                 String buttonPressed = e.getActionCommand();
                 if(buttonPressed.equals(ButtonNames.ALLTASK.getValue())) {
-                    getController().getToDoList().printAllTask();
+                    getController().getToDoList().printAllTasks();
                     greeting.setText("TODO: NEED TO PRINT ALL TASKS");
                 }
             }

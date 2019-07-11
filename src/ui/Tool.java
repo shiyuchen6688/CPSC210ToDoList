@@ -9,7 +9,6 @@ public class Tool {
     private static final String ALLOVERDUE_COMMAND = "overdue";
 
 
-
     private Scanner input;
     private boolean isRunning;
     private ToDoList toDoList;
@@ -20,7 +19,7 @@ public class Tool {
         isRunning = true;
     }
 
-    public  void handleUserInput() {
+    public void handleUserInput() {
         System.out.println("Welcome to your TODO list, how can I help you?");
         printInstruction();
         String str;
@@ -43,20 +42,18 @@ public class Tool {
 
 
     public void processInput(String str) {
-        if (str.length() > 0) {
-            switch (str) {
-                case ALLTASK_COMMAND:
-                    toDoList.printAllTask();
-                    break;
-                case ALLOVERDUE_COMMAND:
-                    toDoList.printAllOverdueTask();
-                    break;
-                default:
-                    toDoList.addTask(str);
-                    break;
+        switch (str) {
+            case ALLTASK_COMMAND:
+                toDoList.printAllTasks();
+                break;
+            case ALLOVERDUE_COMMAND:
+                toDoList.printAllOverdueTasks();
+                break;
+            default:
+                toDoList.addTask(str);
+                break;
 
 
-            }
         }
     }
 

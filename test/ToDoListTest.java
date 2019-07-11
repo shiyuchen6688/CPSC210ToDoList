@@ -1,9 +1,11 @@
 import model.Task;
 import model.ToDoList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class ToDoListTest {
     private ToDoList testToDoList;
@@ -15,7 +17,7 @@ public class ToDoListTest {
     private static Task task1DayOverdue;
     private static Task task5DayOverdue;
 
-    @Before
+    @BeforeEach
     public void setup() {
         testToDoList = new ToDoList();
 
@@ -121,7 +123,7 @@ public class ToDoListTest {
     @Test
     public void testGetAllTaskStringEmpty() {
         checkToDoEmptyDoesntContain();
-        assertEquals("", testToDoList.getAllTaskString());
+        assertEquals("", testToDoList.getAllTaskAsString());
     }
 
     @Test
@@ -129,7 +131,7 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("task1");
         testToDoList.addTask("task2");
-        assertEquals("\ntask1\ntask2", testToDoList.getAllTaskString());
+        assertEquals("\ntask1\ntask2", testToDoList.getAllTaskAsString());
     }
 
     private void checkToDoContainOnce() {

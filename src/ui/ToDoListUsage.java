@@ -1,7 +1,7 @@
 package ui;
 
 import model.ToDoList;
-import ui.Tabs.HomeTab;
+import ui.tabs.HomeTab;
 
 import javax.swing.*;
 

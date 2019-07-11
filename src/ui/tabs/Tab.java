@@ -1,4 +1,4 @@
-package ui.Tabs;
+package ui.tabs;
 
 import ui.ToDoListUsage;
 
