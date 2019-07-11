@@ -45,6 +45,16 @@ public class ToDoListTest {
         checkToDoContainOnce();
     }
 
+    @Test
+    public void testAddTwoTask() {
+        checkToDoEmptyDoesntContain();
+        testToDoList.addTask("test task");
+        testToDoList.addTask("test task 2");
+        assertTrue(testToDoList.contains("test task"));
+        assertTrue(testToDoList.contains("test task 2"));
+        assertEquals(testToDoList.size(), 2);
+    }
+
 
     @Test
     public void testDeleteTaskExist() {
@@ -72,6 +82,7 @@ public class ToDoListTest {
         checkToDoContainOnce();
         Task t = testToDoList.findTask("test task");
         assertEquals(t.getTaskName(), "test task");
+        checkToDoContainOnce();
     }
 
 
@@ -80,9 +91,33 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
         Task t = testToDoList.findTask("test task");
         assertEquals(t, null);
+        checkToDoEmptyDoesntContain();
     }
 
-    // TODO: Question: do we do test for contains and size and other method that only print stuff
+    @Test
+    public void testContainsExist() {
+        checkToDoEmptyDoesntContain();
+        testToDoList.addTask("test task");
+        assertTrue(testToDoList.contains("test task"));
+    }
+
+    @Test
+    public void testContainsDoesntExist() {
+        checkToDoEmptyDoesntContain();
+        assertFalse(testToDoList.contains("test task"));
+    }
+
+    @Test
+    public void testSize() {
+        assertEquals(0, testToDoList.size());
+    }
+
+    @Test
+    public void testSizeContainOne() {
+        testToDoList.addTask("test task");
+        assertEquals(1, testToDoList.size());
+    }
+
 
     private void checkToDoContainOnce() {
         assertEquals(testToDoList.size(), 1);
