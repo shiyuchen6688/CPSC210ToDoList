@@ -7,7 +7,8 @@ public class ToDoList {
     List<Task> tasks;
 
 
-    // EFFECTSL create
+    // MODIFIES: this
+    // EFFECTS: create a ToDoList object with empty task list
     public ToDoList() {
         tasks = new ArrayList<>();
     }
@@ -24,7 +25,8 @@ public class ToDoList {
 
 
     // MODIFIES: this
-    // EFFECTS: delete a task from the ToDoList
+    // EFFECTS: delete given task from the ToDoList, return true if deleted
+    //          return false if can not find
     public boolean deleteTask(String taskName) {
         Task t = findTask(taskName);
         if (t != null) {
@@ -38,7 +40,8 @@ public class ToDoList {
     }
 
 
-    // EFFECTS: find a specific task with givn name
+    // EFFECTS: return a specific task with given name,
+    //          return null if can not find
     public Task findTask(String taskName) {
         for (Task t: tasks) {
             if(t.getTaskName() == taskName) {
