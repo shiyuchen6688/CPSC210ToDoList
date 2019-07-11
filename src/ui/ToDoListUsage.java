@@ -1,13 +1,12 @@
 package ui;
 
 import model.ToDoList;
+import ui.Tabs.HomeTab;
 
 import javax.swing.*;
 
 public class ToDoListUsage extends JFrame{
     public static final int HOME_TAB_INDEX = 0;
-    public static final int SETTINGS_TAB_INDEX = 1;
-    public static final int REPORT_TAB_INDEX = 2;
 
     public static final int WIDTH = 600;
     public static final int HEIGHT = 400;
@@ -33,25 +32,29 @@ public class ToDoListUsage extends JFrame{
         super("Welcome, ToDo List console");
         setSize(WIDTH, HEIGHT);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
         toDoList = new ToDoList();
         tool = new Tool(toDoList);
 
         sidebar = new JTabbedPane();
         sidebar.setTabPlacement(JTabbedPane.LEFT);
 
+        loadTabs();
+        add(sidebar);
+
+        setVisible(true);
     }
 
     private void loadTabs() {
         JPanel homeTab = new HomeTab(this);
-        JPanel settingsTab = new SettingsTab(this);
-        JPanel reportTab = new ReportTab(this);
 
         sidebar.add(homeTab, HOME_TAB_INDEX);
-        sidebar.setTitleAt(HOME_TAB_INDEX, "Home");
-        sidebar.add(settingsTab, SETTINGS_TAB_INDEX);
-        sidebar.setTitleAt(SETTINGS_TAB_INDEX, "Settings");
-        sidebar.add(reportTab, REPORT_TAB_INDEX);
-        sidebar.setTitleAt(REPORT_TAB_INDEX, "Report");
+        sidebar.setTitleAt(HOME_TAB_INDEX, "ToDo Home");
+    }
+
+    // EFFECTS: return this toDoList
+    public ToDoList getToDoList() {
+        return toDoList;
     }
 
 }

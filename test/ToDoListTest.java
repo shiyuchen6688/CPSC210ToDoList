@@ -118,6 +118,19 @@ public class ToDoListTest {
         assertEquals(1, testToDoList.size());
     }
 
+    @Test
+    public void testGetAllTaskStringEmpty() {
+        checkToDoEmptyDoesntContain();
+        assertEquals("", testToDoList.getAllTaskString());
+    }
+
+    @Test
+    public void testGetAllTwoTaskString() {
+        checkToDoEmptyDoesntContain();
+        testToDoList.addTask("task1");
+        testToDoList.addTask("task2");
+        assertEquals("\ntask1\ntask2", testToDoList.getAllTaskString());
+    }
 
     private void checkToDoContainOnce() {
         assertEquals(testToDoList.size(), 1);

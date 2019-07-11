@@ -52,7 +52,7 @@ public class ToDoList {
 
 
 
-    // EFFECTS: print all list inside todolist in format: Number : task name
+    // EFFECTS: print all task inside todolist in format: Number : task name
     public void printAllTask() {
         System.out.println();
         System.out.println("----------Here is all of your tasks----------");
@@ -64,6 +64,15 @@ public class ToDoList {
         int count = num - 1;
         System.out.println("Done, you have " + count + " task in total");
         System.out.println();
+    }
+
+    // EFFECTS: Return names of all tasks in the ToDOList in a String
+    public String getAllTaskString() {
+        String result = "";
+        for (Task t: tasks) {
+            result = result + "\n" + t.getTaskName();
+        }
+        return result;
     }
 
 
