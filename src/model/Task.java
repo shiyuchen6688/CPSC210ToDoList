@@ -4,11 +4,13 @@ public class Task {
     private String taskName;
     private int dayUntilDue;
 
+    // EFFECTS: construct a task object set taskName to given taskName, set dayUntilDue to 0
     public Task(String taskName) {
         this.taskName = taskName;
         this.dayUntilDue = 0;
     }
 
+    // getters
     public String getTaskName() {
         return taskName;
     }
@@ -17,7 +19,8 @@ public class Task {
         return dayUntilDue;
     }
 
-    public void changeTaskName(String taskName) {
+    // setters
+    public void setTaskName(String taskName) {
         this.taskName = taskName;
     }
 
