@@ -91,9 +91,11 @@ public class Birthday implements Holiday, Task{
 
     // EFFECTS: return true if this task is due, false otherwise
     public boolean isOverdue() {
-        if (!(this.dueDate == null) && this.dueDate.before(CURRENT_DATE)) {
+            if (!(this.dueDate == null) && this.dueDate.before(CURRENT_DATE)) {
                 return true;
-        }
-        return false;
+            }
+            return false;
     }
+
+
 }

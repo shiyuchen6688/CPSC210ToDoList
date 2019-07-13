@@ -7,8 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Birthday;
-import model.ToDoList;
+import model.*;
+import sun.java2d.loops.FillRect;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -32,7 +32,7 @@ public class ToDoListUsage extends Application {
     // object from model
     private static ToDoList toDoList;
     private static Tool tool;
-    private static Birthday birthdayOfShiyu = new Birthday("Shiyu");
+    private static Task birthdayOfShiyu = new Birthday("Shiyu");
     /// Stage and scenes
     Stage window;
     Scene scene1, scene2;

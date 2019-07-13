@@ -33,7 +33,6 @@ public class ToDoList {
         tasks.add(new GeneralTask(taskName, dueDate));
     }
 
-    // TODO still need to test this
     // MODIFIES: this
     // EFFECTS: add given task in to ToDoList
     public void addTask(Task t) {

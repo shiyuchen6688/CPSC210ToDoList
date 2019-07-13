@@ -71,9 +71,9 @@ public class GeneralTask implements Task {
         this.status = status;
     }
 
-    // EFFECTS: return true if this task is due, false otherwise
+    // EFFECTS: return true if dueDate is set and task is due, false otherwise
     public boolean isOverdue() {
-        if (this.dueDate.before(CURRENT_DATE)) {
+        if (!(this.dueDate == null) && this.dueDate.before(CURRENT_DATE)) {
             return true;
         }
         return false;
