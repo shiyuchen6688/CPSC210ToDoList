@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Birthday;
+import model.Task;
 import model.ToDoList;
 
 
@@ -24,6 +26,7 @@ public class ToDoListUsage extends Application {
 
     private static ToDoList toDoList;
     private static Tool tool;
+    private static Birthday birthdayOfShiyu = new Birthday("Shiyu");
     Stage window;
     Scene scene1, scene2;
     Button addTaskButton;
@@ -32,6 +35,7 @@ public class ToDoListUsage extends Application {
 
     public static void main(String[] args) {
         toDoList = new ToDoList();
+        toDoList.addTask(birthdayOfShiyu);
 //        tool = new Tool(toDoList);  // interactions inside intellij
 //        tool.printInstruction();
 //        tool.handleUserInput();

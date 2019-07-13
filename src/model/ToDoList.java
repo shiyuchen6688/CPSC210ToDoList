@@ -17,10 +17,18 @@ public class ToDoList {
 
 
     // MODIFIES: this
-    // EFFECTS: add a task in to ToDoList
+    // EFFECTS:  add a task with given name in to ToDoList
     public void addTask(String taskName) {
         System.out.println("New task created: " + taskName);
-        tasks.add(new Task(taskName));
+        tasks.add(new GeneralTask(taskName));
+    }
+
+    // TODO still need to test this
+    // MODIFIES: this
+    // EFFECTS: add given task in to ToDoList
+    public void addTask(Task t) {
+        System.out.println("New task created: " + t.getTaskName());
+        tasks.add(t);
     }
 
 

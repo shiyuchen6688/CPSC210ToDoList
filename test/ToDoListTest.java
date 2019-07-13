@@ -1,4 +1,4 @@
-import model.Task;
+import model.GeneralTask;
 import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,27 +10,27 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class ToDoListTest {
     private ToDoList testToDoList;
 
-    private static Task taskCPSC210;
-    private static Task taskWRDS150;
-    private static Task task1DayLeft;
-    private static Task task0DayLeft;
-    private static Task task1DayOverdue;
-    private static Task task5DayOverdue;
+    private static GeneralTask generalGeneralTaskCPSC210;
+    private static GeneralTask generalGeneralTaskWRDS150;
+    private static GeneralTask generalGeneralTask1DayLeft;
+    private static GeneralTask generalGeneralTask0DayLeft;
+    private static GeneralTask generalGeneralTask1DayOverdue;
+    private static GeneralTask generalGeneralTask5DayOverdue;
 
     @BeforeEach
     public void setup() {
         testToDoList = new ToDoList();
 
-        taskCPSC210 = new Task("Assignment one for CPSC210");
-        taskWRDS150 = new Task("Paragraph for WRDS150");
-        task1DayLeft = new Task("This task should have one day left, not overdue");
-        task1DayLeft.setDayUntilDue(1);
-        task0DayLeft = new Task("This task should have zero day left, not overdue");
-        task0DayLeft.setDayUntilDue(0);
-        task1DayOverdue = new Task("This task should OVERDUE 1 day");
-        task1DayOverdue.setDayUntilDue(-1);
-        task5DayOverdue = new Task("This task should OVERDUE 10 day");
-        task5DayOverdue.setDayUntilDue(-5);
+        generalGeneralTaskCPSC210 = new GeneralTask("Assignment one for CPSC210");
+        generalGeneralTaskWRDS150 = new GeneralTask("Paragraph for WRDS150");
+        generalGeneralTask1DayLeft = new GeneralTask("This task should have one day left, not overdue");
+        generalGeneralTask1DayLeft.setDayUntilDue(1);
+        generalGeneralTask0DayLeft = new GeneralTask("This task should have zero day left, not overdue");
+        generalGeneralTask0DayLeft.setDayUntilDue(0);
+        generalGeneralTask1DayOverdue = new GeneralTask("This task should OVERDUE 1 day");
+        generalGeneralTask1DayOverdue.setDayUntilDue(-1);
+        generalGeneralTask5DayOverdue = new GeneralTask("This task should OVERDUE 10 day");
+        generalGeneralTask5DayOverdue.setDayUntilDue(-5);
     }
 
 
@@ -82,7 +82,7 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         checkToDoContainOnce();
-        Task t = testToDoList.findTask("test task");
+        GeneralTask t = testToDoList.findTask("test task");
         assertEquals(t.getTaskName(), "test task");
         checkToDoContainOnce();
     }
@@ -91,7 +91,7 @@ public class ToDoListTest {
     @Test
     public void testFindTaskDoesntExist() {
         checkToDoEmptyDoesntContain();
-        Task t = testToDoList.findTask("test task");
+        GeneralTask t = testToDoList.findTask("test task");
         assertEquals(t, null);
         checkToDoEmptyDoesntContain();
     }
