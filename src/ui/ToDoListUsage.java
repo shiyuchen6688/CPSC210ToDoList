@@ -26,7 +26,7 @@ public class ToDoListUsage extends Application {
     public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
     public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
     public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
-    public static final String MESSAGE_END_OUTPUT = "Welcome, these are tasks you added before";
+    public static final String MESSAGE_END_OUTPUT = "Goodbye, your tasks have been saved";
 
 
     // object from model
@@ -58,6 +58,7 @@ public class ToDoListUsage extends Application {
             String line = lines.get(i);
             if (line.equals(MESSAGE_END_OUTPUT)) {
                 System.out.println(MESSAGE_END_OUTPUT);
+                writer.println(line);
             } else {
                 ArrayList<String> partsOfLine = splitOnSpace(line);
                 System.out.print("Task: " + partsOfLine.get(0) + " ");
@@ -67,13 +68,13 @@ public class ToDoListUsage extends Application {
         }
         writer.close();
 
-        // This part is for GUI TODO need to finish
+        // TODO need to finish This part is for GUI
         // launch(args);
     }
 
     // helper to split words in load and save. File download from CPSC-210 EDX.
     public static ArrayList<String> splitOnSpace(String line){
-        String[] splits = line.split(" ");
+        String[] splits = line.split("  ");
         return new ArrayList<>(Arrays.asList(splits));
     }
 

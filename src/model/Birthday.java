@@ -64,12 +64,8 @@ public class Birthday implements Holiday, Task{
 
     // EFFECTS: return status of this task
     @Override
-    public String getStatus() {
-        if (this.status) {
-            return ("Done");
-        } else {
-            return ("Not Done");
-        }
+    public boolean getStatus() {
+        return this.status;
     }
 
     // MODIFIES: this

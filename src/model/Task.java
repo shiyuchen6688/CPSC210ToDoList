@@ -11,7 +11,7 @@ public interface Task {
     Date getDueDate();
 
     // EFFECTS: return status of this task
-    String getStatus();
+    boolean getStatus();
 
     // MODIFIES: this
     // EFFECTS: set this taskName to given taskName

@@ -1,5 +1,7 @@
 package model;
 
+import sun.java2d.loops.FillRect;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.Date;
 public class GeneralTask implements Task {
     public final Date CURRENT_DATE = new Date();
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     private String taskName;
     private Date dueDate;
     private boolean status;
@@ -43,12 +46,8 @@ public class GeneralTask implements Task {
 
     // EFFECTS: return status of this task
     @Override
-    public String getStatus() {
-        if (this.status) {
-            return ("Done");
-        } else {
-            return ("Not Done");
-        }
+    public boolean getStatus() {
+        return this.status;
     }
 
     // MODIFIES: this
@@ -81,4 +80,5 @@ public class GeneralTask implements Task {
 
 
     }
+
 }

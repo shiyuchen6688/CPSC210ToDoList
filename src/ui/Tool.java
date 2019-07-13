@@ -2,6 +2,9 @@ package ui;
 
 import model.ToDoList;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Scanner;
 
@@ -14,10 +17,11 @@ public class Tool {
 
 
     private Scanner input;
+    private PrintWriter inputWriter = new PrintWriter("inputfile.txt","UTF-8");
     private boolean isRunning;
     private ToDoList toDoList;
 
-    public Tool(ToDoList toDoList) {
+    public Tool(ToDoList toDoList) throws FileNotFoundException, UnsupportedEncodingException {
         this.toDoList = toDoList;
         input = new Scanner(System.in);
         isRunning = true;
@@ -58,6 +62,7 @@ public class Tool {
                 handleAddTask();
                 break;
             case QUIT_COMMAND:
+                inputWriter.close();
                 isRunning = false;
                 break;
             default:
@@ -73,11 +78,16 @@ public class Tool {
         // due date ot not
         System.out.println("Enter dueDate in format yyyy-mm-dd or Enter skip if no dueDate");
         String date = input.nextLine();
+        String record = "";
         if (date.equals("skip")) {
             toDoList.addTask(name);
+            record = name + "  " + "None";
         } else {
             toDoList.addTask(name, date);
+            record = name + "  " + date;
         }
+        inputWriter.println(record);
+
     }
 
 
