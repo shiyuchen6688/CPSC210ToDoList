@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +10,14 @@ import javafx.stage.Stage;
 import model.Birthday;
 import model.ToDoList;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class ToDoListUsage extends Application {
@@ -18,6 +26,7 @@ public class ToDoListUsage extends Application {
     public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
     public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
     public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
+    public static final String MESSAGE_END_OUTPUT = "Welcome, these are tasks you added before";
 
 
     // object from model
@@ -32,16 +41,44 @@ public class ToDoListUsage extends Application {
     Button printAllTasksButton;
     Button printAllOverdueTasksButton;
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, IOException {
+        // setups
         toDoList = new ToDoList();
         toDoList.addTask(birthdayOfShiyu);
-        tool = new Tool(toDoList);  // interactions inside intellij
-        tool.handleUserInput();
-        launch(args);
 
+        // interactions inside intellij
+        tool = new Tool(toDoList);
+        tool.handleUserInput();    // Comment this out to able to use GUI
 
+        // Load and Save
+        List<String> lines = Files.readAllLines(Paths.get("inputfile.txt"));;
+        PrintWriter writer = new PrintWriter("outputfile.txt","UTF-8");
+        lines.add(MESSAGE_END_OUTPUT);
+        for (int i = 0; i < lines.size(); i++){
+            String line = lines.get(i);
+            if (line.equals(MESSAGE_END_OUTPUT)) {
+                System.out.println(MESSAGE_END_OUTPUT);
+            } else {
+                ArrayList<String> partsOfLine = splitOnSpace(line);
+                System.out.print("Task: " + partsOfLine.get(0) + " ");
+                System.out.println("DueDate: " + partsOfLine.get(1));
+                writer.println(line);
+            }
+        }
+        writer.close();
+
+        // This part is for GUI TODO need to finish
+        // launch(args);
     }
 
+    // helper to split words in load and save. File download from CPSC-210 EDX.
+    public static ArrayList<String> splitOnSpace(String line){
+        String[] splits = line.split(" ");
+        return new ArrayList<>(Arrays.asList(splits));
+    }
+
+
+    // This method is for GUI, TODO not finished yet
     @Override
     public void start(Stage primaryStage) throws Exception {
         // let window reference primaryStage
@@ -61,9 +98,16 @@ public class ToDoListUsage extends Application {
             PopupAd.display("Advertisement", "Nikdas, 50% cheaper than them");
         });   // switch scene from scene1 to scene2 and pop up ad
 
+        // Button to print all overdue tasks
+        printAllOverdueTasksButton = new Button(BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON);
+        printAllOverdueTasksButton.setOnAction(e -> toDoList.printAllOverdueTasks());
+
+
         // Layout1 - vertically in scene1
         VBox layoutScene1 = new VBox(20);   // 5 is the spacing between elements inside the box
-        layoutScene1.getChildren().addAll(initialText, printAllTasksButton, addTaskButton);
+        layoutScene1.getChildren().addAll(initialText, printAllTasksButton, addTaskButton, printAllOverdueTasksButton);
+        layoutScene1.setAlignment(Pos.CENTER);
+
         // Set scene 1
         scene1 = new Scene(layoutScene1, SCENE_WIDTH, SCENE_HEIGHT);
 
