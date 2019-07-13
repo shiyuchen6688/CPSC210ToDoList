@@ -1,19 +1,15 @@
 package ui;
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Birthday;
-import model.Task;
 import model.ToDoList;
+
+import java.text.ParseException;
 
 
 public class ToDoListUsage extends Application {
@@ -24,21 +20,23 @@ public class ToDoListUsage extends Application {
     public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
 
 
+    // object from model
     private static ToDoList toDoList;
     private static Tool tool;
     private static Birthday birthdayOfShiyu = new Birthday("Shiyu");
+    /// Stage and scenes
     Stage window;
     Scene scene1, scene2;
+    // Buttons
     Button addTaskButton;
     Button printAllTasksButton;
     Button printAllOverdueTasksButton;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         toDoList = new ToDoList();
         toDoList.addTask(birthdayOfShiyu);
-//        tool = new Tool(toDoList);  // interactions inside intellij
-//        tool.printInstruction();
-//        tool.handleUserInput();
+        tool = new Tool(toDoList);  // interactions inside intellij
+        tool.handleUserInput();
         launch(args);
 
 

@@ -1,10 +1,13 @@
 package model;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ToDoList {
+
     private List<Task> tasks;
 
 
@@ -21,6 +24,13 @@ public class ToDoList {
     public void addTask(String taskName) {
         System.out.println("New task created: " + taskName);
         tasks.add(new GeneralTask(taskName));
+    }
+
+    // MODIFIES: this
+    // EFFECTS:  add a task with given name and given due date in to ToDoList
+    public void addTask(String taskName, String dueDate) throws ParseException {
+        System.out.println("New task created: " + taskName);
+        tasks.add(new GeneralTask(taskName, dueDate));
     }
 
     // TODO still need to test this
@@ -70,7 +80,11 @@ public class ToDoList {
         System.out.println("----------Here is all of your tasks----------");
         int num = 1;
         for (Task t : tasks) {
-            System.out.println(num + " : " + t.getTaskName());
+            String result = num + " : " + t.getTaskName();
+            if (t.getDueDate() != null) {
+                result = result + ", Due Date is " + t.getDueDate().toString();
+            }
+            System.out.println(result);
             num = num + 1;
         }
         System.out.println("Done, you have " + tasks.size() + " task in total");
@@ -91,7 +105,7 @@ public class ToDoList {
         System.out.println("---!!!Here is all of your OVERDUE tasks!!----");
         int num = 1;
         for (Task t : tasks) {
-            if (t.getDayUntilDue() < 0) {
+            if (t.isOverdue()) {
                 System.out.println("OVERDUE Task " + num + " : " + t.getTaskName());
                 num = num + 1;
             }

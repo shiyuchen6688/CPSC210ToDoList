@@ -1,17 +1,32 @@
 package model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class GeneralTask implements Task {
+    public final Date CURRENT_DATE = new Date();
+    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private String taskName;
-    private int dayUntilDue;
-    private boolean overdue;
+    private Date dueDate;
+    private boolean status;
 
     // MODIFIES: this
     // EFFECTS: construct a task object set taskName to given taskName,
-    //          set dayUntilDue to 0, set overdue to false
+    //          set dueDate to null, set overdue to false
     public GeneralTask(String taskName) {
         this.taskName = taskName;
-        this.dayUntilDue = 0;
-        this.overdue = false;
+        this.dueDate = null;
+        this.status = false;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: construct a task object set taskName to given taskName,
+    //          set dueDate to gicen dueDate, set overdue to false
+    public GeneralTask(String taskName, String dueDate) throws ParseException {
+        this.taskName = taskName;
+        this.dueDate = sdf.parse(dueDate);
+        this.status = false;
     }
 
     // EFFECTS: return taskName
@@ -20,15 +35,21 @@ public class GeneralTask implements Task {
         return taskName;
     }
 
-    // EFFECTS: return dayUntilDue
+    // EFFECTS: return dueDate
     @Override
-    public int getDayUntilDue() {
-        return dayUntilDue;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    // EFFECTS: return overdue
+    // EFFECTS: return status of this task
     @Override
-    public boolean getOverdue() {return overdue;}
+    public String getStatus() {
+        if (this.status) {
+            return ("Done");
+        } else {
+            return ("Not Done");
+        }
+    }
 
     // MODIFIES: this
     // EFFECTS: set this taskName to given taskName
@@ -38,17 +59,26 @@ public class GeneralTask implements Task {
     }
 
     // MODIFIES: this
-    // EFFECTS: set this dayUntilDue to given dayUntilDue
+    // EFFECTS: set this dueDate to given dueDate in format yyyy-MM-dd
     @Override
-    public void setDayUntilDue(int dayUntilDue) {
-        this.dayUntilDue = dayUntilDue;
+    public void setDueDate(String dueDate) throws ParseException {
+        this.dueDate = sdf.parse(dueDate);
     }
 
     // MODIFIES: this
-    // EFFECTS: set this overdue to given overdue
+    // EFFECTS: set this status to given status
     @Override
-    public void setOverdue(boolean overdue) {
-        this.overdue = overdue;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
+    // EFFECTS: return true if this task is due, false otherwise
+    public boolean isOverdue() {
+        if (this.dueDate.before(CURRENT_DATE)) {
+            return true;
+        }
+        return false;
+
+
+    }
 }

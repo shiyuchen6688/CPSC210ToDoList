@@ -1,24 +1,30 @@
 package model;
 
+import java.text.ParseException;
+import java.util.Date;
+
 public interface Task {
     // EFFECTS: return taskName
     String getTaskName();
 
     // EFFECTS: return dayUntilDue
-    int getDayUntilDue();
+    Date getDueDate();
 
-    // EFFECTS: return overdue
-    boolean getOverdue();
+    // EFFECTS: return status of this task
+    String getStatus();
 
     // MODIFIES: this
     // EFFECTS: set this taskName to given taskName
     void setTaskName(String taskName);
 
     // MODIFIES: this
-    // EFFECTS: set this dayUntilDue to given dayUntilDue
-    void setDayUntilDue(int dayUntilDue);
+    // EFFECTS: set this dueDate to given year, month, date
+    void setDueDate(String dueDate) throws ParseException;
 
     // MODIFIES: this
     // EFFECTS: set this overdue to given overdue
-    void setOverdue(boolean overdue);
+    void setStatus(boolean overdue);
+
+    // EFFECTS: return true if this task is due, false otherwise
+    boolean isOverdue();
 }
