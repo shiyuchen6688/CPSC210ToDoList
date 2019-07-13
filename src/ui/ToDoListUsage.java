@@ -1,5 +1,6 @@
 package ui;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +12,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ToDoList;
-import ui.tabs.HomeTab;
 
 
 public class ToDoListUsage extends Application {
@@ -23,6 +23,7 @@ public class ToDoListUsage extends Application {
 
 
     private static ToDoList toDoList;
+    private static Tool tool;
     Stage window;
     Scene scene1, scene2;
     Button addTaskButton;
@@ -31,6 +32,9 @@ public class ToDoListUsage extends Application {
 
     public static void main(String[] args) {
         toDoList = new ToDoList();
+//        tool = new Tool(toDoList);  // interactions inside intellij
+//        tool.printInstruction();
+//        tool.handleUserInput();
         launch(args);
 
 
