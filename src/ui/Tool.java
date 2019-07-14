@@ -18,7 +18,6 @@ public class Tool {
 
 
     private Scanner input;
-    private PrintWriter inputWriter = new PrintWriter("inputfile.txt","UTF-8");
     private boolean isRunning;
     private ToDoList toDoList;
 

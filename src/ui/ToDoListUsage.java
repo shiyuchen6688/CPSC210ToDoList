@@ -26,13 +26,13 @@ public class ToDoListUsage {
     public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
     public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
     public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
-    public static final String MESSAGE_END_OUTPUT = "Goodbye, your tasks have been saved";
 
 
     // object from model
     private static ToDoList toDoList;
     private static Tool tool;
     private static Task birthdayOfShiyu = new Birthday("Shiyu");
+    private static FileReaderAndWriter fileReaderAndWriter;
     /// Stage and scenes
     Stage window;
     Scene scene1, scene2;
@@ -45,48 +45,51 @@ public class ToDoListUsage {
         // setups
         toDoList = new ToDoList();
         toDoList.addTask(birthdayOfShiyu);
+        fileReaderAndWriter = new FileReaderAndWriter(toDoList);
 
         // print all history
-        printHistory();
+        fileReaderAndWriter.printHistory();
 
         // interactions inside intellij
         tool = new Tool(toDoList);
         tool.handleUserInput();    // Comment this out to able to use GUI
 
         // Load and Save
-        List<Task> tasks = toDoList.getTasks();
-        PrintWriter writer = new PrintWriter("inputfile.txt", "UTF-8");
-        for (int i = 0; i < tasks.size(); i++) {
-            Task t = tasks.get(i);
-            String name = t.getTaskName();
-            String date = "";
-            if (t.getDueDate() != null) {
-                date = t.getDueDate().toString();
-            } else {
-                date = "None";
-            }
+        fileReaderAndWriter.saveAllHistoryToInput();
+//        List<Task> tasks = toDoList.getTasks();
+//        PrintWriter writer = new PrintWriter("inputfile.txt", "UTF-8");
+//        for (int i = 0; i < tasks.size(); i++) {
+//            Task t = tasks.get(i);
+//            String name = t.getTaskName();
+//            String date = "";
+//            if (t.getDueDate() != null) {
+//                date = t.getDueDate().toString();
+//            } else {
+//                date = "None";
+//            }
+//
+//            writer.println(name + "  " + date);
+//        }
+//        writer.close();
 
-            writer.println(name + "  " + date);
-        }
-        writer.close();
+        fileReaderAndWriter.copyInputToOutput();
 
-        List<String> linesOutput = Files.readAllLines(Paths.get("inputfile.txt"));
-        ;
-        PrintWriter writerOutput = new PrintWriter("outputfile.txt", "UTF-8");
-        linesOutput.add(MESSAGE_END_OUTPUT);
-        for (int i = 0; i < linesOutput.size(); i++) {
-            String line = linesOutput.get(i);
-            if (line.equals(MESSAGE_END_OUTPUT)) {
-                System.out.println(MESSAGE_END_OUTPUT);
-                writerOutput.println(line);
-            } else {
-                ArrayList<String> partsOfLine = splitOnSpace(line);
-                System.out.print("Task: " + partsOfLine.get(0) + " ");
-                System.out.println("DueDate: " + partsOfLine.get(1));
-                writerOutput.println(line);
-            }
-        }
-        writerOutput.close();
+//        List<String> linesOutput = Files.readAllLines(Paths.get("inputfile.txt"));
+//        PrintWriter writerOutput = new PrintWriter("outputfile.txt", "UTF-8");
+//        linesOutput.add(MESSAGE_END_OUTPUT);
+//        for (int i = 0; i < linesOutput.size(); i++) {
+//            String line = linesOutput.get(i);
+//            if (line.equals(MESSAGE_END_OUTPUT)) {
+//                System.out.println(MESSAGE_END_OUTPUT);
+//                writerOutput.println(line);
+//            } else {
+//                ArrayList<String> partsOfLine = splitOnSpace(line);
+//                System.out.print("Task: " + partsOfLine.get(0) + " ");
+//                System.out.println("DueDate: " + partsOfLine.get(1));
+//                writerOutput.println(line);
+//            }
+//        }
+//        writerOutput.close();
 
         // TODO need to finish This part is for GUI
         // launch(args);
@@ -98,15 +101,7 @@ public class ToDoListUsage {
         return new ArrayList<>(Arrays.asList(splits));
     }
 
-    // EFFECTS: print all history tasks
-    public static void printHistory() throws IOException {
-        List<String> linesOutput = Files.readAllLines(Paths.get("inputfile.txt"));
-        for (String line: linesOutput) {
-            ArrayList<String> partsOfLine = splitOnSpace(line);
-            System.out.print("Task: " + partsOfLine.get(0) + " ");
-            System.out.println("DueDate: " + partsOfLine.get(1));
-        }
-    }
+
 
 
 //    // This method is for GUI, TODO not finished yet
