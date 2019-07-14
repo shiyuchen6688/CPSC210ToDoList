@@ -1,5 +1,6 @@
 package ui;
 
+import model.Task;
 import model.ToDoList;
 
 import java.io.FileNotFoundException;
@@ -62,7 +63,6 @@ public class Tool {
                 handleAddTask();
                 break;
             case QUIT_COMMAND:
-                inputWriter.close();
                 isRunning = false;
                 break;
             default:
@@ -78,15 +78,11 @@ public class Tool {
         // due date ot not
         System.out.println("Enter dueDate in format yyyy-mm-dd or Enter skip if no dueDate");
         String date = input.nextLine();
-        String record = "";
         if (date.equals("skip")) {
             toDoList.addTask(name);
-            record = name + "  " + "None";
         } else {
             toDoList.addTask(name, date);
-            record = name + "  " + date;
         }
-        inputWriter.println(record);
 
     }
 

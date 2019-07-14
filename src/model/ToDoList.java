@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 public class ToDoList {
 
     private List<Task> tasks;
@@ -18,6 +19,11 @@ public class ToDoList {
     }
 
 
+
+    // EFFECTS: return tasks of this list
+    public List<Task> getTasks() {
+        return this.tasks;
+    }
 
     // MODIFIES: this
     // EFFECTS:  add a task with given name in to ToDoList
@@ -93,6 +99,15 @@ public class ToDoList {
     // EFFECTS: Return names of all tasks in the ToDOList in a String
     public String getAllTaskAsString() {
         return tasks.stream().map(Task::getTaskName).collect(Collectors.joining("\n"));
+    }
+
+    // EFFECTS: return list of string names of tasks in the list
+    public List<String> getAllTaskAsListOfString() {
+        List<String> ls = new ArrayList<String>();
+        for (Task t: tasks) {
+            ls.add(t.getTaskName());
+        }
+        return ls;
     }
 
 

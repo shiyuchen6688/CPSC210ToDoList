@@ -9,7 +9,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class TaskTest {
+public abstract class TaskTest {
     public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     protected Task testTask;
 

@@ -22,6 +22,14 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
     }
 
+    @Test
+    public void testGetTasks() {
+        checkToDoEmptyDoesntContain();
+        Task t = new GeneralTask("test");
+        testToDoList.addTask(t);
+        assertEquals(1, testToDoList.getTasks().size());
+        assertEquals(t, testToDoList.getTasks().get(0));
+    }
 
     @Test
     public void testAddTask() {
@@ -122,7 +130,7 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("task1");
         testToDoList.addTask("task2");
-        assertEquals("\ntask1\ntask2", testToDoList.getAllTaskAsString());
+        assertEquals("task1\ntask2", testToDoList.getAllTaskAsString());
     }
 
     private void checkToDoContainOnce() {
