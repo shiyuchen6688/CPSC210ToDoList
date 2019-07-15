@@ -58,6 +58,9 @@ public class ToDoListUsage {
         fileReaderAndWriter.saveAllHistoryToInput();
         fileReaderAndWriter.copyInputToOutput();
 
+
+
+        
         // TODO need to finish This part is for GUI
         // launch(args);
     }
