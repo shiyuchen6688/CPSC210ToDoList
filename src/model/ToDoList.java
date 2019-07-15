@@ -1,6 +1,7 @@
 package model;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.stream.Collectors;
 
 
 public class ToDoList {
+    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private List<Task> tasks;
 
@@ -87,7 +89,7 @@ public class ToDoList {
         for (Task t : tasks) {
             String result = num + " : " + t.getTaskName();
             if (t.getDueDate() != null) {
-                result = result + ", Due Date is " + t.getDueDate().toString();
+                result = result + ", Due Date is " + sdf.format(t.getDueDate());
             }
             System.out.println(result);
             num = num + 1;

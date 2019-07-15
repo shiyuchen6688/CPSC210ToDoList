@@ -47,8 +47,8 @@ public class ToDoListUsage {
         toDoList.addTask(birthdayOfShiyu);
         fileReaderAndWriter = new FileReaderAndWriter(toDoList);
 
-        // print all history
-        fileReaderAndWriter.printHistory();
+        // load and print all history
+        fileReaderAndWriter.load();
 
         // interactions inside intellij
         tool = new Tool(toDoList);

@@ -28,7 +28,11 @@ public class GeneralTask implements Task {
     //          set dueDate to gicen dueDate, set overdue to false
     public GeneralTask(String taskName, String dueDate) throws ParseException {
         this.taskName = taskName;
-        this.dueDate = sdf.parse(dueDate);
+        if (dueDate == null) {
+            this.dueDate = null;
+        } else {
+            this.dueDate = sdf.parse(dueDate);
+        }
         this.status = false;
     }
 

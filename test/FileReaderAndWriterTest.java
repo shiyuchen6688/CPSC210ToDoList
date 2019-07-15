@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,15 +36,26 @@ public class FileReaderAndWriterTest {
     }
 
     @Test
+    public void testLoad() throws IOException, ParseException {
+        List<String> allTaskName = getAllTasksNames(testToDoList.getTasks());
+        assertFalse(allTaskName.contains(NAME_TEST1));
+        testFileReaderAndWriter.getInputFileWriter().write(NAME_TEST1+ "  " + DUEDATE_TEST1);
+
+        testFileReaderAndWriter.load();
+        allTaskName = getAllTasksNames(testToDoList.getTasks());
+        assertFalse(allTaskName.contains(NAME_TEST1));
+    }
+
+    @Test
     public void testSaveAllHistoryToInput() throws IOException, ParseException {
         List<String> lines = Files.readAllLines(Paths.get("inputfile.txt"));
-        assertFalse(lines.contains("test1  Sat Nov 11 00:00:00 PST 1111"));
+        assertFalse(lines.contains("test1  " + DUEDATE_TEST1));
 
         testToDoList.addTask(task1);
         testFileReaderAndWriter.saveAllHistoryToInput();
         lines = Files.readAllLines(Paths.get("inputfile.txt"));
 
-        assertEquals("test1  Sat Nov 11 00:00:00 PST 1111" , lines.get(lines.size()-1));
+        assertEquals("test1  " + DUEDATE_TEST1 , lines.get(lines.size()-1));
     }
 
     @Test
@@ -54,10 +66,17 @@ public class FileReaderAndWriterTest {
         testFileReaderAndWriter.copyInputToOutput();
         lines = Files.readAllLines(Paths.get("outputfile.txt"));
 
-        assertEquals("test1  Sat Nov 11 00:00:00 PST 1111", lines.get(lines.size() - 2));
+        assertEquals("test1  " + DUEDATE_TEST1, lines.get(lines.size() - 2));
         assertEquals("Goodbye, your tasks have been saved", lines.get(lines.size() - 1));
     }
 
 
+    public List<String> getAllTasksNames(List<Task> tasks) {
+        List<String> result = new ArrayList<>();
+        for (Task t: tasks) {
+            result.add(t.getTaskName());
+        }
+        return result;
+    }
 
 }
