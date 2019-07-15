@@ -56,40 +56,7 @@ public class ToDoListUsage {
 
         // Load and Save
         fileReaderAndWriter.saveAllHistoryToInput();
-//        List<Task> tasks = toDoList.getTasks();
-//        PrintWriter writer = new PrintWriter("inputfile.txt", "UTF-8");
-//        for (int i = 0; i < tasks.size(); i++) {
-//            Task t = tasks.get(i);
-//            String name = t.getTaskName();
-//            String date = "";
-//            if (t.getDueDate() != null) {
-//                date = t.getDueDate().toString();
-//            } else {
-//                date = "None";
-//            }
-//
-//            writer.println(name + "  " + date);
-//        }
-//        writer.close();
-
         fileReaderAndWriter.copyInputToOutput();
-
-//        List<String> linesOutput = Files.readAllLines(Paths.get("inputfile.txt"));
-//        PrintWriter writerOutput = new PrintWriter("outputfile.txt", "UTF-8");
-//        linesOutput.add(MESSAGE_END_OUTPUT);
-//        for (int i = 0; i < linesOutput.size(); i++) {
-//            String line = linesOutput.get(i);
-//            if (line.equals(MESSAGE_END_OUTPUT)) {
-//                System.out.println(MESSAGE_END_OUTPUT);
-//                writerOutput.println(line);
-//            } else {
-//                ArrayList<String> partsOfLine = splitOnSpace(line);
-//                System.out.print("Task: " + partsOfLine.get(0) + " ");
-//                System.out.println("DueDate: " + partsOfLine.get(1));
-//                writerOutput.println(line);
-//            }
-//        }
-//        writerOutput.close();
 
         // TODO need to finish This part is for GUI
         // launch(args);
