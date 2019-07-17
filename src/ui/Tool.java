@@ -11,6 +11,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
+import static ui.ToDoListUsage.dateFormat;
+import static ui.ToDoListUsage.sdf;
+
 public class Tool {
     private static final String ALLTASKS_COMMAND = "all";
     private static final String ALLOVERDUES_COMMAND = "overdue";
@@ -21,8 +24,7 @@ public class Tool {
     private static final String CHANGE_DUEDATE_COMMAND = "2";
     private static final String DELETE_COMMAND = "3";
 
-
-    private Scanner input;
+    private static Scanner input;
     private boolean isRunning;
     private ToDoList toDoList;
 
@@ -31,7 +33,46 @@ public class Tool {
         input = new Scanner(System.in);
         isRunning = true;
     }
-    // TODO Commit first and then try to do something with just str
+
+    // Choose Format
+    public void userChooseFormat() {
+        printFormatOptions();
+        String formatChoice = input.nextLine();
+        handleFormatOptions(formatChoice);
+    }
+
+    public void printFormatOptions() {
+        System.out.println("Welcome to your TODO list!");
+        System.out.println("You can choose your default date format here:");
+        System.out.println("\nEnter " + 1 + " to use yyyy-MM-dd");
+        System.out.println("\nEnter " + 2 + " to use dd-MM-yyyy");
+        System.out.println("\nEnter " + 3 + " to use MM-dd-yyyy");
+        System.out.println("\nEnter " + 0 + " if you don't care and we will use our default yyyy-MM-dd");
+    }
+
+    public void handleFormatOptions(String formatChoice) {
+        switch (formatChoice) {
+            case "1":
+                dateFormat = "yyyy-MM-dd";
+                sdf = new SimpleDateFormat(dateFormat);
+                break;
+            case "2":
+                dateFormat = "dd-MM-yyyy";
+                sdf = new SimpleDateFormat(dateFormat);
+                break;
+            case "3":
+                dateFormat = "MM-dd-yyyy";
+                sdf = new SimpleDateFormat(dateFormat);
+                break;
+            default:
+                dateFormat = "yyyy-MM-dd";
+                System.out.println("seted to default yyyy-MM-dd");
+                sdf = new SimpleDateFormat(dateFormat);
+                break;
+        }
+    }
+
+
     public void handleUserInput() throws ParseException {
         System.out.println("How can I help you today?");
         printInstruction();
@@ -87,7 +128,7 @@ public class Tool {
         String name = input.nextLine();
         System.out.println("Name of the test is: " + name);
         // due date or not
-        System.out.println("\nEnter dueDate in format yyyy-mm-dd or Enter skip if no dueDate");
+        System.out.println("\nEnter dueDate in format " + dateFormat + " or Enter skip if no dueDate");
         String date = input.nextLine();
         if (date.equals("skip")) {
             date = null;
@@ -115,15 +156,6 @@ public class Tool {
 
         }
 
-
-//        if (date.equals("skip")) {
-//            System.out.println("New task created: " + name + " Due date not set");
-//            toDoList.addTask(name);
-//        } else {
-//            System.out.println("New task created: " + name + " Due date set at: " + date);
-//            toDoList.addTask(name, date);
-//        }
-
     }
 
     // handle edit a Task, change name, delete, change due date
@@ -137,8 +169,8 @@ public class Tool {
         if (editTask != null) {
             System.out.println("Found task: " + taskName);
             printEditOptions();
-            String editOption = input.nextLine();
-            handleEditOption(editOption, editTask);
+            String option = input.nextLine();
+            handleEditOption(option, editTask);
         } else {
             System.out.println("Task: " + taskName + " does not exist.");
         }
@@ -193,39 +225,8 @@ public class Tool {
         System.out.println("Task " + taskName + " has been deleted");
     }
 
-    // Choose Format
-    public void userChooseFormat() {
-        printFormatOptions();
-        String formatChoice = input.nextLine();
-        handleFormatOptions(formatChoice);
-    }
-
-    public void printFormatOptions() {
-        System.out.println("Welcome to your TODO list!");
-        System.out.println("You can choose your default date format here:");
-        System.out.println("\nEnter " + 1 + " to use yyyy-MM-dd");
-        System.out.println("\nEnter " + 2 + " to use dd-MM-yyyy");
-        System.out.println("\nEnter " + 3 + " to use MM-dd-yyyy");
-        System.out.println("\nEnter " + 0 + " if you don't care and we will use our default yyyy-MM-dd");
-    }
-
-    public void handleFormatOptions(String formatChoice) {
-        switch (formatChoice) {
-            case "1":
-                ToDoListUsage.sdf = new SimpleDateFormat("yyyy-MM-dd");
-                break;
-            case "2":
-                ToDoListUsage.sdf = new SimpleDateFormat("dd-MM-yyyy");
-                break;
-            case "3":
-                ToDoListUsage.sdf = new SimpleDateFormat("MM-dd-yyyy");
-                break;
-            default:
-                System.out.println("seted to default yyyy-MM-dd");
-                ToDoListUsage.sdf = new SimpleDateFormat("yyyy-MM-dd");
-                break;
-        }
-    }
-
 
 }
+
+
+

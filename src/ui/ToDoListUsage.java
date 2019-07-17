@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 // extends Application to use GUI
 public class ToDoListUsage {
@@ -28,12 +29,14 @@ public class ToDoListUsage {
     public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
     public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public static String dateFormat = "yyyy-MM-dd";
 
 
     // object from model
     private static ToDoList toDoList;
     private static Tool tool;
     private static FileReaderAndWriter fileReaderAndWriter;
+
     /// Stage and scenes
     Stage window;
     Scene scene1, scene2;

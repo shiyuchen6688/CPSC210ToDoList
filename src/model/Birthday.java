@@ -115,13 +115,13 @@ public class Birthday extends GeneralTask implements Holiday{
         return false;
     }
 
-    public static void main(String[] args) throws ParseException {
-        Birthday a = new Birthday("Shiyu", "2019-10-08");
-        Birthday b = new Birthday("Shiyu", "2019-10-08");
-        String c = "shiyu";
-        String d = "shiyu";
-        System.out.println(c == d);
-        System.out.println(c.equals(d));
-    }
+//    public static void main(String[] args) throws ParseException {
+//        Birthday a = new Birthday("Shiyu", "2019-10-08");
+//        Birthday b = new Birthday("Shiyu", "2019-10-08");
+//        String c = "shiyu";
+//        String d = "shiyu";
+//        System.out.println(c == d);
+//        System.out.println(c.equals(d));
+//    }
 
 }
