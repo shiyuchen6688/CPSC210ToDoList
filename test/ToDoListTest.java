@@ -1,4 +1,4 @@
-import model.GeneralTask;
+import model.RegularTask;
 import model.Task;
 import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ public class ToDoListTest {
     @Test
     public void testGetTasks() {
         checkToDoEmptyDoesntContain();
-        Task t = new GeneralTask("test");
+        Task t = new RegularTask("test");
         testToDoList.addTask(t);
         assertEquals(1, testToDoList.getTasks().size());
         assertEquals(t, testToDoList.getTasks().get(0));
@@ -51,7 +51,7 @@ public class ToDoListTest {
     @Test
     public void testAddTask2() {
         checkToDoEmptyDoesntContain();
-        testToDoList.addTask(new GeneralTask("test task"));
+        testToDoList.addTask(new RegularTask("test task"));
         checkToDoContainOnce();
     }
 

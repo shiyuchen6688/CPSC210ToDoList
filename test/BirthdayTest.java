@@ -3,6 +3,8 @@ import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,12 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class BirthdayTest extends TaskTest {
     private Birthday testBirthday;
 
-    // TODO QUESTION, can I construct another object just to test birthday?
-    // TODO QUESTION, how to test two constructor?
+
     @BeforeEach
-    public void setup() {
-        testBirthday = new Birthday("shiyu");
-        testTask = new Birthday("shiyu");
+    public void setup() throws ParseException {
+        testBirthday = new Birthday("shiyu", "2019-10-08");
     }
 
     @Test
@@ -73,9 +73,7 @@ public class BirthdayTest extends TaskTest {
         assertTrue(testBirthday.getGift().equals(newGift));
     }
 
-    // TODO QUESTION can I do this?
-    @Override
-    @Test
+    @Test @Override
     public void testSetTaskName() {
         assertTrue("Birthday of shiyu".equals(testBirthday.getTaskName()));
         testTask.setTaskName("changed");

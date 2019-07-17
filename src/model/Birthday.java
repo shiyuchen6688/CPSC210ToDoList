@@ -1,24 +1,25 @@
 package model;
 
+import ui.ToDoListUsage;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
-public class Birthday implements Holiday, Task{
-    public final Date CURRENT_DATE = new Date();
-    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private String taskName;
-    private Date dueDate;
-    private boolean status;
+public class Birthday extends GeneralTask implements Holiday{
     private String greeting;
     private String gift;
 
     // MODIFIES: this
     // EFFECTS: construct a task object set taskName to given taskName,
     //          set dueDate to null, set overdue to false
-    public Birthday(String name) {
+    public Birthday(String name, String date) throws ParseException {
+        super();
         this.taskName = "Birthday of " + name;
-        this.dueDate = null;
+        this.dueDate = ToDoListUsage.sdf.parse(date);
         this.status = false;
         this.greeting = "Happy Birthday " + name + " !";
         this.gift = "Birthday card for " + name;
@@ -79,7 +80,7 @@ public class Birthday implements Holiday, Task{
     // EFFECTS: set this dueDate to given dueDate in format yyyy-MM-dd
     @Override
     public void setDueDate(String dueDate) throws ParseException {
-        this.dueDate = sdf.parse(dueDate);
+        this.dueDate = ToDoListUsage.sdf.parse(dueDate);
     }
 
     // MODIFIES: this
@@ -90,12 +91,37 @@ public class Birthday implements Holiday, Task{
     }
 
     // EFFECTS: return true if this task is due, false otherwise
+    @Override
     public boolean isOverdue() {
-            if (!(this.dueDate == null) && this.dueDate.before(CURRENT_DATE)) {
-                return true;
-            }
-            return false;
+        LocalDate currentDate = LocalDate.now();
+        if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
+            return true;
+        }
+        return false;
     }
 
+    @Override
+    public boolean closeToDue() {
+        LocalDate currentDate = LocalDate.now();
+        if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
+            return false;
+        }
+        Period period = Period.between(this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                currentDate);
+        int days = period.getDays();
+        if (days < 3) {
+            return true;
+        }
+        return false;
+    }
+
+    public static void main(String[] args) throws ParseException {
+        Birthday a = new Birthday("Shiyu", "2019-10-08");
+        Birthday b = new Birthday("Shiyu", "2019-10-08");
+        String c = "shiyu";
+        String d = "shiyu";
+        System.out.println(c == d);
+        System.out.println(c.equals(d));
+    }
 
 }

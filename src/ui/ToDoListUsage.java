@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,12 +27,12 @@ public class ToDoListUsage {
     public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
     public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
     public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 
     // object from model
     private static ToDoList toDoList;
     private static Tool tool;
-    private static Task birthdayOfShiyu = new Birthday("Shiyu");
     private static FileReaderAndWriter fileReaderAndWriter;
     /// Stage and scenes
     Stage window;
@@ -44,14 +45,18 @@ public class ToDoListUsage {
     public static void main(String[] args) throws ParseException, IOException {
         // setups
         toDoList = new ToDoList();
-        toDoList.addTask(birthdayOfShiyu);
+        tool = new Tool(toDoList);
+        tool.userChooseFormat();
         fileReaderAndWriter = new FileReaderAndWriter(toDoList);
 
         // load and print all history
         fileReaderAndWriter.load();
 
+        // Reminders
+        System.out.println("\nHere is a reminder of all the task that are close to due!!");
+        toDoList.printAllCloseToDue();
+
         // interactions inside intellij
-        tool = new Tool(toDoList);
         tool.handleUserInput();    // Comment this out to able to use GUI
 
         // Load and Save
@@ -60,7 +65,9 @@ public class ToDoListUsage {
 
 
 
-        
+
+
+
         // TODO need to finish This part is for GUI
         // launch(args);
     }
@@ -132,9 +139,11 @@ public class ToDoListUsage {
 //    }
 
 
+
     // EFFECTS: return this toDoList
     public ToDoList getToDoList() {
         return toDoList;
     }
+
 
 }

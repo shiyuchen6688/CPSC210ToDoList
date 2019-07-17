@@ -15,7 +15,7 @@ import java.util.List;
 public class FileReaderAndWriter {
 
     public static final String MESSAGE_END_OUTPUT = "Goodbye, your tasks have been saved";
-    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 
 
     private FileWriter outputFileWriter;
@@ -29,8 +29,10 @@ public class FileReaderAndWriter {
     }
 
 
+    // TODO let user decide where to save/load
+
     public void load() throws IOException, ParseException {
-        System.out.println("---------- Here is all the task you added Before ----------");
+        System.out.println("\n---------- Here is all the task you added Before ----------");
         List<String> lines = Files.readAllLines((Paths.get("inputfile.txt")));
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
@@ -39,19 +41,12 @@ public class FileReaderAndWriter {
             if (dueDate.equals("None")) {
                 dueDate = null;
             }
+            System.out.print("Task: " + taskName);
+            System.out.println(" | Duedate: " + dueDate);
             toDoList.addTask(taskName, dueDate);
 
         }
     }
-//    // EFFECTS: print all history tasks
-//    public void printHistory() throws IOException {
-//        List<String> linesOutput = Files.readAllLines(Paths.get("inputfile.txt"));
-//        for (String line : linesOutput) {
-//            ArrayList<String> partsOfLine = splitOnSpace(line);
-//            System.out.print("Task: " + partsOfLine.get(0) + "    ");
-//            System.out.println("DueDate: " + partsOfLine.get(1));
-//        }
-//    }
 
     // MODIFIES: inputfile.txt
     // EFFECTS: save all tasks to inputfile.txt
@@ -63,7 +58,7 @@ public class FileReaderAndWriter {
             String name = t.getTaskName();
             String date = "";
             if (t.getDueDate() != null) {
-                date = sdf.format(t.getDueDate());
+                date = ToDoListUsage.sdf.format(t.getDueDate());
             } else {
                 date = "None";
             }
@@ -98,6 +93,7 @@ public class FileReaderAndWriter {
     }
 
     // helper to split words in load and save. File download from CPSC-210 EDX.
+    // TODO return List instead of ArrayList
     public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split("  ");
         return new ArrayList<>(Arrays.asList(splits));
@@ -107,4 +103,6 @@ public class FileReaderAndWriter {
     public FileWriter getInputFileWriter() {
         return this.inputFileWriter;
     }
+
+
 }

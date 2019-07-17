@@ -1,38 +1,19 @@
 package model;
 
-import sun.java2d.loops.FillRect;
+import ui.ToDoListUsage;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 
-public class GeneralTask implements Task {
-    public final Date CURRENT_DATE = new Date();
-    public final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+public abstract class GeneralTask implements Task {
+    protected String taskName;
+    protected Date dueDate;
+    protected boolean status;
 
-    private String taskName;
-    private Date dueDate;
-    private boolean status;
-
-    // MODIFIES: this
-    // EFFECTS: construct a task object set taskName to given taskName,
-    //          set dueDate to null, set overdue to false
-    public GeneralTask(String taskName) {
-        this.taskName = taskName;
-        this.dueDate = null;
-        this.status = false;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: construct a task object set taskName to given taskName,
-    //          set dueDate to gicen dueDate, set overdue to false
-    public GeneralTask(String taskName, String dueDate) throws ParseException {
-        this.taskName = taskName;
-        if (dueDate == null) {
-            this.dueDate = null;
-        } else {
-            this.dueDate = sdf.parse(dueDate);
-        }
+    public GeneralTask() {
         this.status = false;
     }
 
@@ -65,7 +46,7 @@ public class GeneralTask implements Task {
     // EFFECTS: set this dueDate to given dueDate in format yyyy-MM-dd
     @Override
     public void setDueDate(String dueDate) throws ParseException {
-        this.dueDate = sdf.parse(dueDate);
+        this.dueDate = ToDoListUsage.sdf.parse(dueDate);
     }
 
     // MODIFIES: this
@@ -76,13 +57,21 @@ public class GeneralTask implements Task {
     }
 
     // EFFECTS: return true if dueDate is set and task is due, false otherwise
+    @Override
     public boolean isOverdue() {
-        if (!(this.dueDate == null) && this.dueDate.before(CURRENT_DATE)) {
+        Date currentDate = java.sql.Date.valueOf(LocalDate.now());
+        if (!(this.dueDate == null) && this.dueDate.before(currentDate)) {
             return true;
         }
         return false;
 
-
+    }
+    @Override
+    public int getDayUntilDue() {
+        LocalDate currentDate = LocalDate.now();
+        Period period = Period.between(currentDate,this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        return period.getDays();
     }
 
+    public abstract boolean closeToDue();
 }

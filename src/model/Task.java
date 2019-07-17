@@ -27,4 +27,8 @@ public interface Task {
 
     // EFFECTS: return true if this task is due, false otherwise
     boolean isOverdue();
+
+    boolean closeToDue();
+
+    int getDayUntilDue();
 }

@@ -1,4 +1,4 @@
-import model.GeneralTask;
+import model.RegularTask;
 import model.Task;
 import model.ToDoList;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,9 +29,9 @@ public class FileReaderAndWriterTest {
     public void setup() throws ParseException, IOException {
         testToDoList = new ToDoList();
         testFileReaderAndWriter = new FileReaderAndWriter(testToDoList);
-        task1 = new GeneralTask(NAME_TEST1);
+        task1 = new RegularTask(NAME_TEST1);
         task1.setDueDate(DUEDATE_TEST1);
-        task2 = new GeneralTask(NAME_TEST2);
+        task2 = new RegularTask(NAME_TEST2);
         task2.setDueDate(DUEDATE_TEST2);
     }
 
