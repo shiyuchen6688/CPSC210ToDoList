@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.NotFoundException;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,6 +11,8 @@ import javafx.stage.Stage;
 import model.*;
 import sun.java2d.loops.FillRect;
 
+import java.awt.image.ImagingOpException;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -45,12 +48,32 @@ public class ToDoListUsage {
     Button printAllTasksButton;
     Button printAllOverdueTasksButton;
 
-    public static void main(String[] args) throws ParseException, IOException {
+    public static void main(String[] args) throws ParseException, IOException{
         // setups
         toDoList = new ToDoList();
         tool = new Tool(toDoList);
+//        } catch (NotFoundException e) {
+//            System.out.println("Can not be found, please try again");
+//        } catch (IOException e) {
+//            System.out.println("This is a bigger problem, please try again");
+//        }
         tool.userChooseFormat();
-        fileReaderAndWriter = new FileReaderAndWriter(toDoList);
+
+        // Choose file
+        String fileName = null;
+        try {
+            fileName = tool.chooseFileToSaveHistory();
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not found");
+        } finally{
+            if (fileName == null) {
+                System.out.println("Since file can not be found, we set the file to default file: inputfile.txt");
+                fileName = "inputfile.txt";
+            } else {
+                System.out.println("file found, everything works fine");
+            }
+        }
+        fileReaderAndWriter = new FileReaderAndWriter(toDoList, fileName);
 
         // load and print all history
         fileReaderAndWriter.load();
@@ -67,10 +90,6 @@ public class ToDoListUsage {
         fileReaderAndWriter.copyInputToOutput();
 
 
-
-
-
-
         // TODO need to finish This part is for GUI
         // launch(args);
     }
@@ -80,8 +99,6 @@ public class ToDoListUsage {
         String[] splits = line.split("  ");
         return new ArrayList<>(Arrays.asList(splits));
     }
-
-
 
 
 //    // This method is for GUI, TODO not finished yet
@@ -140,7 +157,6 @@ public class ToDoListUsage {
 //        //        layout.getChildren().add(printAllOverdueTasksButton);
 //
 //    }
-
 
 
     // EFFECTS: return this toDoList

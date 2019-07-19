@@ -28,7 +28,7 @@ public class FileReaderAndWriterTest {
     @BeforeEach
     public void setup() throws ParseException, IOException {
         testToDoList = new ToDoList();
-        testFileReaderAndWriter = new FileReaderAndWriter(testToDoList);
+        testFileReaderAndWriter = new FileReaderAndWriter(testToDoList, "inputfile.txt");
         task1 = new RegularTask(NAME_TEST1);
         task1.setDueDate(DUEDATE_TEST1);
         task2 = new RegularTask(NAME_TEST2);

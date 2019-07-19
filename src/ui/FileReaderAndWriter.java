@@ -21,11 +21,19 @@ public class FileReaderAndWriter {
     private FileWriter outputFileWriter;
     private FileWriter inputFileWriter;
     private ToDoList toDoList;
+    private String chosenFile;
 
-    public FileReaderAndWriter(ToDoList toDoList) throws IOException {
+//    public FileReaderAndWriter(ToDoList toDoList) throws IOException {
+//        outputFileWriter = new FileWriter("outputfile.txt", false);
+//        inputFileWriter = new FileWriter("inputfile.txt", true);
+//        this.toDoList = toDoList;
+//    }
+
+    public FileReaderAndWriter(ToDoList toDoList, String fileName) throws IOException {
         outputFileWriter = new FileWriter("outputfile.txt", false);
-        inputFileWriter = new FileWriter("inputfile.txt", true);
+        inputFileWriter = new FileWriter(fileName, true);
         this.toDoList = toDoList;
+        this.chosenFile = fileName;
     }
 
 
@@ -33,7 +41,7 @@ public class FileReaderAndWriter {
 
     public void load() throws IOException, ParseException {
         System.out.println("\n---------- Here is all the task you added Before ----------");
-        List<String> lines = Files.readAllLines((Paths.get("inputfile.txt")));
+        List<String> lines = Files.readAllLines((Paths.get(chosenFile)));
         for (String line : lines) {
             ArrayList<String> partsOfLine = splitOnSpace(line);
             String taskName = partsOfLine.get(0);
@@ -51,7 +59,7 @@ public class FileReaderAndWriter {
     // MODIFIES: inputfile.txt
     // EFFECTS: save all tasks to inputfile.txt
     public void saveAllHistoryToInput() throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get("inputfile.txt"));
+        List<String> lines = Files.readAllLines(Paths.get(chosenFile));
         List<Task> tasks = toDoList.getTasks();
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
@@ -74,7 +82,7 @@ public class FileReaderAndWriter {
     // MODIFIES: outputfile.txt
     // EFFECTS: add things in inputfile.txt to outputfile.txt
     public void copyInputToOutput() throws IOException {
-        List<String> linesOutput = Files.readAllLines(Paths.get("inputfile.txt"));
+        List<String> linesOutput = Files.readAllLines(Paths.get(chosenFile));
         linesOutput.add(MESSAGE_END_OUTPUT);
         for (int i = 0; i < linesOutput.size(); i++) {
             String line = linesOutput.get(i);

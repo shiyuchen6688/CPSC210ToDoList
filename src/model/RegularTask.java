@@ -39,13 +39,13 @@ public class RegularTask extends GeneralTask {
         this.status = false;
     }
 
-
+    @Override
     public boolean closeToDue() {
         LocalDate currentDate = LocalDate.now();
         if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
             return false;
         }
-        Period period = Period.between(currentDate,this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        Period period = Period.between(currentDate, this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         int days = period.getDays();
         if (days < 3) {
             return true;

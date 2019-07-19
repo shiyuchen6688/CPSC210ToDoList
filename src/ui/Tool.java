@@ -1,5 +1,7 @@
 package ui;
 
+import exceptions.NotFoundException;
+import exceptions.TaskNotFoundException;
 import model.RegularTask;
 import model.Task;
 import model.ToDoList;
@@ -9,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static ui.ToDoListUsage.dateFormat;
@@ -27,11 +31,15 @@ public class Tool {
     private static Scanner input;
     private boolean isRunning;
     private ToDoList toDoList;
+    private List<String> historyFiles;
 
     public Tool(ToDoList toDoList) throws FileNotFoundException, UnsupportedEncodingException {
         this.toDoList = toDoList;
         input = new Scanner(System.in);
         isRunning = true;
+        this.historyFiles = new ArrayList<>();
+        historyFiles.add("inputfile.txt");
+        historyFiles.add("schoolfile.txt");
     }
 
     // Choose Format
@@ -88,7 +96,30 @@ public class Tool {
 
     }
 
-    // GET another method that process input
+    // TODO QUESTION: CAN I DO THIS?
+    // TODO: Let them add new files
+    public String chooseFileToSaveHistory() throws FileNotFoundException {
+        System.out.println("Here is all files you currently have");
+        for (String file : historyFiles) {
+            System.out.println(file);
+        }
+
+        System.out.println("\nPlease enter the name of the file you want to work with");
+        String fileName = input.nextLine();
+        Boolean canFindFile = false;
+        for (String file : historyFiles) {
+            if (file == fileName) {
+                canFindFile = true;
+                break;
+            }
+        }
+        if (!canFindFile) {
+            throw new FileNotFoundException();
+        }
+        return fileName;
+    }
+
+// GET another method that process input
 
     public void printInstruction() {
         System.out.println("\nEnter " + ADD_TASK_COMMAND + " to add new task in to your TODO list");
@@ -112,7 +143,12 @@ public class Tool {
                 handleAddTask();
                 break;
             case EDIT_TASK_COMMAND:
-                handleEditTask();
+                try {
+                    handleEditTask();
+                } catch (TaskNotFoundException e) {
+                    System.out.println("\nThis task does not exist, do you want to add it?");
+                    System.out.println("Enter " + ADD_TASK_COMMAND + " to add a new task");
+                }
                 break;
             case QUIT_COMMAND:
                 isRunning = false;
@@ -122,6 +158,8 @@ public class Tool {
         }
     }
 
+
+    // TODO : seperate into 3 helpers
     public void handleAddTask() throws ParseException {
         // name
         System.out.println("\nPlease enter the name of your task");
@@ -159,7 +197,7 @@ public class Tool {
     }
 
     // handle edit a Task, change name, delete, change due date
-    public void handleEditTask() throws ParseException {
+    public void handleEditTask() throws ParseException, TaskNotFoundException {
         // name
         System.out.println("\n------Here is all of your task------");
         toDoList.printAllTasks();
@@ -172,7 +210,8 @@ public class Tool {
             String option = input.nextLine();
             handleEditOption(option, editTask);
         } else {
-            System.out.println("Task: " + taskName + " does not exist.");
+            throw new TaskNotFoundException();
+
         }
     }
 
@@ -200,7 +239,8 @@ public class Tool {
         }
     }
 
-    // ui Change Task Name
+    // TODO file does not exist
+// ui Change Task Name
     public void handleChangeName(Task editTask) {
         System.out.println("Enter the new name you want to change to");
         String newName = input.nextLine();
