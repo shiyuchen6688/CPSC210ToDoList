@@ -15,6 +15,7 @@ import java.awt.image.ImagingOpException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -48,10 +49,11 @@ public class ToDoListUsage {
     Button printAllTasksButton;
     Button printAllOverdueTasksButton;
 
-    public static void main(String[] args) throws ParseException, IOException{
+    public static void main(String[] args) {
         // setups
         toDoList = new ToDoList();
         tool = new Tool(toDoList);
+
 //        } catch (NotFoundException e) {
 //            System.out.println("Can not be found, please try again");
 //        } catch (IOException e) {
@@ -61,11 +63,13 @@ public class ToDoListUsage {
 
         // Choose file
         String fileName = null;
+        Boolean fileNotFound = true;
+
         try {
             fileName = tool.chooseFileToSaveHistory();
         } catch (FileNotFoundException e) {
             System.out.println("File Not found");
-        } finally{
+        } finally {
             if (fileName == null) {
                 System.out.println("Since file can not be found, we set the file to default file: inputfile.txt");
                 fileName = "inputfile.txt";
@@ -73,21 +77,47 @@ public class ToDoListUsage {
                 System.out.println("file found, everything works fine");
             }
         }
-        fileReaderAndWriter = new FileReaderAndWriter(toDoList, fileName);
+
+        try {
+            fileReaderAndWriter = new FileReaderAndWriter(toDoList, fileName);
+        } catch (IOException e) {
+            System.out.println("\nSomething is wrong with this file");
+            System.out.println("Use default inputfile.txt instead");
+            try {
+                fileReaderAndWriter = new FileReaderAndWriter(toDoList, "inputfile.txt");
+            } catch (IOException ex) {
+                ex.printStackTrace(); // probably not gonna happen
+            }
+
+        }
 
         // load and print all history
-        fileReaderAndWriter.load();
+        try {
+            fileReaderAndWriter.load();
+        } catch (IOException e) {
+            System.out.println("Found IOException");
+        } catch (Exception e) {
+            System.out.println("WARNING: Some of old tasks might not show up");
+        }
 
         // Reminders
-        System.out.println("\nHere is a reminder of all the task that are close to due!!");
+        System.out.println("\n------Here is a reminder of all the task that are close to due------");
         toDoList.printAllCloseToDue();
 
         // interactions inside intellij
         tool.handleUserInput();    // Comment this out to able to use GUI
 
+
         // Load and Save
-        fileReaderAndWriter.saveAllHistoryToInput();
-        fileReaderAndWriter.copyInputToOutput();
+
+        try {
+            fileReaderAndWriter.saveAllHistoryToInput();
+            fileReaderAndWriter.copyInputToOutput();
+        } catch (IOException e) {
+            System.out.println("WARNING: some of your tasks might not be saved");
+        } finally {
+            System.out.println("Thank for using this app, have a good day!");
+        }
 
 
         // TODO need to finish This part is for GUI

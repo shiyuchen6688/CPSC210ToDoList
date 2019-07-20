@@ -33,7 +33,7 @@ public class Tool {
     private ToDoList toDoList;
     private List<String> historyFiles;
 
-    public Tool(ToDoList toDoList) throws FileNotFoundException, UnsupportedEncodingException {
+    public Tool(ToDoList toDoList) {
         this.toDoList = toDoList;
         input = new Scanner(System.in);
         isRunning = true;
@@ -81,19 +81,58 @@ public class Tool {
     }
 
 
-    public void handleUserInput() throws ParseException {
+    // Entrance to tool
+    public void handleUserInput() {
         System.out.println("How can I help you today?");
         printInstruction();
         String str;
+        Boolean foundException = true;
 
         while (isRunning) {
             if (input.hasNext()) {
                 str = input.nextLine();
-                processInput(str);
+                do {
+                    try {
+                        processInput(str);
+                        foundException = false;
+                    } catch (TaskNotFoundException e) {
+                        System.out.println("\nTask can not be found");
+                        System.out.println("Back to enter task name");
+                        printInstruction();
+                    } catch (ParseException p) {
+                        System.out.println("\nDate added is not in appropriate form");
+                        System.out.println("please follow: " + dateFormat);
+                        System.out.println("Back to enter task name");
+                    }
+                } while (foundException);
             }
         }
 
 
+    }
+
+    public void processInput(String str) throws ParseException, TaskNotFoundException {
+        switch (str) {
+            case ALLTASKS_COMMAND:
+                System.out.println("\n------Here is all of your tasks------");
+                toDoList.printAllTasks();
+                break;
+            case ALLOVERDUES_COMMAND:
+                System.out.println("\n------Here is all of your overdue tasks------");
+                toDoList.printAllOverdueTasks();
+                break;
+            case ADD_TASK_COMMAND:
+                handleAddTask();
+                break;
+            case EDIT_TASK_COMMAND:
+                handleEditTask();
+                break;
+            case QUIT_COMMAND:
+                isRunning = false;
+                break;
+            default:
+                System.out.println("Wrong command, try again");
+        }
     }
 
     // TODO QUESTION: CAN I DO THIS?
@@ -129,34 +168,7 @@ public class Tool {
     }
 
 
-    public void processInput(String str) throws ParseException {
-        switch (str) {
-            case ALLTASKS_COMMAND:
-                System.out.println("\n------Here is all of your tasks------");
-                toDoList.printAllTasks();
-                break;
-            case ALLOVERDUES_COMMAND:
-                System.out.println("\n------Here is all of your overdue tasks------");
-                toDoList.printAllOverdueTasks();
-                break;
-            case ADD_TASK_COMMAND:
-                handleAddTask();
-                break;
-            case EDIT_TASK_COMMAND:
-                try {
-                    handleEditTask();
-                } catch (TaskNotFoundException e) {
-                    System.out.println("\nThis task does not exist, do you want to add it?");
-                    System.out.println("Enter " + ADD_TASK_COMMAND + " to add a new task");
-                }
-                break;
-            case QUIT_COMMAND:
-                isRunning = false;
-                break;
-            default:
-                System.out.println("Wrong command, try again");
-        }
-    }
+
 
 
     // TODO : seperate into 3 helpers
@@ -204,15 +216,11 @@ public class Tool {
         System.out.println("Please enter the name of the task you want to edit");
         String taskName = input.nextLine();
         Task editTask = toDoList.findTask(taskName);
-        if (editTask != null) {
-            System.out.println("Found task: " + taskName);
-            printEditOptions();
-            String option = input.nextLine();
-            handleEditOption(option, editTask);
-        } else {
-            throw new TaskNotFoundException();
+        System.out.println("Found task: " + taskName);
+        printEditOptions();
+        String option = input.nextLine();
+        handleEditOption(option, editTask);
 
-        }
     }
 
 
@@ -223,7 +231,7 @@ public class Tool {
         System.out.println("Enter " + DELETE_COMMAND + " to delete this task");
     }
 
-    public void handleEditOption(String option, Task editTask) throws ParseException {
+    public void handleEditOption(String option, Task editTask) throws ParseException, TaskNotFoundException {
         switch (option) {
             case "1":
                 handleChangeName(editTask);
@@ -234,8 +242,6 @@ public class Tool {
             case "3":
                 handleDeleteTask(editTask);
                 break;
-            default:
-                System.out.println("Wrong command, try again");
         }
     }
 
@@ -259,10 +265,13 @@ public class Tool {
     }
 
     // ui Delete task
-    public void handleDeleteTask(Task editTask) {
+    public void handleDeleteTask(Task editTask) throws TaskNotFoundException {
         String taskName = editTask.getTaskName();
-        toDoList.deleteTask(taskName);
-        System.out.println("Task " + taskName + " has been deleted");
+        Boolean isDeleted = toDoList.deleteTask(taskName);
+        if (isDeleted) {
+            System.out.println("Task " + taskName + " has been deleted");
+        }
+
     }
 
 

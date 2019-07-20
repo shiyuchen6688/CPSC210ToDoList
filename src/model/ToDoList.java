@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.TaskNotFoundException;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
@@ -47,11 +48,11 @@ public class ToDoList {
     // MODIFIES: this
     // EFFECTS: delete given task from the ToDoList, return true if deleted
     //          return false if can not find
-    public boolean deleteTask(String taskName) {
+    public boolean deleteTask(String taskName) throws TaskNotFoundException {
         Task t = findTask(taskName);
         if (t != null) {
+            // change ui to main
             tasks.remove(t);
-            // TODO change ui to main
             System.out.println("Task deleted: " + taskName);
             return true;
         } else {
@@ -63,13 +64,13 @@ public class ToDoList {
 
     // EFFECTS: return a specific task with given name,
     //          return null if can not find
-    public Task findTask(String taskName) {
+    public Task findTask(String taskName) throws TaskNotFoundException {
         for (Task t : tasks) {
             if (t.getTaskName().equals(taskName)) {
                 return t;
             }
         }
-        return null;
+        throw new TaskNotFoundException();
     }
 
 

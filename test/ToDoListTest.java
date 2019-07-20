@@ -1,12 +1,15 @@
+import exceptions.TaskNotFoundException;
 import model.RegularTask;
 import model.Task;
 import model.ToDoList;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ToDoListTest {
     private ToDoList testToDoList;
@@ -58,7 +61,7 @@ public class ToDoListTest {
 
 
     @Test
-    public void testDeleteTaskExist() {
+    public void testDeleteTaskExist() throws TaskNotFoundException {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         checkToDoContainOnce();
@@ -69,7 +72,7 @@ public class ToDoListTest {
 
 
     @Test
-    public void testDeleteTaskDoesntExist() {
+    public void testDeleteTaskDoesntExist() throws TaskNotFoundException {
         checkToDoEmptyDoesntContain();
         boolean b = testToDoList.deleteTask("test task");
         assertFalse(b);
@@ -77,7 +80,7 @@ public class ToDoListTest {
 
 
     @Test
-    public void testFindTaskExist() {
+    public void testFindTaskExist() throws TaskNotFoundException {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         checkToDoContainOnce();
@@ -88,7 +91,7 @@ public class ToDoListTest {
 
 
     @Test
-    public void testFindTaskDoesntExist() {
+    public void testFindTaskDoesntExist() throws TaskNotFoundException {
         checkToDoEmptyDoesntContain();
         Task t = testToDoList.findTask("test task");
         assertEquals(t, null);
@@ -125,12 +128,45 @@ public class ToDoListTest {
         assertEquals("", testToDoList.getAllTaskAsString());
     }
 
+
     @Test
     public void testGetAllTwoTaskString() {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("task1");
         testToDoList.addTask("task2");
         assertEquals("task1\ntask2", testToDoList.getAllTaskAsString());
+    }
+
+
+    // test for exceptions
+    @Test
+    public void testExpectTaskNotFoundException() {
+        Assertions.assertEquals(0, testToDoList.size());
+
+        try {
+            testToDoList.findTask("a task");
+            fail("No exception thrown");
+        } catch (TaskNotFoundException e) {
+            // Do nothing
+        } catch (Exception e) {
+            fail("Wrong exception was thrown");
+        }
+
+    }
+
+
+    @Test
+    public void testExpectNoException() {
+        testToDoList.addTask("t1");
+        Assertions.assertTrue(testToDoList.contains("t1"));
+
+        try {
+            testToDoList.findTask("t1");
+        } catch (TaskNotFoundException t) {
+            fail("Thrown TaskNotFound exception when should not");
+        } catch (Exception e) {
+            fail("Thrown unexpected exception when should not");
+        }
     }
 
     private void checkToDoContainOnce() {
