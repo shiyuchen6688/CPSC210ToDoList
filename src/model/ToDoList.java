@@ -134,7 +134,7 @@ public class ToDoList {
 
 
     public void printAllCloseToDue() {
-        for (Task t: tasks) {
+        for (Task t : tasks) {
             if (t.closeToDue()) {
                 System.out.println(String.format("\nTask %s is due in %s days", t.getTaskName(), t.getDayUntilDue()));
             }
