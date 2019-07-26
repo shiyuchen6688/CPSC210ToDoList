@@ -1,25 +1,52 @@
 package model;
 
+import exceptions.FileNotFoundException;
+import exceptions.NotFoundException;
 import exceptions.TaskNotFoundException;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.sun.jmx.snmp.ThreadContext.contains;
 
 
 public class ToDoList {
 
+    // TODO: make use of this name
+    private String name;
     private List<Task> tasks;
+    private String type;
 
 
     // MODIFIES: this
     // EFFECTS: create a ToDoList object with empty tasks list
-    public ToDoList() {
+    public ToDoList(String name) {
         tasks = new ArrayList<>();
+        this.name = name;
     }
 
+    // MODIFIES: this
+    // EFFECTS: create a ToDoList object with empty list and given type
+    public ToDoList(String name, String type) {
+        this.type = type;
+        tasks = new ArrayList<>();
+        this.name = name;
+    }
+
+
+    // EFFECTS: return name of this list
+    public String getName() {
+        return this.name;
+    }
+
+    // EFFECTS: return type of this list
+    public String getType() {
+        return this.type;
+    }
 
     // EFFECTS: return tasks of this list
     public List<Task> getTasks() {
@@ -29,48 +56,74 @@ public class ToDoList {
     // MODIFIES: this
     // EFFECTS:  add a task with given name in to ToDoList
     public void addTask(String taskName) {
-        tasks.add(new RegularTask(taskName));
+        if (!contains(taskName)) {
+            Task newTask = new RegularTask(taskName);
+            tasks.add(newTask);
+            newTask.setListBelonged(this);
+        }
     }
 
     // MODIFIES: this
     // EFFECTS:  add a task with given name and given due date in to ToDoList
     public void addTask(String taskName, String dueDate) throws ParseException {
-        tasks.add(new RegularTask(taskName, dueDate));
+        if (!contains(taskName)) {
+            Task newTask = new RegularTask(taskName, dueDate);
+            tasks.add(newTask);
+            newTask.setListBelonged(this);
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: add given task in to ToDoList
     public void addTask(Task t) {
-        tasks.add(t);
+        if (!tasks.contains(t)) {
+            tasks.add(t);
+            t.setListBelonged(this);
+        }
     }
 
 
     // MODIFIES: this
-    // EFFECTS: delete given task from the ToDoList, return true if deleted
-    //          return false if can not find
+    // EFFECTS: if given task is already in the ToDoList, delete it and return true
+    //          Otherwise, return false
     public boolean deleteTask(String taskName) throws TaskNotFoundException {
-        Task t = findTask(taskName);
-        if (t != null) {
-            // change ui to main
-            tasks.remove(t);
+        // TODO THIS IS SO WEIRED!!!!!!!!
+        if (contains(taskName)) {
+            Task task = findTask(taskName);
+            tasks.remove(task);
+            task.removeListBelonged(this);
             System.out.println("Task deleted: " + taskName);
             return true;
-        } else {
-            System.out.println("This task does not exist");
-            return false;
         }
+        return false;
+
     }
 
 
     // EFFECTS: return a specific task with given name,
     //          return null if can not find
     public Task findTask(String taskName) throws TaskNotFoundException {
+        Task taskRegular = new RegularTask(taskName);
+        Task taskUrgent = new UrgentTask(taskName);
         for (Task t : tasks) {
-            if (t.getTaskName().equals(taskName)) {
+            if (taskRegular.equals(t) || taskUrgent.equals(t)) {
                 return t;
             }
         }
         throw new TaskNotFoundException();
+    }
+
+    // EFFECTS: return true if todoList contain task with given name, false otherwise
+    public boolean contains(String taskName) {
+        Task taskRegular = new RegularTask(taskName);
+        Task taskUrgent = new UrgentTask(taskName);
+        for (Task t : tasks) {
+            if (taskRegular.equals(t) || taskUrgent.equals(t)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -121,18 +174,6 @@ public class ToDoList {
     }
 
 
-    // EFFECTS: return true if todoList contain task with given name, false otherwise
-    public boolean contains(String taskName) {
-        for (Task t : tasks) {
-            if (t.getTaskName().equals(taskName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
     public void printAllCloseToDue() {
         for (Task t : tasks) {
             if (t.closeToDue()) {
@@ -141,9 +182,21 @@ public class ToDoList {
         }
     }
 
-
     // EFFECTS: return size of todoList
     public int size() {
         return tasks.size();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ToDoList toDoList = (ToDoList) o;
+        return name.equals(toDoList.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

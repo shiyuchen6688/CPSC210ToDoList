@@ -16,14 +16,19 @@ public class ToDoListTest {
 
     @BeforeEach
     public void setup() {
-        testToDoList = new ToDoList();
+        testToDoList = new ToDoList("General");
     }
 
 
+
+
+    // test Constructor
     @Test
     public void testConstructor() {
         checkToDoEmptyDoesntContain();
+        assertEquals("General", testToDoList.getName());
     }
+
 
     @Test
     public void testGetTasks() {
@@ -35,14 +40,14 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testAddTask() {
+    public void testAddTaskWithTaskName() {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         checkToDoContainOnce();
     }
 
     @Test
-    public void testAddTwoTask() {
+    public void testAddTwoTaskWithTaskName() {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         testToDoList.addTask("test task 2");
@@ -52,7 +57,7 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testAddTask2() {
+    public void testAddTaskWithNewTask() {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask(new RegularTask("test task"));
         checkToDoContainOnce();
@@ -65,9 +70,14 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         checkToDoContainOnce();
-        boolean b = testToDoList.deleteTask("test task");
-        assertTrue(b);
-        checkToDoEmptyDoesntContain();
+        try {
+            boolean b = testToDoList.deleteTask("test task");
+            assertTrue(b);
+            checkToDoEmptyDoesntContain();
+        } catch (TaskNotFoundException e) {
+            fail("Caught TaskNotFound when shouldn't have");
+        }
+
     }
 
 
@@ -76,26 +86,37 @@ public class ToDoListTest {
         checkToDoEmptyDoesntContain();
         boolean b = testToDoList.deleteTask("test task");
         assertFalse(b);
+
+
+
     }
 
 
     @Test
-    public void testFindTaskExist() throws TaskNotFoundException {
+    public void testFindTaskExist() {
         checkToDoEmptyDoesntContain();
         testToDoList.addTask("test task");
         checkToDoContainOnce();
-        Task t = testToDoList.findTask("test task");
-        assertEquals(t.getTaskName(), "test task");
+        try {
+            Task t = testToDoList.findTask("test task");
+            assertEquals(t.getTaskName(), "test task");
+        } catch (TaskNotFoundException e) {
+            fail("caught TaskNotFound exception when shouldn't have");
+        }
+
         checkToDoContainOnce();
     }
 
 
     @Test
-    public void testFindTaskDoesntExist() throws TaskNotFoundException {
+    public void testFindTaskDoesntExist() {
         checkToDoEmptyDoesntContain();
-        Task t = testToDoList.findTask("test task");
-        assertEquals(t, null);
-        checkToDoEmptyDoesntContain();
+        try {
+            Task t = testToDoList.findTask("test task");
+            fail();
+        } catch (TaskNotFoundException e) {
+            // expected
+        }
     }
 
     @Test

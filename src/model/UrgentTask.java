@@ -8,6 +8,10 @@ import java.time.Period;
 import java.time.ZoneId;
 
 public class UrgentTask extends GeneralTask {
+    public UrgentTask(String taskName) {
+        this.taskName = taskName;
+    }
+
     public UrgentTask(String taskName, String dueDate) throws ParseException {
         this.taskName = taskName;
         this.dueDate = ToDoListUsage.sdf.parse(dueDate);

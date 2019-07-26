@@ -20,7 +20,6 @@ public class FileReaderAndWriter {
 
     private FileWriter outputFileWriter;
     private FileWriter inputFileWriter;
-    private ToDoList toDoList;
     private String chosenFile;
 
 //    public FileReaderAndWriter(ToDoList toDoList) throws IOException {
@@ -29,17 +28,16 @@ public class FileReaderAndWriter {
 //        this.toDoList = toDoList;
 //    }
 
-    public FileReaderAndWriter(ToDoList toDoList, String fileName) throws IOException {
+    public FileReaderAndWriter(String fileName) throws IOException {
         outputFileWriter = new FileWriter("outputfile.txt", false);
         inputFileWriter = new FileWriter(fileName, true);
-        this.toDoList = toDoList;
         this.chosenFile = fileName;
     }
 
 
     // TODO let user decide where to save/load
 
-    public void load() throws IOException, ParseException {
+    public void load(ToDoList toDoList) throws IOException, ParseException {
         System.out.println("\n---------- Here is all the task you added Before ----------");
         List<String> lines = Files.readAllLines((Paths.get(chosenFile)));
         for (String line : lines) {
@@ -58,7 +56,7 @@ public class FileReaderAndWriter {
 
     // MODIFIES: inputfile.txt
     // EFFECTS: save all tasks to inputfile.txt
-    public void saveAllHistoryToInput() throws IOException {
+    public void saveAllHistoryToInput(ToDoList toDoList) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(chosenFile));
         List<Task> tasks = toDoList.getTasks();
         for (int i = 0; i < tasks.size(); i++) {

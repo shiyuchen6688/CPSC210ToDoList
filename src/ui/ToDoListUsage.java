@@ -1,29 +1,14 @@
 package ui;
 
-import exceptions.NotFoundException;
-import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
-import sun.java2d.loops.FillRect;
 
-import java.awt.image.ImagingOpException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 // extends Application to use GUI
 public class ToDoListUsage {
@@ -37,7 +22,7 @@ public class ToDoListUsage {
 
 
     // object from model
-    private static ToDoList toDoList;
+    private static Map<String, ToDoList> toDoListMap;
     private static Tool tool;
     private static FileReaderAndWriter fileReaderAndWriter;
 
@@ -51,15 +36,18 @@ public class ToDoListUsage {
 
     public static void main(String[] args) {
         // setups
-        toDoList = new ToDoList();
-        tool = new Tool(toDoList);
+        ToDoList generalToDoList = new ToDoList("General");
+        toDoListMap.put("General", generalToDoList);
 
-//        } catch (NotFoundException e) {
-//            System.out.println("Can not be found, please try again");
-//        } catch (IOException e) {
-//            System.out.println("This is a bigger problem, please try again");
-//        }
-        tool.userChooseFormat();
+
+        tool = new Tool();
+
+        // Let used choose date Format
+        tool.userChooseDateFormat();
+
+        // Let user choose which toDoList to work on
+        String choosedList = tool.userChooseWhichToDoList();
+        ToDoList toDoList = toDoListMap.get(choosedList);
 
         // Choose file
         String fileName = null;
@@ -79,12 +67,12 @@ public class ToDoListUsage {
         }
 
         try {
-            fileReaderAndWriter = new FileReaderAndWriter(toDoList, fileName);
+            fileReaderAndWriter = new FileReaderAndWriter(fileName);
         } catch (IOException e) {
             System.out.println("\nSomething is wrong with this file");
             System.out.println("Use default inputfile.txt instead");
             try {
-                fileReaderAndWriter = new FileReaderAndWriter(toDoList, "inputfile.txt");
+                fileReaderAndWriter = new FileReaderAndWriter("inputfile.txt");
             } catch (IOException ex) {
                 ex.printStackTrace(); // probably not gonna happen
             }
@@ -93,7 +81,7 @@ public class ToDoListUsage {
 
         // load and print all history
         try {
-            fileReaderAndWriter.load();
+            fileReaderAndWriter.load(toDoList);
         } catch (IOException e) {
             System.out.println("Found IOException");
         } catch (Exception e) {
@@ -105,13 +93,13 @@ public class ToDoListUsage {
         toDoList.printAllCloseToDue();
 
         // interactions inside intellij
-        tool.handleUserInput();    // Comment this out to able to use GUI
+        tool.handleUserInput(toDoList);    // Comment this out to able to use GUI
 
 
         // Load and Save
 
         try {
-            fileReaderAndWriter.saveAllHistoryToInput();
+            fileReaderAndWriter.saveAllHistoryToInput(toDoList);
             fileReaderAndWriter.copyInputToOutput();
         } catch (IOException e) {
             System.out.println("WARNING: some of your tasks might not be saved");
@@ -124,11 +112,11 @@ public class ToDoListUsage {
         // launch(args);
     }
 
-    // helper to split words in load and save. File download from CPSC-210 EDX.
-    public static ArrayList<String> splitOnSpace(String line) {
-        String[] splits = line.split("  ");
-        return new ArrayList<>(Arrays.asList(splits));
-    }
+//    // helper to split words in load and save. File download from CPSC-210 EDX.
+//    public static ArrayList<String> splitOnSpace(String line) {
+//        String[] splits = line.split("  ");
+//        return new ArrayList<>(Arrays.asList(splits));
+//    }
 
 
 //    // This method is for GUI, TODO not finished yet
@@ -189,10 +177,7 @@ public class ToDoListUsage {
 //    }
 
 
-    // EFFECTS: return this toDoList
-    public ToDoList getToDoList() {
-        return toDoList;
-    }
+
 
 
 }

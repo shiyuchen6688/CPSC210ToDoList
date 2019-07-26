@@ -90,15 +90,15 @@ public class Birthday extends GeneralTask implements Holiday{
         this.status = status;
     }
 
-    // EFFECTS: return true if this task is due, false otherwise
-    @Override
-    public boolean isOverdue() {
-        LocalDate currentDate = LocalDate.now();
-        if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
-            return true;
-        }
-        return false;
-    }
+//    // EFFECTS: return true if this task is due, false otherwise
+//    @Override
+//    public boolean isOverdue() {
+//        LocalDate currentDate = LocalDate.now();
+//        if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
+//            return true;
+//        }
+//        return false;
+//    }
 
     @Override
     public boolean closeToDue() {

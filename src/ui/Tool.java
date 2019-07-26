@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.NotFoundException;
 import exceptions.TaskNotFoundException;
 import model.RegularTask;
 import model.Task;
@@ -8,7 +7,6 @@ import model.ToDoList;
 import model.UrgentTask;
 
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,11 +28,19 @@ public class Tool {
 
     private static Scanner input;
     private boolean isRunning;
-    private ToDoList toDoList;
     private List<String> historyFiles;
 
-    public Tool(ToDoList toDoList) {
-        this.toDoList = toDoList;
+    // TODO: This is the old version that we don't need, delete later
+//    public Tool(ToDoList toDoList) {
+//        this.toDoList = toDoList;
+//        input = new Scanner(System.in);
+//        isRunning = true;
+//        this.historyFiles = new ArrayList<>();
+//        historyFiles.add("inputfile.txt");
+//        historyFiles.add("schoolfile.txt");
+//    }
+
+    public Tool() {
         input = new Scanner(System.in);
         isRunning = true;
         this.historyFiles = new ArrayList<>();
@@ -42,8 +48,17 @@ public class Tool {
         historyFiles.add("schoolfile.txt");
     }
 
+    // TODO work on choosing todo list
+    // Choose which ToDoList
+    public String userChooseWhichToDoList() {
+        //System.out.println("Which list do you want to work on?");
+        return "General";
+    }
+
+
+
     // Choose Format
-    public void userChooseFormat() {
+    public void userChooseDateFormat() {
         printFormatOptions();
         String formatChoice = input.nextLine();
         handleFormatOptions(formatChoice);
@@ -82,7 +97,7 @@ public class Tool {
 
 
     // Entrance to tool
-    public void handleUserInput() {
+    public void handleUserInput(ToDoList toDoList) {
         System.out.println("How can I help you today?");
         printInstruction();
         String str;
@@ -93,7 +108,7 @@ public class Tool {
                 str = input.nextLine();
                 do {
                     try {
-                        processInput(str);
+                        processInput(str, toDoList);
                         foundException = false;
                     } catch (TaskNotFoundException e) {
                         System.out.println("\nTask can not be found");
@@ -111,7 +126,7 @@ public class Tool {
 
     }
 
-    public void processInput(String str) throws ParseException, TaskNotFoundException {
+    public void processInput(String str, ToDoList toDoList) throws ParseException, TaskNotFoundException {
         switch (str) {
             case ALLTASKS_COMMAND:
                 System.out.println("\n------Here is all of your tasks------");
@@ -122,10 +137,10 @@ public class Tool {
                 toDoList.printAllOverdueTasks();
                 break;
             case ADD_TASK_COMMAND:
-                handleAddTask();
+                handleAddTask(toDoList);
                 break;
             case EDIT_TASK_COMMAND:
-                handleEditTask();
+                handleEditTask(toDoList);
                 break;
             case QUIT_COMMAND:
                 isRunning = false;
@@ -172,20 +187,20 @@ public class Tool {
 
 
     // TODO : seperate into 3 helpers
-    public void handleAddTask() throws ParseException {
+    public void handleAddTask(ToDoList toDoList) throws ParseException {
         // name
-        System.out.println("\nPlease enter the name of your task");
-        String name = input.nextLine();
-        System.out.println("Name of the test is: " + name);
+        String name = handleName();
+
         // due date or not
-        System.out.println("\nEnter dueDate in format " + dateFormat + " or Enter skip if no dueDate");
-        String date = input.nextLine();
-        if (date.equals("skip")) {
-            date = null;
-            System.out.println("Due date not set");
-        } else {
-            System.out.println("Due date set at: " + date);
-        }
+        String date = handleDuedate();
+
+        // create and add task
+        createAndAddSelectedTypeOfTask(name, date, toDoList);
+
+
+    }
+
+    private void createAndAddSelectedTypeOfTask(String name, String date, ToDoList toDoList) throws ParseException {
         System.out.println("\nDo you want to set this task as an urgent task? Enter yes or no");
         String isUrgent = input.nextLine();
         if (isUrgent.equals("yes")) {
@@ -205,11 +220,29 @@ public class Tool {
             }
 
         }
+    }
 
+    private String handleDuedate() {
+        System.out.println("\nEnter dueDate in format " + dateFormat + " or Enter skip if no dueDate");
+        String date = input.nextLine();
+        if (date.equals("skip")) {
+            date = null;
+            System.out.println("Due date not set");
+        } else {
+            System.out.println("Due date set at: " + date);
+        }
+        return date;
+    }
+
+    private String handleName() {
+        System.out.println("\nPlease enter the name of your task");
+        String name = input.nextLine();
+        System.out.println("Name of the test is: " + name);
+        return name;
     }
 
     // handle edit a Task, change name, delete, change due date
-    public void handleEditTask() throws ParseException, TaskNotFoundException {
+    public void handleEditTask(ToDoList toDoList) throws ParseException, TaskNotFoundException {
         // name
         System.out.println("\n------Here is all of your task------");
         toDoList.printAllTasks();
@@ -219,7 +252,7 @@ public class Tool {
         System.out.println("Found task: " + taskName);
         printEditOptions();
         String option = input.nextLine();
-        handleEditOption(option, editTask);
+        handleEditOption(option, editTask, toDoList);
 
     }
 
@@ -231,7 +264,7 @@ public class Tool {
         System.out.println("Enter " + DELETE_COMMAND + " to delete this task");
     }
 
-    public void handleEditOption(String option, Task editTask) throws ParseException, TaskNotFoundException {
+    public void handleEditOption(String option, Task editTask, ToDoList toDoList) throws ParseException, TaskNotFoundException {
         switch (option) {
             case "1":
                 handleChangeName(editTask);
@@ -240,7 +273,7 @@ public class Tool {
                 handleChangeDueDate(editTask);
                 break;
             case "3":
-                handleDeleteTask(editTask);
+                handleDeleteTask(editTask, toDoList);
                 break;
         }
     }
@@ -265,7 +298,7 @@ public class Tool {
     }
 
     // ui Delete task
-    public void handleDeleteTask(Task editTask) throws TaskNotFoundException {
+    public void handleDeleteTask(Task editTask, ToDoList toDoList) throws TaskNotFoundException {
         String taskName = editTask.getTaskName();
         Boolean isDeleted = toDoList.deleteTask(taskName);
         if (isDeleted) {
