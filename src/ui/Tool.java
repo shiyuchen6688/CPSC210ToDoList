@@ -1,15 +1,13 @@
 package ui;
 
 import exceptions.TaskNotFoundException;
-import model.RegularTask;
-import model.Task;
-import model.ToDoList;
-import model.UrgentTask;
+import model.*;
 
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,6 +20,7 @@ public class Tool {
     private static final String ADD_TASK_COMMAND = "add";
     private static final String EDIT_TASK_COMMAND = "edit";
     private static final String QUIT_COMMAND = "quit";
+    private static final String SWITCH_LIST_COMMAND = "change";
     private static final String CHANGE_NAME_COMMAND = "1";
     private static final String CHANGE_DUEDATE_COMMAND = "2";
     private static final String DELETE_COMMAND = "3";
@@ -48,12 +47,39 @@ public class Tool {
         historyFiles.add("schoolfile.txt");
     }
 
-    // TODO work on choosing todo list
-    // Choose which ToDoList
-    public String userChooseWhichToDoList() {
-        //System.out.println("Which list do you want to work on?");
-        return "General";
-    }
+//    // TODO work on choosing todo list
+//    // Choose which ToDoList
+//    public ToDoList userChooseWhichToDoList(ToDoMap map) {
+//
+//        printChooseListOptions();
+//        String str = input.nextLine();
+//        return handleChooseList(str, map);
+//    }
+//
+//    // EFFECTS: print options of list to choose to user, or create new one
+//    public void printChooseListOptions() {
+//        System.out.println("\nEnter " + "new" + " to create new to do list");
+//        System.out.println("\nEnter " + "general" + " to use general to do list");
+//    }
+
+    // TODO KEEP GOING HERE LET USER Create their own list
+//    // EFFECTS: choose the list user want
+//    public ToDoList handleChooseList0(String listOption, ToDoMap map) {
+//        switch (listOption) {
+//            case "general":
+//                return map.getList("General");
+//            default:
+//                return createAndAddNewToDoList(map);
+//        }
+//    }
+
+//    public ToDoList createAndAddNewToDoList(ToDoMap map) {
+//        System.out.println("Please enter name of your list");
+//        String listName = input.nextLine();
+//        ToDoList newList = new ToDoList(listName);
+//        map.addToDoList(newList);
+//        return newList;
+//}
 
 
 
@@ -97,8 +123,14 @@ public class Tool {
 
 
     // Entrance to tool
-    public void handleUserInput(ToDoList toDoList) {
+    public void handleUserInput(ToDoMap toDoMap) {
         System.out.println("How can I help you today?");
+        System.out.println("Here is all list you currently have");
+        printAllCurrentList(toDoMap);
+        System.out.println("Please choose which list to work on or enter name of the new list");
+        String s = input.nextLine();
+        ToDoList curList =  handleChooseList(s, toDoMap);
+        System.out.println("List you are working on is " + curList.getName());
         printInstruction();
         String str;
         Boolean foundException = true;
@@ -108,7 +140,7 @@ public class Tool {
                 str = input.nextLine();
                 do {
                     try {
-                        processInput(str, toDoList);
+                        processInput(str, curList);
                         foundException = false;
                     } catch (TaskNotFoundException e) {
                         System.out.println("\nTask can not be found");
@@ -127,6 +159,7 @@ public class Tool {
     }
 
     public void processInput(String str, ToDoList toDoList) throws ParseException, TaskNotFoundException {
+
         switch (str) {
             case ALLTASKS_COMMAND:
                 System.out.println("\n------Here is all of your tasks------");
@@ -145,9 +178,27 @@ public class Tool {
             case QUIT_COMMAND:
                 isRunning = false;
                 break;
+//            case SWITCH_LIST_COMMAND:
+//                toDoList = handleSwitchList();
             default:
                 System.out.println("Wrong command, try again");
         }
+    }
+
+    public void printAllCurrentList(ToDoMap map) {
+        for (String name: map.getMap().keySet()) {
+            System.out.println(name);
+        }
+    }
+
+
+    public ToDoList handleChooseList(String s, ToDoMap map) {
+        ToDoList newList = map.getList(s);
+        if (newList == null) {
+            newList= new ToDoList(s);
+            map.addToDoList(newList);
+        }
+        return newList;
     }
 
     // TODO QUESTION: CAN I DO THIS?
@@ -162,7 +213,7 @@ public class Tool {
         String fileName = input.nextLine();
         Boolean canFindFile = false;
         for (String file : historyFiles) {
-            if (file == fileName) {
+            if (file.equals(fileName)) {
                 canFindFile = true;
                 break;
             }
@@ -179,6 +230,7 @@ public class Tool {
         System.out.println("\nEnter " + ADD_TASK_COMMAND + " to add new task in to your TODO list");
         System.out.println("Enter " + ALLTASKS_COMMAND + " to see all of your tasks.");
         System.out.println("Enter " + ALLOVERDUES_COMMAND + " to see all of your OVERDUE tasks.");
+//        System.out.println("Enter " + SWITCH_LIST_COMMAND + " to work on a different list or create a new one");
         System.out.println("Enter " + QUIT_COMMAND + " to quit");
     }
 
