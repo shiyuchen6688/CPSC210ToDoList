@@ -16,10 +16,10 @@ import static com.sun.jmx.snmp.ThreadContext.contains;
 
 public class ToDoList {
 
-    // TODO: make use of this name
     private String name;
     private List<Task> tasks;
     private String type;
+    private ToDoMap mapBelonged;
 
 
     // MODIFIES: this
@@ -37,6 +37,10 @@ public class ToDoList {
         this.name = name;
     }
 
+    // EFFECTS: return ToDoMap this list belonged
+    public ToDoMap getMap() {
+        return this.mapBelonged;
+    }
 
     // EFFECTS: return name of this list
     public String getName() {
@@ -51,6 +55,16 @@ public class ToDoList {
     // EFFECTS: return tasks of this list
     public List<Task> getTasks() {
         return this.tasks;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: record that this list belonged to given map
+    public void setMapBelonged(ToDoMap mapBelonged) {
+        if (this.mapBelonged != null) {
+            this.mapBelonged = mapBelonged;
+            mapBelonged.addToDoList(this.getName());
+        }
+
     }
 
     // MODIFIES: this
@@ -87,7 +101,6 @@ public class ToDoList {
     // EFFECTS: if given task is already in the ToDoList, delete it and return true
     //          Otherwise, return false
     public boolean deleteTask(String taskName) throws TaskNotFoundException {
-        // TODO THIS IS SO WEIRED!!!!!!!!
         if (contains(taskName)) {
             Task task = findTask(taskName);
             tasks.remove(task);
@@ -139,7 +152,7 @@ public class ToDoList {
             System.out.println(result);
             num = num + 1;
         }
-        System.out.println("Done, you have " + tasks.size() + " task in total");
+        System.out.println("Done, you have " + tasks.size() + " task in " + name);
         System.out.println();
     }
 
@@ -177,7 +190,7 @@ public class ToDoList {
     public void printAllCloseToDue() {
         for (Task t : tasks) {
             if (t.closeToDue()) {
-                System.out.println(String.format("\nTask %s is due in %s days", t.getTaskName(), t.getDayUntilDue()));
+                System.out.println(String.format("\nTask %s in %s list is due in %s days", t.getTaskName(), name, t.getDayUntilDue()));
             }
         }
     }

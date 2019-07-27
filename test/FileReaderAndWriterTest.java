@@ -52,7 +52,7 @@
 //        assertFalse(lines.contains("test1  " + DUEDATE_TEST1));
 //
 //        testToDoList.addTask(task1);
-//        testFileReaderAndWriter.saveAllHistoryToInput();
+//        testFileReaderAndWriter.saveAllHistoryInListToInput();
 //        lines = Files.readAllLines(Paths.get("inputfile.txt"));
 //
 //        assertEquals("test1  " + DUEDATE_TEST1 , lines.get(lines.size()-1));

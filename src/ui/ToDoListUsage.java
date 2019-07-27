@@ -7,8 +7,8 @@ import model.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 
 // extends Application to use GUI
 public class ToDoListUsage {
@@ -22,9 +22,11 @@ public class ToDoListUsage {
 
 
     // object from model
-    private static Map<String, ToDoList> toDoListMap;
+    private static ToDoMap toDoMap;
+    private static ToDoList curList;
     private static Tool tool;
     private static FileReaderAndWriter fileReaderAndWriter;
+
 
     /// Stage and scenes
     Stage window;
@@ -36,8 +38,8 @@ public class ToDoListUsage {
 
     public static void main(String[] args) {
         // setups
-        ToDoList generalToDoList = new ToDoList("General");
-        toDoListMap.put("General", generalToDoList);
+        toDoMap = new ToDoMap();
+        toDoMap.addToDoList("school");
 
 
         tool = new Tool();
@@ -45,13 +47,8 @@ public class ToDoListUsage {
         // Let used choose date Format
         tool.userChooseDateFormat();
 
-        // Let user choose which toDoList to work on
-        String choosedList = tool.userChooseWhichToDoList();
-        ToDoList toDoList = toDoListMap.get(choosedList);
-
         // Choose file
         String fileName = null;
-        Boolean fileNotFound = true;
 
         try {
             fileName = tool.chooseFileToSaveHistory();
@@ -81,25 +78,35 @@ public class ToDoListUsage {
 
         // load and print all history
         try {
-            fileReaderAndWriter.load(toDoList);
+            fileReaderAndWriter.load(toDoMap);
         } catch (IOException e) {
             System.out.println("Found IOException");
-        } catch (Exception e) {
+        } catch (ParseException e) {
             System.out.println("WARNING: Some of old tasks might not show up");
         }
 
-        // Reminders
-        System.out.println("\n------Here is a reminder of all the task that are close to due------");
-        toDoList.printAllCloseToDue();
+
+
+
+
+        // Let user choose which curList to work on
+
+        System.out.println("Please choose which list to work on or create new one");
+//        curList = tool.userChooseWhichToDoList(toDoMap);
+
+         // TODO fix this to work on all the list in map
+//        // Reminders
+//        System.out.println("\n------Here is a reminder of all the task that are close to due------");
+//        curList.printAllCloseToDue();
 
         // interactions inside intellij
-        tool.handleUserInput(toDoList);    // Comment this out to able to use GUI
+        tool.handleUserInput(toDoMap);    // Comment this out to able to use GUI
 
 
         // Load and Save
 
         try {
-            fileReaderAndWriter.saveAllHistoryToInput(toDoList);
+            fileReaderAndWriter.saveAllHistoryInMapToInput(toDoMap);
             fileReaderAndWriter.copyInputToOutput();
         } catch (IOException e) {
             System.out.println("WARNING: some of your tasks might not be saved");
