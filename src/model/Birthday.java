@@ -1,29 +1,35 @@
 package model;
 
+import exceptions.NoDueDateException;
+import exceptions.OverDueException;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
 public class Birthday extends GeneralTask implements Holiday{
+
     private String greeting;
     private String gift;
 
+
     // MODIFIES: this
-    // EFFECTS: construct a task object set taskName to given taskName,
+    // EFFECTS: construct a task object set name to given name,
     //          set dueDate to null, set overdue to false
     public Birthday(String name, String date) throws ParseException {
         super();
-        this.taskName = "Birthday of " + name;
+        this.name = "Birthday of " + name;
         this.dueDate = ToDoListUsage.sdf.parse(date);
         this.status = false;
         this.greeting = "Happy Birthday " + name + " !";
         this.gift = "Birthday card for " + name;
     }
+
+
+    // setters
 
     // MODIFIES: this
     // EFFECTS: set greeting
@@ -32,12 +38,16 @@ public class Birthday extends GeneralTask implements Holiday{
         this.greeting = greeting;
     }
 
+
     // MODIFIES: this
     // EFFECTS: set birthday gift
     @Override
     public void setGift(String gift) {
         this.gift = gift;
     }
+
+
+    // getters
 
     // EFFECTS: return birthday greeting
     @Override
@@ -51,60 +61,19 @@ public class Birthday extends GeneralTask implements Holiday{
         return this.gift;
     }
 
-    // EFFECTS: return taskName
-    @Override
-    public String getTaskName() {
-        return taskName;
-    }
 
-    // EFFECTS: return dueDate
-    @Override
-    public Date getDueDate() {
-        return dueDate;
-    }
 
-    // EFFECTS: return status of this task
+    // EFFECTS: if given task has no due date, throw NoDueDateException
+    //          if given task is already due, throw OverDueException
+    //          otherwise, produce true if given task is due in 3 days
     @Override
-    public boolean getStatus() {
-        return this.status;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: set this taskName to given taskName
-    @Override
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: set this dueDate to given dueDate in format yyyy-MM-dd
-    @Override
-    public void setDueDate(String dueDate) throws ParseException {
-        this.dueDate = ToDoListUsage.sdf.parse(dueDate);
-    }
-
-    // MODIFIES: this
-    // EFFECTS: set this status to given status
-    @Override
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-//    // EFFECTS: return true if this task is due, false otherwise
-//    @Override
-//    public boolean isOverdue() {
-//        LocalDate currentDate = LocalDate.now();
-//        if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
-//            return true;
-//        }
-//        return false;
-//    }
-
-    @Override
-    public boolean closeToDue() {
+    public boolean closeToDue() throws OverDueException, NoDueDateException {
         LocalDate currentDate = LocalDate.now();
-        if (!(this.dueDate == null) && this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
-            return false;
+        if (!(this.dueDate == null)) {
+            throw new NoDueDateException("Due date for task: " + name + " has not been set yet");
+        }
+        if (isOverdue()) {
+            throw new OverDueException("Due date for task: " + name + " has passed");
         }
         Period period = Period.between(this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
                 currentDate);
@@ -115,13 +84,7 @@ public class Birthday extends GeneralTask implements Holiday{
         return false;
     }
 
-//    public static void main(String[] args) throws ParseException {
-//        Birthday a = new Birthday("Shiyu", "2019-10-08");
-//        Birthday b = new Birthday("Shiyu", "2019-10-08");
-//        String c = "shiyu";
-//        String d = "shiyu";
-//        System.out.println(c == d);
-//        System.out.println(c.equals(d));
-//    }
+
+
 
 }

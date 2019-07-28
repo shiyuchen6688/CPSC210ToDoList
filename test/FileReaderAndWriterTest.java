@@ -74,7 +74,7 @@
 //    public List<String> getAllTasksNames(List<Task> tasks) {
 //        List<String> result = new ArrayList<>();
 //        for (Task t: tasks) {
-//            result.add(t.getTaskName());
+//            result.add(t.getName());
 //        }
 //        return result;
 //    }

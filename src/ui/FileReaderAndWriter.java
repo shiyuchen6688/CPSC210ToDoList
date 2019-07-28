@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.TaskAlreadyExistException;
 import model.Task;
 import model.ToDoList;
 import model.ToDoMap;
@@ -8,7 +9,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +69,12 @@ public class FileReaderAndWriter {
             }
 
             // add this task into this list
-            curList.addTask(taskName, dueDate);
+            try {
+                curList.addTask(taskName, dueDate);
+            } catch (TaskAlreadyExistException e) {
+                System.out.println("Found duplicate task when loading");
+                System.out.println(e.getMessage());
+            }
 
         }
     }
@@ -94,7 +99,7 @@ public class FileReaderAndWriter {
         List<Task> tasks = toDoList.getTasks();
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
-            String name = t.getTaskName();
+            String name = t.getName();
 
             String date = "";
             if (t.getDueDate() != null) {

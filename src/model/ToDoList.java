@@ -1,8 +1,6 @@
 package model;
 
-import exceptions.FileNotFoundException;
-import exceptions.NotFoundException;
-import exceptions.TaskNotFoundException;
+import exceptions.*;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
@@ -10,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static com.sun.jmx.snmp.ThreadContext.contains;
 
 
 public class ToDoList {
@@ -22,12 +18,15 @@ public class ToDoList {
     private ToDoMap mapBelonged;
 
 
+    // constructor
+
     // MODIFIES: this
     // EFFECTS: create a ToDoList object with empty tasks list
     public ToDoList(String name) {
         tasks = new ArrayList<>();
         this.name = name;
     }
+
 
     // MODIFIES: this
     // EFFECTS: create a ToDoList object with empty list and given type
@@ -36,6 +35,9 @@ public class ToDoList {
         tasks = new ArrayList<>();
         this.name = name;
     }
+
+
+    // getters
 
     // EFFECTS: return ToDoMap this list belonged
     public ToDoMap getMap() {
@@ -57,49 +59,82 @@ public class ToDoList {
         return this.tasks;
     }
 
+
+    // setters
+
     // MODIFIES: this
     // EFFECTS: record that this list belonged to given map
-    public void setMapBelonged(ToDoMap mapBelonged) {
-        if (this.mapBelonged != null) {
-            this.mapBelonged = mapBelonged;
-            mapBelonged.addToDoList(this.getName());
+    public void setMapBelonged(ToDoMap map) {
+        if (this.mapBelonged != map) {
+            this.mapBelonged = map;
+            map.addToDoList(this.getName());
         }
 
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+
+    // EFFECTS: return size of todoList
+    public int size() {
+        return tasks.size();
+    }
+
+
+    // add task
+
     // MODIFIES: this
-    // EFFECTS:  add a task with given name in to ToDoList
-    public void addTask(String taskName) {
+    // EFFECTS:  if task already exist, throw TaskAlreadyExistException
+    //           otherwise, add a task with given name in to ToDoList
+    public void addTask(String taskName) throws TaskAlreadyExistException {
         if (!contains(taskName)) {
             Task newTask = new RegularTask(taskName);
             tasks.add(newTask);
             newTask.setListBelonged(this);
         }
+
+        throw new TaskAlreadyExistException("Trying to make task: " + taskName + " but it already exist");
     }
 
     // MODIFIES: this
-    // EFFECTS:  add a task with given name and given due date in to ToDoList
-    public void addTask(String taskName, String dueDate) throws ParseException {
+    // EFFECTS:  if task already exist, throw TaskAlreadyExistException
+    //           otherwise, add a task with given name and given due date in to ToDoList
+    public void addTask(String taskName, String dueDate) throws ParseException, TaskAlreadyExistException {
         if (!contains(taskName)) {
             Task newTask = new RegularTask(taskName, dueDate);
             tasks.add(newTask);
             newTask.setListBelonged(this);
         }
+
+        throw new TaskAlreadyExistException("Trying to make task: " + taskName + " but it already exist");
     }
 
     // MODIFIES: this
-    // EFFECTS: add given task in to ToDoList
-    public void addTask(Task t) {
+    // EFFECTS: if task already exist, throw TaskAlreadyExistException
+    //           otherwise, add given task in to ToDoList
+    public void addTask(Task t) throws TaskAlreadyExistException {
         if (!tasks.contains(t)) {
             tasks.add(t);
             t.setListBelonged(this);
         }
+
+        throw new TaskAlreadyExistException("Trying to make task: " + t.getName() + " but it already exist");
     }
 
 
+    // delete task
     // MODIFIES: this
     // EFFECTS: if given task is already in the ToDoList, delete it and return true
-    //          Otherwise, return false
     public boolean deleteTask(String taskName) throws TaskNotFoundException {
         if (contains(taskName)) {
             Task task = findTask(taskName);
@@ -113,8 +148,8 @@ public class ToDoList {
     }
 
 
-    // EFFECTS: return a specific task with given name,
-    //          return null if can not find
+    // EFFECTS: if can find, return a specific task with given name,
+    //          if cannot find, throw TaskNotFound exception
     public Task findTask(String taskName) throws TaskNotFoundException {
         Task taskRegular = new RegularTask(taskName);
         Task taskUrgent = new UrgentTask(taskName);
@@ -125,6 +160,7 @@ public class ToDoList {
         }
         throw new TaskNotFoundException();
     }
+
 
     // EFFECTS: return true if todoList contain task with given name, false otherwise
     public boolean contains(String taskName) {
@@ -145,7 +181,7 @@ public class ToDoList {
         System.out.println();
         int num = 1;
         for (Task t : tasks) {
-            String result = num + " : " + t.getTaskName();
+            String result = num + " : " + t.getName();
             if (t.getDueDate() != null) {
                 result = result + ", Due Date is " + ToDoListUsage.sdf.format(t.getDueDate());
             }
@@ -156,20 +192,6 @@ public class ToDoList {
         System.out.println();
     }
 
-    // EFFECTS: Return names of all tasks in the ToDOList in a String
-    public String getAllTaskAsString() {
-        return tasks.stream().map(Task::getTaskName).collect(Collectors.joining("\n"));
-    }
-
-    // EFFECTS: return list of string names of tasks in the list
-    public List<String> getAllTaskAsListOfString() {
-        List<String> ls = new ArrayList<String>();
-        for (Task t : tasks) {
-            ls.add(t.getTaskName());
-        }
-        return ls;
-    }
-
 
     // EFFECTS: print all overdue tasks inside todolist in format:
     //          OVERDUE Task num : task name
@@ -178,7 +200,7 @@ public class ToDoList {
         int num = 1;
         for (Task t : tasks) {
             if (t.isOverdue()) {
-                System.out.println("OVERDUE Task " + num + " : " + t.getTaskName());
+                System.out.println("OVERDUE Task " + num + " : " + t.getName());
                 num = num + 1;
             }
         }
@@ -187,18 +209,38 @@ public class ToDoList {
     }
 
 
-    public void printAllCloseToDue() {
+    public void printAllCloseToDueTasks() {
         for (Task t : tasks) {
-            if (t.closeToDue()) {
-                System.out.println(String.format("\nTask %s in %s list is due in %s days", t.getTaskName(), name, t.getDayUntilDue()));
+            try {
+                if (t.closeToDue()) {
+                    System.out.println(String.format("\nTask %s in %s list is due in %s days", t.getName(), name, t.getDayUntilDue()));
+                }
+            } catch (NoDueDateException e) {
+                System.out.println(e.getMessage());
+            } catch (OverDueException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
 
-    // EFFECTS: return size of todoList
-    public int size() {
-        return tasks.size();
+
+    // EFFECTS: Return names of all tasks in the ToDOList in a String
+    public String getAllTaskAsString() {
+        return tasks.stream().map(Task::getName).collect(Collectors.joining("\n"));
     }
+
+
+    // EFFECTS: return list of string names of tasks in the list
+    public List<String> getAllTaskAsListOfString() {
+        List<String> ls = new ArrayList<String>();
+        for (Task t : tasks) {
+            ls.add(t.getName());
+        }
+        return ls;
+    }
+
+
+
 
     @Override
     public boolean equals(Object o) {

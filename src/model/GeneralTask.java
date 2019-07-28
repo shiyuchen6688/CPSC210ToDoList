@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.NoDueDateException;
+import exceptions.OverDueException;
 import exceptions.TaskNotFoundException;
 import ui.ToDoListUsage;
 
@@ -11,19 +13,25 @@ import java.util.Date;
 import java.util.Objects;
 
 public abstract class GeneralTask implements Task {
-    protected String taskName;
+
+    protected String name;
     protected Date dueDate;
     protected boolean status;
     protected ToDoList listBelonged;
 
+    // constructor
     public GeneralTask() {
         this.status = false;
+        this.dueDate = null;
     }
 
-    // EFFECTS: return taskName
+
+    // getters
+
+    // EFFECTS: return name
     @Override
-    public String getTaskName() {
-        return taskName;
+    public String getName() {
+        return name;
     }
 
     // EFFECTS: return dueDate
@@ -43,11 +51,13 @@ public abstract class GeneralTask implements Task {
     public ToDoList getListBelonged() { return this.listBelonged; }
 
 
+    // setters
+
     // MODIFIES: this
-    // EFFECTS: set this taskName to given taskName
+    // EFFECTS: set this name to given name
     @Override
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     // MODIFIES: this
@@ -77,13 +87,15 @@ public abstract class GeneralTask implements Task {
     // EFFECTS: return true if dueDate is set and task is due, false otherwise
     @Override
     public boolean isOverdue() {
-        Date currentDate = java.sql.Date.valueOf(LocalDate.now());
-        if (!(this.dueDate == null) && this.dueDate.before(currentDate)) {
-            return true;
+        LocalDate currentDate = LocalDate.now();
+        if(dueDate != null) {
+            return this.dueDate.before(java.sql.Date.valueOf(currentDate));
         }
         return false;
-
     }
+
+
+    // EFFECTS: return number of day until this task is due
     @Override
     public int getDayUntilDue() {
         LocalDate currentDate = LocalDate.now();
@@ -91,31 +103,30 @@ public abstract class GeneralTask implements Task {
         return period.getDays();
     }
 
+
     // MODIFIES: this
     // EFFECTS: remove listBelonged of this task
     @Override
     public void removeListBelonged(ToDoList list) throws TaskNotFoundException {
         if (this.listBelonged == list) {
             this.listBelonged = null;
-            list.deleteTask(this.getTaskName());
+            list.deleteTask(this.getName());
         }
     }
 
 
-
-    // override equals and hash code
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof GeneralTask)) return false;
         GeneralTask that = (GeneralTask) o;
-        return taskName.equals(that.taskName);
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taskName);
+        return Objects.hash(name);
     }
 
-    public abstract boolean closeToDue();
+    public abstract boolean closeToDue() throws OverDueException, NoDueDateException;
 }

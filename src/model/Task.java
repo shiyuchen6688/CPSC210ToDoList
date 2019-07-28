@@ -1,13 +1,16 @@
 package model;
 
+import exceptions.NoDueDateException;
+import exceptions.OverDueException;
 import exceptions.TaskNotFoundException;
 
 import java.text.ParseException;
 import java.util.Date;
 
 public interface Task {
-    // EFFECTS: return taskName
-    String getTaskName();
+
+    // EFFECTS: return name
+    String getName();
 
     // EFFECTS: return dayUntilDue
     Date getDueDate();
@@ -19,8 +22,8 @@ public interface Task {
     ToDoList getListBelonged();
 
     // MODIFIES: this
-    // EFFECTS: set this taskName to given taskName
-    void setTaskName(String taskName);
+    // EFFECTS: set this name to given name
+    void setName(String name);
 
     // MODIFIES: this
     // EFFECTS: set this dueDate to given year, month, date
@@ -41,7 +44,7 @@ public interface Task {
     // EFFECTS: return true if this task is due, false otherwise
     boolean isOverdue();
 
-    boolean closeToDue();
+    boolean closeToDue() throws OverDueException, NoDueDateException;
 
     int getDayUntilDue();
 

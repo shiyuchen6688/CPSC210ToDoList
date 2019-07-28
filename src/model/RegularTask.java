@@ -1,36 +1,33 @@
 package model;
 
-import sun.java2d.loops.FillRect;
-import ui.FileReaderAndWriter;
+import exceptions.NoDueDateException;
+import exceptions.OverDueException;
 import ui.ToDoListUsage;
-import ui.Tool;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Date;
 
 public class RegularTask extends GeneralTask {
 
-
+    // constructor
     // MODIFIES: this
-    // EFFECTS: construct a task object set taskName to given taskName,
+    // EFFECTS: construct a task object set name to given name,
     //          set dueDate to null, set overdue to false
     public RegularTask(String taskName) {
 
-        this.taskName = taskName;
+        this.name = taskName;
         this.dueDate = null;
         this.status = false;
     }
 
+
     // MODIFIES: this
-    // EFFECTS: construct a task object set taskName to given taskName,
+    // EFFECTS: construct a task object set name to given name,
     //          set dueDate to gicen dueDate, set overdue to false
     public RegularTask(String taskName, String dueDate) throws ParseException {
-        this.taskName = taskName;
+        this.name = taskName;
         if (dueDate == null) {
             this.dueDate = null;
         } else {
@@ -39,28 +36,25 @@ public class RegularTask extends GeneralTask {
         this.status = false;
     }
 
+
+    // EFFECTS: if given task has no due date, throw NoDueDateException
+    //          if given task is already due, throw OverDueException
+    //          otherwise, produce true if given task is due in 3 days
     @Override
-    public boolean closeToDue() {
+    public boolean closeToDue() throws OverDueException, NoDueDateException {
         LocalDate currentDate = LocalDate.now();
-        if (this.dueDate == null) {
-            return false;
+        if (!(this.dueDate == null)) {
+            throw new NoDueDateException("Due date for task: " + name + " has not been set yet");
         }
-        if (this.dueDate.before(java.sql.Date.valueOf(currentDate))) {
-            return false;
+        if (isOverdue()) {
+            throw new OverDueException("Due date for task: " + name + " has passed");
         }
-        Period period = Period.between(currentDate, this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        Period period = Period.between(this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                currentDate);
         int days = period.getDays();
         if (days < 3) {
             return true;
         }
         return false;
     }
-
-//    public static void main(String[] args) throws ParseException {
-//        RegularTask t1 = new RegularTask("t1","2019-07-17");
-//        RegularTask t2 = new RegularTask("t1","2019-07-25");
-//        System.out.println(t1.closeToDue());
-//        System.out.println(t2.closeToDue());
-//    }
-
 }

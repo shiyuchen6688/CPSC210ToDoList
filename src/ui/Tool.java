@@ -1,5 +1,6 @@
 package ui;
 
+import exceptions.TaskAlreadyExistException;
 import exceptions.TaskNotFoundException;
 import model.*;
 
@@ -185,7 +186,7 @@ public class Tool {
     // EFFECTS: print all close to due tasks
     public void printReminder(ToDoMap map) {
         for(String name: map.getMap().keySet()) {
-            map.getList(name).printAllCloseToDue();
+            map.getList(name).printAllCloseToDueTasks();
         }
     }
 
@@ -244,7 +245,17 @@ public class Tool {
     // EFFECTS: ask for task name and add the task to given toDoList
     public void handleAddTaskToList(ToDoList toDoList) throws ParseException {
         // name
-        String name = handleName();
+        Boolean nameSuccessed = false;
+        String name = null;
+
+        do {
+            try {
+                name = handleName(toDoList);
+                nameSuccessed = true;
+            } catch (TaskAlreadyExistException e) {
+                System.out.println(e.getMessage());
+            }
+        } while(!nameSuccessed);
 
         // due date or not
         String date = handleDuedate();
@@ -262,22 +273,26 @@ public class Tool {
     private void createAndAddSelectedTypeOfTask(String name, String date, ToDoList toDoList) throws ParseException {
         System.out.println("\nDo you want to set this task as an urgent task? Enter yes or no");
         String isUrgent = input.nextLine();
-        if (isUrgent.equals("yes")) {
-            toDoList.addTask(new UrgentTask(name, date));
-            if (date == null) {
-                System.out.println("New urgent task created: " + name + " Due date not set");
-            } else {
-                System.out.println("New urgent task created: " + name + " Due date set at: " + date);
-            }
+        try {
+            if (isUrgent.equals("yes")) {
+                toDoList.addTask(new UrgentTask(name, date));
+                if (date == null) {
+                    System.out.println("New urgent task created: " + name + " Due date not set");
+                } else {
+                    System.out.println("New urgent task created: " + name + " Due date set at: " + date);
+                }
 
-        } else {
-            toDoList.addTask(new RegularTask(name, date));
-            if (date == null) {
-                System.out.println("New task created: " + name + " Due date not set");
             } else {
-                System.out.println("New task created: " + name + " Due date set at: " + date);
-            }
+                toDoList.addTask(new RegularTask(name, date));
+                if (date == null) {
+                    System.out.println("New task created: " + name + " Due date not set");
+                } else {
+                    System.out.println("New task created: " + name + " Due date set at: " + date);
+                }
 
+            }
+        } catch (TaskAlreadyExistException e) {
+            System.out.println("This should not happens, duplicate in name should be caught when getting name- handleName()");
         }
     }
 
@@ -300,10 +315,13 @@ public class Tool {
         return date;
     }
 
-    private String handleName() {
+    private String handleName(ToDoList toDoList) throws TaskAlreadyExistException {
         System.out.println("\nPlease enter the name of your task");
         String name = input.nextLine();
         System.out.println("Name of the test is: " + name);
+        if (toDoList.contains(name)) {
+            throw new TaskAlreadyExistException("Task: " + name + " already exist");
+        }
         return name;
     }
 
@@ -352,8 +370,8 @@ public class Tool {
     public void handleChangeName(Task editTask) {
         System.out.println("Enter the new name you want to change to");
         String newName = input.nextLine();
-        String oldName = editTask.getTaskName();
-        editTask.setTaskName(newName);
+        String oldName = editTask.getName();
+        editTask.setName(newName);
         System.out.println(String.format("Your task's name changed from %1s to %2s", oldName, newName));
     }
 
@@ -368,7 +386,7 @@ public class Tool {
 
     // ui Delete task
     public void handleDeleteTask(Task editTask, ToDoList toDoList) throws TaskNotFoundException {
-        String taskName = editTask.getTaskName();
+        String taskName = editTask.getName();
         Boolean isDeleted = toDoList.deleteTask(taskName);
         if (isDeleted) {
             System.out.println("Task " + taskName + " has been deleted");

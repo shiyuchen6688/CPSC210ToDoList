@@ -97,7 +97,7 @@ public class ToDoListUsage {
          // TODO fix this to work on all the list in map
 //        // Reminders
 //        System.out.println("\n------Here is a reminder of all the task that are close to due------");
-//        curList.printAllCloseToDue();
+//        curList.printAllCloseToDueTasks();
 
         // interactions inside intellij
         tool.handleUserInput(toDoMap);    // Comment this out to able to use GUI

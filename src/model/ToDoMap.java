@@ -26,8 +26,7 @@ public class ToDoMap {
 
     }
 
-
-    // TODO need test
+    
     public void addToDoList(ToDoList newList) {
         String name = newList.getName();
         if (!toDoMap.keySet().contains(name)) {
@@ -76,8 +75,6 @@ public class ToDoMap {
         return toDoMap.get(name);
     }
 
-    public static void main(String[] args) {
 
-    }
 
 }

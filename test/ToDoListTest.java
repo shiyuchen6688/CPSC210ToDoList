@@ -99,7 +99,7 @@ public class ToDoListTest {
         checkToDoContainOnce();
         try {
             Task t = testToDoList.findTask("test task");
-            assertEquals(t.getTaskName(), "test task");
+            assertEquals(t.getName(), "test task");
         } catch (TaskNotFoundException e) {
             fail("caught TaskNotFound exception when shouldn't have");
         }
