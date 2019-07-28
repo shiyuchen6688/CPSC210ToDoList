@@ -26,7 +26,7 @@ public class ToDoMap {
 
     }
 
-    
+
     public void addToDoList(ToDoList newList) {
         String name = newList.getName();
         if (!toDoMap.keySet().contains(name)) {

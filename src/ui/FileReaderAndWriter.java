@@ -1,6 +1,7 @@
 package ui;
 
 import exceptions.TaskAlreadyExistException;
+import model.RegularTask;
 import model.Task;
 import model.ToDoList;
 import model.ToDoMap;
@@ -68,12 +69,18 @@ public class FileReaderAndWriter {
                 map.addToDoList(curList);
             }
 
+            List<Task> allOriginalTask = curList.getTasks();
+            Task newTask = new RegularTask(taskName,dueDate);
+            Boolean isDuplicate = allOriginalTask.contains(newTask);
+
             // add this task into this list
             try {
-                curList.addTask(taskName, dueDate);
+                curList.addTask(newTask);
             } catch (TaskAlreadyExistException e) {
-                System.out.println("Found duplicate task when loading");
-                System.out.println(e.getMessage());
+                if (isDuplicate) {
+                    System.out.println("duplicate task when loading");
+                    System.out.println(e.getMessage());
+                }
             }
 
         }

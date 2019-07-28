@@ -2,6 +2,7 @@ package model;
 
 import exceptions.NoDueDateException;
 import exceptions.OverDueException;
+import exceptions.TaskAlreadyExistException;
 import exceptions.TaskNotFoundException;
 import ui.ToDoListUsage;
 
@@ -80,7 +81,11 @@ public abstract class GeneralTask implements Task {
     public void setListBelonged(ToDoList toDoList) {
         if (this.listBelonged != toDoList) {
             this.listBelonged = toDoList;
-            toDoList.addTask(this);
+            try {
+                toDoList.addTask(this);
+            } catch (TaskAlreadyExistException e) {
+                // do nothing, this is ok
+            }
         } }
 
 

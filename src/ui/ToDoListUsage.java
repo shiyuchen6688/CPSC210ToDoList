@@ -86,25 +86,11 @@ public class ToDoListUsage {
         }
 
 
-
-
-
-        // Let user choose which curList to work on
-
-        System.out.println("Please choose which list to work on or create new one");
-//        curList = tool.userChooseWhichToDoList(toDoMap);
-
-         // TODO fix this to work on all the list in map
-//        // Reminders
-//        System.out.println("\n------Here is a reminder of all the task that are close to due------");
-//        curList.printAllCloseToDueTasks();
-
         // interactions inside intellij
         tool.handleUserInput(toDoMap);    // Comment this out to able to use GUI
 
 
         // Load and Save
-
         try {
             fileReaderAndWriter.saveAllHistoryInMapToInput(toDoMap);
             fileReaderAndWriter.copyInputToOutput();
