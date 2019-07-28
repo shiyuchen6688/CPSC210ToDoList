@@ -1,4 +1,4 @@
-package ui;
+package ui.display;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,13 +10,13 @@ import javafx.stage.Stage;
 
 public class PopupAd {
     public static void display(String title, String message) {
-       Stage window = new Stage();
+        Stage window = new Stage();
 
-       window.initModality(Modality.APPLICATION_MODAL);  // Block other user interaction
-       window.setTitle(title);
-       window.setMinWidth(250);
+        window.initModality(Modality.APPLICATION_MODAL);  // Block other user interaction
+        window.setTitle(title);
+        window.setMinWidth(250);
 
-       // Ad label 1
+        // Ad label 1
         Label label1 = new Label();
         label1.setText(message);
 

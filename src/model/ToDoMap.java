@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ToDoMap {
@@ -43,6 +45,14 @@ public class ToDoMap {
             System.out.println("Here is all your task in list: " + name);
             toDoMap.get(name).printAllTasks();
         }
+    }
+
+    public List<String> returnAllMapTasks() {
+        List<String> result = new ArrayList<>();
+        for(String name: toDoMap.keySet()) {
+            result.addAll(toDoMap.get(name).returnAllListTasks());
+        }
+        return result;
     }
 
     // EFFECTS: rint all task in map

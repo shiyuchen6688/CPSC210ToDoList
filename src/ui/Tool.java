@@ -54,7 +54,7 @@ public class Tool {
 //
 //        printChooseListOptions();
 //        String str = input.nextLine();
-//        return ChooseListFromMapOrCreateList(str, map);
+//        return chooseListFromMapOrCreateList(str, map);
 //    }
 //
 //    // EFFECTS: print options of list to choose to user, or create new one
@@ -83,7 +83,6 @@ public class Tool {
 //}
 
 
-
     // Choose Format
     public void userChooseDateFormat() {
         printFormatOptions();
@@ -92,7 +91,7 @@ public class Tool {
     }
 
     public void printFormatOptions() {
-        System.out.println("Welcome to your TODO list!");
+//        System.out.println("Welcome to your TODO list!");
         System.out.println("You can choose your default date format here:");
         System.out.println("\nEnter " + 1 + " to use yyyy-MM-dd");
         System.out.println("\nEnter " + 2 + " to use dd-MM-yyyy");
@@ -100,25 +99,34 @@ public class Tool {
         System.out.println("\nEnter " + 0 + " if you don't care and we will use our default yyyy-MM-dd");
     }
 
-    public void handleFormatOptions(String formatChoice) {
+    public List<String> returnFormatOptions() {
+        List<String> options = new ArrayList<>();
+        options.add("You can choose your default date format here:");
+        options.add("\nEnter " + 1 + " to use yyyy-MM-dd");
+        options.add("\nEnter " + 2 + " to use dd-MM-yyyy");
+        options.add("\nEnter " + 3 + " to use MM-dd-yyyy");
+        options.add("\nEnter " + 0 + " if you don't care and we will use our default yyyy-MM-dd");
+        return options;
+    }
+
+    public String handleFormatOptions(String formatChoice) {
         switch (formatChoice) {
-            case "1":
+            case "yyyy-MM-dd":
                 dateFormat = "yyyy-MM-dd";
                 sdf = new SimpleDateFormat(dateFormat);
-                break;
-            case "2":
+                return "choosed yyyy-MM-dd";
+            case "dd-MM-yyyy":
                 dateFormat = "dd-MM-yyyy";
                 sdf = new SimpleDateFormat(dateFormat);
-                break;
-            case "3":
+                return "choosed dd-MM-yyyy";
+            case "MM-dd-yyyy":
                 dateFormat = "MM-dd-yyyy";
                 sdf = new SimpleDateFormat(dateFormat);
-                break;
+                return "choosed MM-dd-yyyy";
             default:
                 dateFormat = "yyyy-MM-dd";
-                System.out.println("seted to default yyyy-MM-dd");
                 sdf = new SimpleDateFormat(dateFormat);
-                break;
+                return "option is incorrect, set to default yyyy-MM-dd";
         }
     }
 
@@ -185,15 +193,15 @@ public class Tool {
 
     // EFFECTS: print all close to due tasks
     public void printReminder(ToDoMap map) {
-        for(String name: map.getMap().keySet()) {
+        for (String name : map.getMap().keySet()) {
             map.getList(name).printAllCloseToDueTasks();
         }
     }
 
-    public ToDoList ChooseListFromMapOrCreateList(String s, ToDoMap map) {
+    public ToDoList chooseListFromMapOrCreateList(String s, ToDoMap map) {
         ToDoList newList = map.getList(s);
         if (newList == null) {
-            newList= new ToDoList(s);
+            newList = new ToDoList(s);
             map.addToDoList(newList);
         }
         return newList;
@@ -231,13 +239,11 @@ public class Tool {
     }
 
 
-
-
     public void handleAddTaskToMap(ToDoMap map) throws ParseException {
         printAllCurrentList(map);
         System.out.println("Please choose which list to work on or enter name of the new list");
         String listName = input.nextLine();
-        ToDoList curList =  ChooseListFromMapOrCreateList(listName, map);
+        ToDoList curList = chooseListFromMapOrCreateList(listName, map);
         System.out.println("List you are working on is " + curList.getName());
         handleAddTaskToList(curList);
     }
@@ -255,7 +261,7 @@ public class Tool {
             } catch (TaskAlreadyExistException e) {
                 System.out.println(e.getMessage());
             }
-        } while(!nameSuccessed);
+        } while (!nameSuccessed);
 
         // due date or not
         String date = handleDuedate();
@@ -266,14 +272,52 @@ public class Tool {
 
     }
 
+    public void handleAddTaskToList(ToDoList toDoList, String name, String dueDate, Boolean isUrgents) throws TaskAlreadyExistException {
+        // check if task already exist
+        if(toDoList.contains(name)) {
+            throw new TaskAlreadyExistException("Trying to add a duplicate task");
+        }
+        Task newTask = null;
+        if (isUrgents) {
+            try {
+                if (dueDate != "skip") {
+                    newTask = new UrgentTask(name, dueDate);
+                } else {
+                    newTask = new UrgentTask(name);
+                }
+
+            } catch (ParseException e) {
+                System.out.println("date of new urgent task is incorrect");
+            }
+        } else {
+            try {
+                if (dueDate != "skip") {
+                    newTask = new RegularTask(name, dueDate);
+                } else {
+                    newTask = new RegularTask(name);
+                }
+
+            } catch (ParseException e) {
+                System.out.println("date of new regular task is incorrect");
+            }
+        }
 
 
+
+        if(newTask != null) {
+                toDoList.addTask(newTask);
+        } else {
+            System.out.println("When creating task new tasl is null");
+        }
+
+
+    }
 
 
     private void createAndAddSelectedTypeOfTask(String name, String date, ToDoList toDoList) throws ParseException {
         System.out.println("\nDo you want to set this task as an urgent task? Enter yes or no");
         String isUrgent = input.nextLine();
-        try {
+
             if (isUrgent.equals("yes")) {
                 toDoList.addTask(new UrgentTask(name, date));
                 if (date == null) {
@@ -291,14 +335,12 @@ public class Tool {
                 }
 
             }
-        } catch (TaskAlreadyExistException e) {
-            System.out.println("This should not happens, duplicate in name should be caught when getting name- handleName()");
-        }
+
     }
 
     private void printAllCurrentList(ToDoMap map) {
         System.out.println("Here is all to do list you have");
-        for(String name : map.getMap().keySet()) {
+        for (String name : map.getMap().keySet()) {
             System.out.println(name);
         }
     }

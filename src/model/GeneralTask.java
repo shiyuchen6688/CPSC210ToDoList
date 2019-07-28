@@ -81,11 +81,8 @@ public abstract class GeneralTask implements Task {
     public void setListBelonged(ToDoList toDoList) {
         if (this.listBelonged != toDoList) {
             this.listBelonged = toDoList;
-            try {
                 toDoList.addTask(this);
-            } catch (TaskAlreadyExistException e) {
-                // do nothing, this is ok
-            }
+
         } }
 
 

@@ -1,4 +1,0 @@
-general  t1  2019-07-01
-grocery  apple  None
-school  assign4  2019-08-01
-school  assign5  2019-07-30

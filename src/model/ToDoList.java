@@ -122,13 +122,12 @@ public class ToDoList {
     // MODIFIES: this
     // EFFECTS: if task already exist, throw TaskAlreadyExistException
     //           otherwise, add given task in to ToDoList
-    public void addTask(Task t) throws TaskAlreadyExistException {
+    public void addTask(Task t) {
         if (!tasks.contains(t)) {
             tasks.add(t);
             t.setListBelonged(this);
         }
 
-        throw new TaskAlreadyExistException("Trying to make task: " + t.getName() + " but it already exist");
     }
 
 
@@ -190,6 +189,14 @@ public class ToDoList {
         }
         System.out.println("Done, you have " + tasks.size() + " task in " + name);
         System.out.println();
+    }
+
+    public List<String> returnAllListTasks() {
+        List<String> result = new ArrayList<>();
+        for (Task t: tasks) {
+            result.add(t.getName());
+        }
+        return result;
     }
 
 
