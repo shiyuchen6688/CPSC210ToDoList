@@ -193,15 +193,24 @@ public class ToDoList {
 
     public List<String> returnAllListTasks() {
         List<String> result = new ArrayList<>();
-        for (Task t: tasks) {
-            result.add(t.getName());
+        result.add("Here is all of your task in list: " + name);
+        for (Task t : tasks) {
+            if (t.getDueDate() != null) {
+                result.add(ToDoListUsage.INDENTATION + "Task: " + t.getName()
+                        + " Due Date:" + ToDoListUsage.sdf.format(t.getDueDate()));
+            } else {
+                result.add(ToDoListUsage.INDENTATION + "Task: " + t.getName()
+                        + " with no due date");
+            }
         }
+        result.add("\nlist: " + name + " is done");
         return result;
     }
 
 
     // EFFECTS: print all overdue tasks inside todolist in format:
     //          OVERDUE Task num : task name
+    // TODO old version don't need anymore
     public void printAllOverdueTasks() {
         System.out.println();
         int num = 1;
@@ -216,18 +225,18 @@ public class ToDoList {
     }
 
 
-    public void printAllCloseToDueTasks() {
+    public List<String> returnListAllOverdueTasks() {
+        List<String> overDueTasks = new ArrayList<>();
+        overDueTasks.add("Here is all of your overdue task in list: " + name);
         for (Task t : tasks) {
-            try {
-                if (t.closeToDue()) {
-                    System.out.println(String.format("\nTask %s in %s list is due in %s days", t.getName(), name, t.getDayUntilDue()));
-                }
-            } catch (NoDueDateException e) {
-                System.out.println(e.getMessage());
-            } catch (OverDueException e) {
-                System.out.println(e.getMessage());
+            if (t.isOverdue()) {
+                overDueTasks.add(ToDoListUsage.INDENTATION + "Overdue Task: " + t.getName()
+                        + " Due Date:" + ToDoListUsage.sdf.format(t.getDueDate()));
             }
+            overDueTasks.add("\nlist: " + name + " is done");
+            return overDueTasks;
         }
+        return overDueTasks;
     }
 
 
@@ -245,8 +254,6 @@ public class ToDoList {
         }
         return ls;
     }
-
-
 
 
     @Override

@@ -41,7 +41,7 @@
 //        assertFalse(allTaskName.contains(NAME_TEST1));
 //        testFileReaderAndWriter.getInputFileWriter().write(NAME_TEST1+ "  " + DUEDATE_TEST1);
 //
-//        testFileReaderAndWriter.load();
+//        testFileReaderAndWriter.addHistryIntoMapAndReturnLoad();
 //        allTaskName = getAllTasksNames(testToDoList.getTasks());
 //        assertFalse(allTaskName.contains(NAME_TEST1));
 //    }

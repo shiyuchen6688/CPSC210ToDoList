@@ -26,26 +26,18 @@ public class Tool {
     private static final String CHANGE_DUEDATE_COMMAND = "2";
     private static final String DELETE_COMMAND = "3";
 
-    private static Scanner input;
-    private boolean isRunning;
-    private List<String> historyFiles;
 
-    // TODO: This is the old version that we don't need, delete later
-//    public Tool(ToDoList toDoList) {
-//        this.toDoList = toDoList;
-//        input = new Scanner(System.in);
-//        isRunning = true;
-//        this.historyFiles = new ArrayList<>();
-//        historyFiles.add("inputfile.txt");
-//        historyFiles.add("schoolfile.txt");
-//    }
+    private static Scanner input;
+    public static boolean isRunning;
+    public List<String> historyFiles;
+
 
     public Tool() {
         input = new Scanner(System.in);
         isRunning = true;
         this.historyFiles = new ArrayList<>();
         historyFiles.add("inputfile.txt");
-        historyFiles.add("schoolfile.txt");
+        // TODO you can add more files here to save history
     }
 
 //    // TODO work on choosing todo list
@@ -178,10 +170,10 @@ public class Tool {
             case EDIT_TASK_COMMAND:
                 handleEditTask(toDoMap);
                 break;
-            case REMINDER_COMMAND:
-                System.out.println("Here is all your tasks that are close to due");
-                printReminder(toDoMap);
-                break;
+//            case REMINDER_COMMAND:
+//                System.out.println("Here is all your tasks that are close to due");
+//                printReminder(toDoMap);
+//                break;
             case QUIT_COMMAND:
                 isRunning = false;
                 break;
@@ -191,12 +183,12 @@ public class Tool {
     }
 
 
-    // EFFECTS: print all close to due tasks
-    public void printReminder(ToDoMap map) {
-        for (String name : map.getMap().keySet()) {
-            map.getList(name).printAllCloseToDueTasks();
-        }
-    }
+//    // EFFECTS: print all close to due tasks
+//    public void printReminder(ToDoMap map) {
+//        for (String name : map.getMap().keySet()) {
+//            map.getList(name).printAllCloseToDueTasks();
+//        }
+//    }
 
     public ToDoList chooseListFromMapOrCreateList(String s, ToDoMap map) {
         ToDoList newList = map.getList(s);

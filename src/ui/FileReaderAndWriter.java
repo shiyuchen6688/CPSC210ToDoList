@@ -25,11 +25,6 @@ public class FileReaderAndWriter {
     private FileWriter inputFileWriter;
     private String chosenFile;
 
-//    public FileReaderAndWriter(ToDoList toDoList) throws IOException {
-//        outputFileWriter = new FileWriter("outputfile.txt", false);
-//        inputFileWriter = new FileWriter("inputfile.txt", true);
-//        this.toDoList = toDoList;
-//    }
 
     public FileReaderAndWriter(String fileName) throws IOException {
         outputFileWriter = new FileWriter("outputfile.txt", false);
@@ -38,10 +33,11 @@ public class FileReaderAndWriter {
     }
 
 
-    // TODO let user decide where to save/load
+    // TODO let user decide where to save/addHistryIntoMapAndReturnLoad
 
-    public void load(ToDoMap map) throws IOException, ParseException {
-        System.out.println("\n---------- Here is all the task you added Before ----------");
+    public List<String> addHistryIntoMapAndReturnLoad(ToDoMap map) throws IOException, ParseException, TaskAlreadyExistException {
+        List<String> msgList = new ArrayList<>();
+        msgList.add("\n---------- Here is all the task you added Before ----------");
         List<String> lines = Files.readAllLines((Paths.get(chosenFile)));
         for (String line : lines) {
             // separate the line into 3 parts
@@ -56,10 +52,8 @@ public class FileReaderAndWriter {
             }
 
             // first two is print, the third one is line
-            System.out.print("List: " + listName + " ");
-            System.out.print("| Task: " + taskName + " ");
-            System.out.println("| Duedate: " + dueDate);
-
+            msgList.add("List: " + listName + " " + "| Task: " + taskName + " " + "| Duedate: " + dueDate);
+            msgList.add("All history above has already been saved");
             // get the the list from the map
             ToDoList curList = map.getList(listName);
 
@@ -73,11 +67,16 @@ public class FileReaderAndWriter {
             Task newTask = new RegularTask(taskName,dueDate);
 
             // add this task into this list
-
+            if (!allOriginalTask.contains(newTask)) {
                 curList.addTask(newTask);
+            } else {
+                throw new TaskAlreadyExistException("load trying to add task: " + newTask.getName() + " but it alreadt exist");
+            }
+
 
 
         }
+        return msgList;
     }
 
     // TODO !!! save map history to input, multiple list!!!!
@@ -91,11 +90,15 @@ public class FileReaderAndWriter {
         inputFileWriter.close();
     }
 
+
+
     // save history of a single list
     // MODIFIES: inputfile.txt
     // EFFECTS: save all tasks in s single list to inputfile.txt
     public void saveAllHistoryInListToInput(String listName, ToDoList toDoList) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(chosenFile));
+        PrintWriter writer = new PrintWriter(chosenFile);
+        writer.print("");
+        writer.close();
 
         List<Task> tasks = toDoList.getTasks();
         for (int i = 0; i < tasks.size(); i++) {
@@ -109,19 +112,19 @@ public class FileReaderAndWriter {
                 date = "None";
             }
 
-            // toAdd is the actual line that get added
-            String toAdd = listName + "  " + name + "  " + date;
-            if (!(lines.contains(toAdd))) {
-                inputFileWriter.write(toAdd + "\n");
-            }
+            // stringToAdd is the actual line that get added
+            String stringToAdd = listName + "  " + name + "  " + date + "\n";
+            inputFileWriter.write(stringToAdd);
         }
 
     }
 
+    // TODO delete this later
     // MODIFIES: outputfile.txt
     // EFFECTS: add things in inputfile.txt to outputfile.txt
     public void copyInputToOutput() throws IOException {
         List<String> linesOutput = Files.readAllLines(Paths.get(chosenFile));
+
         linesOutput.add(MESSAGE_END_OUTPUT);
         for (int i = 0; i < linesOutput.size(); i++) {
             String line = linesOutput.get(i);
@@ -139,11 +142,12 @@ public class FileReaderAndWriter {
             }
         }
         outputFileWriter.close();
-
     }
 
-    // helper to split words in load and save. File download from CPSC-210 EDX.
-    // TODO return List instead of ArrayList
+
+
+
+    // helper to split words in addHistryIntoMapAndReturnLoad and save. File download from CPSC-210 EDX.
     public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split("  ");
         return new ArrayList<>(Arrays.asList(splits));

@@ -16,6 +16,7 @@ public class ConfirmBox {
 
         Stage window = new Stage();
 
+
         // block event to other window
         window.initModality(Modality.APPLICATION_MODAL);
 

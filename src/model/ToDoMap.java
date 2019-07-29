@@ -55,6 +55,14 @@ public class ToDoMap {
         return result;
     }
 
+    public List<String> returnMapAllOverdueTasks() {
+        List<String> overdueTasks = new ArrayList<>();
+        for(String name: toDoMap.keySet()) {
+            overdueTasks.addAll(toDoMap.get(name).returnListAllOverdueTasks());
+        }
+        return overdueTasks;
+    }
+
     // EFFECTS: rint all task in map
     public void printAllOverdueTasks() {
         for(String name: toDoMap.keySet()) {
