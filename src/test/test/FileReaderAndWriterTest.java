@@ -1,3 +1,5 @@
+//package test;
+//
 //import model.RegularTask;
 //import model.Task;
 //import model.ToDoList;
@@ -15,10 +17,10 @@
 //import static org.junit.jupiter.api.Assertions.*;
 //
 //public class FileReaderAndWriterTest {
-//    private final String NAME_TEST1 = "test1";
-//    private final String NAME_TEST2 = "test2";
-//    private final String DUEDATE_TEST1 = "1111-11-11";
-//    private final String DUEDATE_TEST2 = "2222-22-22";
+//    private static final String NAME_TEST1 = "test1";
+//    private static final String NAME_TEST2 = "test2";
+//    private static final String DUEDATE_TEST1 = "1111-11-11";
+//    private static final String DUEDATE_TEST2 = "2222-22-22";
 //
 //    private FileReaderAndWriter testFileReaderAndWriter;
 //    private ToDoList testToDoList;
@@ -39,7 +41,7 @@
 //    public void testLoad() throws IOException, ParseException {
 //        List<String> allTaskName = getAllTasksNames(testToDoList.getTasks());
 //        assertFalse(allTaskName.contains(NAME_TEST1));
-//        testFileReaderAndWriter.getInputFileWriter().write(NAME_TEST1+ "  " + DUEDATE_TEST1);
+//        testFileReaderAndWriter.getInputFileWriter().write(NAME_TEST1 + "  " + DUEDATE_TEST1);
 //
 //        testFileReaderAndWriter.addHistryIntoMapAndReturnLoad();
 //        allTaskName = getAllTasksNames(testToDoList.getTasks());
@@ -55,7 +57,7 @@
 //        testFileReaderAndWriter.saveAllHistoryInListToInput();
 //        lines = Files.readAllLines(Paths.get("inputfile.txt"));
 //
-//        assertEquals("test1  " + DUEDATE_TEST1 , lines.get(lines.size()-1));
+//        assertEquals("test1  " + DUEDATE_TEST1, lines.get(lines.size() - 1));
 //    }
 //
 //    @Test
@@ -73,7 +75,7 @@
 //
 //    public List<String> getAllTasksNames(List<Task> tasks) {
 //        List<String> result = new ArrayList<>();
-//        for (Task t: tasks) {
+//        for (Task t : tasks) {
 //            result.add(t.getName());
 //        }
 //        return result;

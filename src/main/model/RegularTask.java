@@ -1,7 +1,7 @@
 package model;
 
-import exceptions.NoDueDateException;
-import exceptions.OverDueException;
+import model.exceptions.NoDueDateException;
+import model.exceptions.OverDueException;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;

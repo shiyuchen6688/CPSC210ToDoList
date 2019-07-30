@@ -1,6 +1,6 @@
 package model;
 
-import exceptions.*;
+import model.exceptions.*;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
@@ -258,8 +258,12 @@ public class ToDoList {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ToDoList toDoList = (ToDoList) o;
         return name.equals(toDoList.name);
     }

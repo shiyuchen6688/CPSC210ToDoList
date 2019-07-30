@@ -41,7 +41,7 @@ public class ToDoMap {
 
     // EFFECTS: rint all task in map
     public void printAllTasks() {
-        for(String name: toDoMap.keySet()) {
+        for (String name : toDoMap.keySet()) {
             System.out.println("Here is all your task in list: " + name);
             toDoMap.get(name).printAllTasks();
         }
@@ -49,7 +49,7 @@ public class ToDoMap {
 
     public List<String> returnAllMapTasks() {
         List<String> result = new ArrayList<>();
-        for(String name: toDoMap.keySet()) {
+        for (String name : toDoMap.keySet()) {
             result.addAll(toDoMap.get(name).returnAllListTasks());
         }
         return result;
@@ -57,7 +57,7 @@ public class ToDoMap {
 
     public List<String> returnMapAllOverdueTasks() {
         List<String> overdueTasks = new ArrayList<>();
-        for(String name: toDoMap.keySet()) {
+        for (String name : toDoMap.keySet()) {
             overdueTasks.addAll(toDoMap.get(name).returnListAllOverdueTasks());
         }
         return overdueTasks;
@@ -65,14 +65,14 @@ public class ToDoMap {
 
     // EFFECTS: rint all task in map
     public void printAllOverdueTasks() {
-        for(String name: toDoMap.keySet()) {
+        for (String name : toDoMap.keySet()) {
             System.out.println("Here is all your overdue task in list: " + name);
             toDoMap.get(name).printAllOverdueTasks();
         }
     }
 
     public Boolean contains(String toDoListName) {
-        if(toDoMap.get(toDoListName) != null) {
+        if (toDoMap.get(toDoListName) != null) {
             return true;
         }
         return false;
@@ -92,7 +92,6 @@ public class ToDoMap {
     public ToDoList getList(String name) {
         return toDoMap.get(name);
     }
-
 
 
 }

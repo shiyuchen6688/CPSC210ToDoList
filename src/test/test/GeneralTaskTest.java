@@ -1,14 +1,12 @@
-import exceptions.TaskNotFoundException;
+package test;
+
+import model.exceptions.TaskNotFoundException;
 import model.GeneralTask;
-import model.Task;
 import model.ToDoList;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;

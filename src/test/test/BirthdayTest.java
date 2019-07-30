@@ -1,3 +1,5 @@
+package test;
+
 import model.Birthday;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,14 +28,15 @@ public class BirthdayTest extends GeneralTaskTest {
         try {
             assertEquals(ToDoListUsage.sdf.parse("2019-10-08"), testBirthday.getDueDate());
         } catch (ParseException e) {
-
+            System.out.println("GOOD, Just as expected");
         }
         assertFalse(testBirthday.getStatus());
         assertTrue(testBirthday.getGreeting().equals("Happy Birthday shiyu !"));
         assertTrue(testBirthday.getGift().equals("Birthday card for shiyu"));
     }
 
-    @Test @Override
+    @Test
+    @Override
     public void testGetDueDate() {
         assertEquals("Birthday of shiyu", testBirthday.getName());
     }
@@ -52,7 +55,7 @@ public class BirthdayTest extends GeneralTaskTest {
 
 
     @Test
-    public void testSetGift(){
+    public void testSetGift() {
         // check initial and setup
         assertTrue(testBirthday.getGift().equals("Birthday card for shiyu"));
         // invoke
@@ -76,7 +79,7 @@ public class BirthdayTest extends GeneralTaskTest {
     @Test
     public void testGetGift() {
         // check initial and setup
-        assertEquals("Birthday card for shiyu",testBirthday.getGift());
+        assertEquals("Birthday card for shiyu", testBirthday.getGift());
         // invoke
         String newGift = "Gift changed";
         testBirthday.setGift(newGift);
@@ -85,7 +88,8 @@ public class BirthdayTest extends GeneralTaskTest {
     }
 
 
-    @Test @Override
+    @Test
+    @Override
     public void testSetName() {
         assertTrue("Birthday of shiyu".equals(testBirthday.getName()));
         testTask.setName("changed");

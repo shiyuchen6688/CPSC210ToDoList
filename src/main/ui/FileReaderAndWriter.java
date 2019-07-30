@@ -1,6 +1,6 @@
 package ui;
 
-import exceptions.TaskAlreadyExistException;
+import model.exceptions.TaskAlreadyExistException;
 import model.RegularTask;
 import model.Task;
 import model.ToDoList;
@@ -20,7 +20,6 @@ public class FileReaderAndWriter {
     public static final String MESSAGE_END_OUTPUT = "Goodbye, your tasks have been saved";
 
 
-
     private FileWriter outputFileWriter;
     private FileWriter inputFileWriter;
     private String chosenFile;
@@ -35,61 +34,67 @@ public class FileReaderAndWriter {
 
     // TODO let user decide where to save/addHistryIntoMapAndReturnLoad
 
-    public List<String> addHistryIntoMapAndReturnLoad(ToDoMap map) throws IOException, ParseException, TaskAlreadyExistException {
+    public List<String> addHistryIntoMapAndReturnLoad(ToDoMap map)
+            throws IOException, ParseException, TaskAlreadyExistException {
         List<String> msgList = new ArrayList<>();
         msgList.add("\n---------- Here is all the task you added Before ----------");
         List<String> lines = Files.readAllLines((Paths.get(chosenFile)));
-        for (String line : lines) {
-            // separate the line into 3 parts
-            ArrayList<String> partsOfLine = splitOnSpace(line);
 
-            // assign each part of string
+        for (String line : lines) {
+            ArrayList<String> partsOfLine = splitOnSpace(line);
             String listName = partsOfLine.get(0);
             String taskName = partsOfLine.get(1);
             String dueDate = partsOfLine.get(2);
             if (dueDate.equals("None")) {
                 dueDate = null;
             }
-
-            // first two is print, the third one is line
             msgList.add("List: " + listName + " " + "| Task: " + taskName + " " + "| Duedate: " + dueDate);
-            msgList.add("All history above has already been saved");
             // get the the list from the map
             ToDoList curList = map.getList(listName);
 
             // if this list is not already in, create and add it
-            if (curList == null) {
-                curList = new ToDoList(listName);
-                map.addToDoList(curList);
-            }
+            curList = ifCurLIstNullCreateNew(map, listName, curList);
 
-            List<Task> allOriginalTask = curList.getTasks();
-            Task newTask = new RegularTask(taskName,dueDate);
-
-            // add this task into this list
-            if (!allOriginalTask.contains(newTask)) {
-                curList.addTask(newTask);
-            } else {
-                throw new TaskAlreadyExistException("load trying to add task: " + newTask.getName() + " but it alreadt exist");
-            }
-
+            addTaskNoDuplicate(taskName, dueDate, curList);
 
 
         }
+        msgList.add("All history above has already been saved");
         return msgList;
+    }
+
+    private void addTaskNoDuplicate(String taskName, String dueDate, ToDoList curList)
+            throws ParseException, TaskAlreadyExistException {
+        List<Task> allOriginalTask = curList.getTasks();
+        Task newTask = new RegularTask(taskName, dueDate);
+
+        // add this task into this list
+        if (!allOriginalTask.contains(newTask)) {
+            curList.addTask(newTask);
+        } else {
+            throw new TaskAlreadyExistException("load trying to add task: "
+                    + newTask.getName() + " but it alreadt exist");
+        }
+    }
+
+    private ToDoList ifCurLIstNullCreateNew(ToDoMap map, String listName, ToDoList curList) {
+        if (curList == null) {
+            curList = new ToDoList(listName);
+            map.addToDoList(curList);
+        }
+        return curList;
     }
 
     // TODO !!! save map history to input, multiple list!!!!
     // save history of a map of list
     public void saveAllHistoryInMapToInput(ToDoMap toDoMap) throws IOException {
         Map<String, ToDoList> map = toDoMap.getMap();
-        for(String name: map.keySet()) {
+        for (String name : map.keySet()) {
             saveAllHistoryInListToInput(name, map.get(name));
         }
 
         inputFileWriter.close();
     }
-
 
 
     // save history of a single list
@@ -143,8 +148,6 @@ public class FileReaderAndWriter {
         }
         outputFileWriter.close();
     }
-
-
 
 
     // helper to split words in addHistryIntoMapAndReturnLoad and save. File download from CPSC-210 EDX.

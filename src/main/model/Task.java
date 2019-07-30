@@ -1,8 +1,8 @@
 package model;
 
-import exceptions.NoDueDateException;
-import exceptions.OverDueException;
-import exceptions.TaskNotFoundException;
+import model.exceptions.NoDueDateException;
+import model.exceptions.OverDueException;
+import model.exceptions.TaskNotFoundException;
 
 import java.text.ParseException;
 import java.util.Date;

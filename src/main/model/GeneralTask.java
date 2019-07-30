@@ -1,9 +1,8 @@
 package model;
 
-import exceptions.NoDueDateException;
-import exceptions.OverDueException;
-import exceptions.TaskAlreadyExistException;
-import exceptions.TaskNotFoundException;
+import model.exceptions.NoDueDateException;
+import model.exceptions.OverDueException;
+import model.exceptions.TaskNotFoundException;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
@@ -49,7 +48,9 @@ public abstract class GeneralTask implements Task {
 
     // EFFECTS: return the list this class belongded to
     @Override
-    public ToDoList getListBelonged() { return this.listBelonged; }
+    public ToDoList getListBelonged() {
+        return this.listBelonged;
+    }
 
 
     // setters
@@ -81,16 +82,17 @@ public abstract class GeneralTask implements Task {
     public void setListBelonged(ToDoList toDoList) {
         if (this.listBelonged != toDoList) {
             this.listBelonged = toDoList;
-                toDoList.addTask(this);
+            toDoList.addTask(this);
 
-        } }
+        }
+    }
 
 
     // EFFECTS: return true if dueDate is set and task is due, false otherwise
     @Override
     public boolean isOverdue() {
         LocalDate currentDate = LocalDate.now();
-        if(dueDate != null) {
+        if (dueDate != null) {
             return this.dueDate.before(java.sql.Date.valueOf(currentDate));
         }
         return false;
@@ -101,7 +103,8 @@ public abstract class GeneralTask implements Task {
     @Override
     public int getDayUntilDue() {
         LocalDate currentDate = LocalDate.now();
-        Period period = Period.between(currentDate,this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        Period period = Period.between(currentDate,
+                this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         return period.getDays();
     }
 
@@ -119,8 +122,12 @@ public abstract class GeneralTask implements Task {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof GeneralTask)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof GeneralTask)) {
+            return false;
+        }
         GeneralTask that = (GeneralTask) o;
         return name.equals(that.name);
     }

@@ -1,16 +1,15 @@
 package model;
 
-import exceptions.NoDueDateException;
-import exceptions.OverDueException;
+import model.exceptions.NoDueDateException;
+import model.exceptions.OverDueException;
 import ui.ToDoListUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
-import java.util.Date;
 
-public class Birthday extends GeneralTask implements Holiday{
+public class Birthday extends GeneralTask implements Holiday {
 
     private String greeting;
     private String gift;

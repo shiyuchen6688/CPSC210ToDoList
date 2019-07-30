@@ -1,4 +1,6 @@
-//import exceptions.TaskNotFoundException;
+//package test;
+//
+//import model.exceptions.TaskNotFoundException;
 //import model.RegularTask;
 //import model.Task;
 //import model.ToDoList;
@@ -159,7 +161,7 @@
 //    }
 //
 //
-//    // test for exceptions
+//    // test for model.exceptions
 //    @Test
 //    public void testExpectTaskNotFoundException() {
 //        Assertions.assertEquals(0, testToDoList.size());

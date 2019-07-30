@@ -1,3 +1,5 @@
+package test;
+
 import model.GeneralTask;
 import model.RegularTask;
 import model.Task;
