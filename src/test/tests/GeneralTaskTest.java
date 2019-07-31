@@ -1,5 +1,6 @@
-package test;
+package tests;
 
+import model.RegularTask;
 import model.exceptions.TaskNotFoundException;
 import model.GeneralTask;
 import model.ToDoList;
@@ -7,6 +8,9 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
@@ -73,7 +77,7 @@ public abstract class GeneralTaskTest {
 
     @Test
     public void testSetListBelonged() {
-        ToDoList list = new ToDoList("test list");
+        ToDoList list = new ToDoList("tests list");
         testTask.setListBelonged(list);
 
         assertEquals(list, testTask.getListBelonged());
@@ -82,17 +86,55 @@ public abstract class GeneralTaskTest {
 
 
     @Test
-    public void testIsOverdueWhenNot() throws ParseException {
-        testTask.setDueDate("3000-10-10");
+    public void testIsOverdueWhenNot() {
+        try {
+            testTask.setDueDate("3000-10-10");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         assertFalse(testTask.isOverdue());
     }
 
+
     @Test
-    public void testOverdueWhenOverdue() throws ParseException {
+    public void testOverdueWhenOverdue() {
         // invoke behavior
-        testTask.setDueDate("1999-01-01");
+        try {
+            testTask.setDueDate("1999-01-01");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         // check outcome
         assertTrue(testTask.isOverdue());
+    }
+
+    @Test
+    public void testOverdueWhenNull() {
+        GeneralTask t = new RegularTask("t");
+        assertFalse(t.isOverdue());
+    }
+
+    @Test
+    public void testGetDayUntilDue() {
+        LocalDate currentDate = LocalDate.now();
+        Date now = java.sql.Date.valueOf(currentDate);
+        try {
+            GeneralTask t  = new RegularTask("t", "2020-10-02");
+            long diff = t.getDueDate().getTime() - now.getTime();
+            int day =  (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            assertEquals(day, t.getDayUntilDue());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void testHashCode() {
+        GeneralTask t1 = new RegularTask("t");
+        GeneralTask t2 = new RegularTask("t");
+        assertEquals(t1.hashCode(), t2.hashCode());
     }
 
     @Test

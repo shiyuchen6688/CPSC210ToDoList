@@ -20,9 +20,9 @@ public class FileReaderAndWriter {
     public static final String MESSAGE_END_OUTPUT = "Goodbye, your tasks have been saved";
 
 
-    private FileWriter outputFileWriter;
-    private FileWriter inputFileWriter;
-    private String chosenFile;
+    private static FileWriter outputFileWriter;
+    private static FileWriter inputFileWriter;
+    private static String chosenFile;
 
 
     public FileReaderAndWriter(String inputFileName, String outputFileName) throws IOException {
@@ -95,7 +95,7 @@ public class FileReaderAndWriter {
     }
 
     // save history of a map of list
-    public void saveAllHistoryInMapToInput(ToDoMap toDoMap) throws IOException {
+    public static void saveAllHistoryInMapToInput(ToDoMap toDoMap) throws IOException {
         Map<String, ToDoList> map = toDoMap.getMap();
         for (String name : map.keySet()) {
             saveAllHistoryInListToInput(name, map.get(name));
@@ -108,7 +108,7 @@ public class FileReaderAndWriter {
     // save history of a single list
     // MODIFIES: inputfile.txt
     // EFFECTS: save all tasks in s single list to inputfile.txt
-    public void saveAllHistoryInListToInput(String listName, ToDoList toDoList) throws IOException {
+    public static void saveAllHistoryInListToInput(String listName, ToDoList toDoList) throws IOException {
         PrintWriter writer = new PrintWriter(chosenFile);
         writer.print("");
         writer.close();
@@ -134,7 +134,7 @@ public class FileReaderAndWriter {
 
     // MODIFIES: outputfile.txt
     // EFFECTS: add things in inputfile.txt to outputfile.txt
-    public void copyInputToOutput() throws IOException {
+    public static void copyInputToOutput() throws IOException {
         List<String> linesOutput = Files.readAllLines(Paths.get(chosenFile));
 
         linesOutput.add(MESSAGE_END_OUTPUT);

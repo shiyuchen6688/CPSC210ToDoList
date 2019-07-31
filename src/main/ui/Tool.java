@@ -221,7 +221,7 @@ public class Tool {
     private String handleName(ToDoList toDoList) throws TaskAlreadyExistException {
         System.out.println("\nPlease enter the name of your task");
         String name = input.nextLine();
-        System.out.println("Name of the test is: " + name);
+        System.out.println("Name of the tests is: " + name);
         if (toDoList.contains(name)) {
             throw new TaskAlreadyExistException("Task: " + name + " already exist");
         }

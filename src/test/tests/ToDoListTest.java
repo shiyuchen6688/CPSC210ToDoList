@@ -1,4 +1,4 @@
-//package test;
+//package tests;
 //
 //import model.exceptions.TaskNotFoundException;
 //import model.RegularTask;
@@ -24,7 +24,7 @@
 //
 //
 //
-//    // test Constructor
+//    // tests Constructor
 //    @Test
 //    public void testConstructor() {
 //        checkToDoEmptyDoesntContain();
@@ -35,7 +35,7 @@
 //    @Test
 //    public void testGetTasks() {
 //        checkToDoEmptyDoesntContain();
-//        Task t = new RegularTask("test");
+//        Task t = new RegularTask("tests");
 //        testToDoList.addTask(t);
 //        assertEquals(1, testToDoList.getTasks().size());
 //        assertEquals(t, testToDoList.getTasks().get(0));
@@ -44,24 +44,24 @@
 //    @Test
 //    public void testAddTaskWithTaskName() {
 //        checkToDoEmptyDoesntContain();
-//        testToDoList.addTask("test task");
+//        testToDoList.addTask("tests task");
 //        checkToDoContainOnce();
 //    }
 //
 //    @Test
 //    public void testAddTwoTaskWithTaskName() {
 //        checkToDoEmptyDoesntContain();
-//        testToDoList.addTask("test task");
-//        testToDoList.addTask("test task 2");
-//        assertTrue(testToDoList.contains("test task"));
-//        assertTrue(testToDoList.contains("test task 2"));
+//        testToDoList.addTask("tests task");
+//        testToDoList.addTask("tests task 2");
+//        assertTrue(testToDoList.contains("tests task"));
+//        assertTrue(testToDoList.contains("tests task 2"));
 //        assertEquals(testToDoList.size(), 2);
 //    }
 //
 //    @Test
 //    public void testAddTaskWithNewTask() {
 //        checkToDoEmptyDoesntContain();
-//        testToDoList.addTask(new RegularTask("test task"));
+//        testToDoList.addTask(new RegularTask("tests task"));
 //        checkToDoContainOnce();
 //    }
 //
@@ -70,10 +70,10 @@
 //    @Test
 //    public void testDeleteTaskExist() throws TaskNotFoundException {
 //        checkToDoEmptyDoesntContain();
-//        testToDoList.addTask("test task");
+//        testToDoList.addTask("tests task");
 //        checkToDoContainOnce();
 //        try {
-//            boolean b = testToDoList.deleteTask("test task");
+//            boolean b = testToDoList.deleteTask("tests task");
 //            assertTrue(b);
 //            checkToDoEmptyDoesntContain();
 //        } catch (TaskNotFoundException e) {
@@ -86,7 +86,7 @@
 //    @Test
 //    public void testDeleteTaskDoesntExist() throws TaskNotFoundException {
 //        checkToDoEmptyDoesntContain();
-//        boolean b = testToDoList.deleteTask("test task");
+//        boolean b = testToDoList.deleteTask("tests task");
 //        assertFalse(b);
 //
 //
@@ -97,11 +97,11 @@
 //    @Test
 //    public void testFindTaskExist() {
 //        checkToDoEmptyDoesntContain();
-//        testToDoList.addTask("test task");
+//        testToDoList.addTask("tests task");
 //        checkToDoContainOnce();
 //        try {
-//            Task t = testToDoList.findTask("test task");
-//            assertEquals(t.getName(), "test task");
+//            Task t = testToDoList.findTask("tests task");
+//            assertEquals(t.getName(), "tests task");
 //        } catch (TaskNotFoundException e) {
 //            fail("caught TaskNotFound exception when shouldn't have");
 //        }
@@ -114,7 +114,7 @@
 //    public void testFindTaskDoesntExist() {
 //        checkToDoEmptyDoesntContain();
 //        try {
-//            Task t = testToDoList.findTask("test task");
+//            Task t = testToDoList.findTask("tests task");
 //            fail();
 //        } catch (TaskNotFoundException e) {
 //            // expected
@@ -124,14 +124,14 @@
 //    @Test
 //    public void testContainsExist() {
 //        checkToDoEmptyDoesntContain();
-//        testToDoList.addTask("test task");
-//        assertTrue(testToDoList.contains("test task"));
+//        testToDoList.addTask("tests task");
+//        assertTrue(testToDoList.contains("tests task"));
 //    }
 //
 //    @Test
 //    public void testContainsDoesntExist() {
 //        checkToDoEmptyDoesntContain();
-//        assertFalse(testToDoList.contains("test task"));
+//        assertFalse(testToDoList.contains("tests task"));
 //    }
 //
 //    @Test
@@ -141,7 +141,7 @@
 //
 //    @Test
 //    public void testSizeContainOne() {
-//        testToDoList.addTask("test task");
+//        testToDoList.addTask("tests task");
 //        assertEquals(1, testToDoList.size());
 //    }
 //
@@ -161,7 +161,7 @@
 //    }
 //
 //
-//    // test for model.exceptions
+//    // tests for model.exceptions
 //    @Test
 //    public void testExpectTaskNotFoundException() {
 //        Assertions.assertEquals(0, testToDoList.size());
@@ -194,12 +194,12 @@
 //
 //    private void checkToDoContainOnce() {
 //        assertEquals(testToDoList.size(), 1);
-//        assertTrue(testToDoList.contains("test task"));
+//        assertTrue(testToDoList.contains("tests task"));
 //    }
 //
 //    private void checkToDoEmptyDoesntContain() {
 //        assertEquals(testToDoList.size(), 0);
-//        assertFalse(testToDoList.contains("test task"));
+//        assertFalse(testToDoList.contains("tests task"));
 //    }
 //
 //}

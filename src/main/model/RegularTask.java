@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class RegularTask extends GeneralTask {
 
@@ -43,16 +45,17 @@ public class RegularTask extends GeneralTask {
     @Override
     public boolean closeToDue() throws OverDueException, NoDueDateException {
         LocalDate currentDate = LocalDate.now();
-        if (!(this.dueDate == null)) {
+        if (this.dueDate == null) {
             throw new NoDueDateException("Due date for task: " + name + " has not been set yet");
         }
         if (isOverdue()) {
             throw new OverDueException("Due date for task: " + name + " has passed");
         }
-        Period period = Period.between(this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                currentDate);
-        int days = period.getDays();
-        if (days < 3) {
+        Date now = java.sql.Date.valueOf(currentDate);
+        long diff = this.dueDate.getTime() - now.getTime();
+        TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        if (diff < 3) {
             return true;
         }
         return false;

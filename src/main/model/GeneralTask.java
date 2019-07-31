@@ -11,6 +11,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public abstract class GeneralTask implements Task {
 
@@ -103,9 +104,10 @@ public abstract class GeneralTask implements Task {
     @Override
     public int getDayUntilDue() {
         LocalDate currentDate = LocalDate.now();
-        Period period = Period.between(currentDate,
-                this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-        return period.getDays();
+        Date now = java.sql.Date.valueOf(currentDate);
+        long diff = this.dueDate.getTime() - now.getTime();
+        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
     }
 
 

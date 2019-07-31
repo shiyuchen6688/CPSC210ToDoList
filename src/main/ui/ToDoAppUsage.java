@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.*;
+import ui.display.CloseConfirm;
 import ui.display.ConfirmBox;
 import ui.display.PopupAd;
 import ui.scene.MainScene;
@@ -79,7 +80,6 @@ public class ToDoAppUsage extends Application {
         sceneMain = new MainScene(toDoMap, tool, window);
 
 
-
         sceneChooseDateFormat = chooseDateFormateScene();
 
 
@@ -92,6 +92,13 @@ public class ToDoAppUsage extends Application {
         window.show();
 
 
+    }
+
+    private void initializeWindow(Stage primaryStage) {
+        window = primaryStage;
+        window.setMinWidth(250);
+        window.setMinHeight(250);
+        window.setOnCloseRequest(e -> closeProgramNoBack());
     }
 
     private Scene chooseDateFormateScene() {
@@ -249,12 +256,6 @@ public class ToDoAppUsage extends Application {
         }
     }
 
-    private void initializeWindow(Stage primaryStage) {
-        window = primaryStage;
-        window.setMinWidth(250);
-        window.setMinHeight(250);
-        window.setOnCloseRequest(e -> closeProgram());
-    }
 
     private List<String> loadHistoryIAndReturnHistoryAsListOfString() {
         List<String> history = null;
@@ -363,6 +364,34 @@ public class ToDoAppUsage extends Application {
     }
 
 
+    public static void closeProgramNoBack() {
+        CloseConfirm.display("Bye", "Thank you for using our app", toDoMap);
+    }
+
+    public static void printSavedReportAndButtonToClose() throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
+        displayListMessageButtonToMain(lines, "ok");
+
+        VBox layout = new VBox(VBOC_SPACING);
+
+        // display all lines in output
+        displayListOfString(lines, layout);
+
+
+        // close button to quit program
+        Button closeButton = new Button("close");
+        closeButton.setOnAction(e -> {
+            stopRunningAndCloseWindow();
+        });
+
+        layout.getChildren().addAll(closeButton);
+        layout.setAlignment(Pos.CENTER);
+
+
+        Scene displayScene = new Scene(layout);
+        window.setScene(displayScene);
+    }
+
     public static void closeProgram() {
         Boolean confirm = ConfirmBox.display("Confirm", "Are you sure you want to quit?");
         if (fileReaderAndWriter == null) {
@@ -398,7 +427,6 @@ public class ToDoAppUsage extends Application {
         displayListMessageButtonToMain(lines, "ok");
 
         VBox layout = new VBox(VBOC_SPACING);
-
 
         // display all lines in output
         displayListOfString(lines, layout);
