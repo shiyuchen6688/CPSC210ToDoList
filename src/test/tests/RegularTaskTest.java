@@ -1,13 +1,16 @@
 package tests;
 
+import model.Birthday;
+import model.GeneralTask;
 import model.RegularTask;
 import model.Task;
-import model.NoDueDateException;
-import model.OverDueException;
+import model.exceptions.NoDueDateException;
+import model.exceptions.OverDueException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import ui.ToDoAppUsage;
 
+import java.awt.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.Date;

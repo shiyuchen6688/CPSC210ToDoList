@@ -1,4 +1,4 @@
-package model;
+package model.exceptions;
 
 public class NoDueDateException extends Exception {
     public NoDueDateException() {

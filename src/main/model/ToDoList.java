@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.*;
 import ui.ToDoAppUsage;
 
 import java.text.ParseException;

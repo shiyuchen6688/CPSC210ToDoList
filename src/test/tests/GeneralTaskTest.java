@@ -1,7 +1,7 @@
 package tests;
 
 import model.RegularTask;
-import model.TaskNotFoundException;
+import model.exceptions.TaskNotFoundException;
 import model.GeneralTask;
 import model.ToDoList;
 import org.junit.Assert;

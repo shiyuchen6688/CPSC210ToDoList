@@ -10,13 +10,10 @@ import javafx.stage.Stage;
 import model.ToDoMap;
 import ui.FileReaderAndWriter;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-
-import static ui.ToDoAppUsage.printSavedReportAndButtonToClose;
 
 public class CloseConfirm {
     public static void display(String title, String message, ToDoMap map) {

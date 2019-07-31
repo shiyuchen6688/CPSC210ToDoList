@@ -1,6 +1,4 @@
-package model;
-
-import model.NotFoundException;
+package model.exceptions;
 
 public class TaskNotFoundException extends NotFoundException {
 

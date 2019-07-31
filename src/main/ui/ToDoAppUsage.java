@@ -1,6 +1,5 @@
 package ui;
 
-import model.TaskAlreadyExistException;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,7 +8,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.*;
+import model.ToDoList;
+import model.ToDoMap;
+import model.exceptions.TaskAlreadyExistException;
 import ui.display.CloseConfirm;
 import ui.display.ConfirmBox;
 import ui.scene.MainScene;
@@ -21,8 +22,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javafx.application.Application.launch;
 
 // extends Application to use display
 public class ToDoAppUsage extends Application {

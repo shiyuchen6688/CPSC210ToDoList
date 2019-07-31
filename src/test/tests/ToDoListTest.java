@@ -1,7 +1,8 @@
 package tests;
 
 import model.*;
-import model.TaskNotFoundException;
+import model.exceptions.TaskAlreadyExistException;
+import model.exceptions.TaskNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

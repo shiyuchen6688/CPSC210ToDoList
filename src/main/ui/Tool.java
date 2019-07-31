@@ -1,8 +1,8 @@
 package ui;
 
-import model.TaskAlreadyExistException;
-import model.TaskNotFoundException;
 import model.*;
+import model.exceptions.TaskAlreadyExistException;
+import model.exceptions.TaskNotFoundException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
