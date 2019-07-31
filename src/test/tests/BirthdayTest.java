@@ -20,9 +20,14 @@ public class BirthdayTest extends GeneralTaskTest {
 
 
     @BeforeEach
-    public void setup() throws ParseException {
-        testBirthday = new Birthday("shiyu", "2019-10-08");
-        testTask = new Birthday("shiyu", "2019-10-08");
+    public void setup() {
+        try {
+            testBirthday = new Birthday("shiyu", "2019-10-08");
+            testTask = new Birthday("shiyu", "2019-10-08");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test

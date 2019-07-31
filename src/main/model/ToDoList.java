@@ -96,7 +96,7 @@ public class ToDoList {
     // MODIFIES: this
     // EFFECTS:  if task already exist, throw TaskAlreadyExistException
     //           otherwise, add a task with given name in to ToDoList
-    public void addTask(String taskName) throws TaskAlreadyExistException {
+    public void addTask(String taskName) {
         if (!contains(taskName)) {
             Task newTask = new RegularTask(taskName);
             tasks.add(newTask);

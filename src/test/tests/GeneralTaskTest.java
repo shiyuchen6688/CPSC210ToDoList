@@ -33,10 +33,14 @@ public abstract class GeneralTaskTest {
     }
 
     @Test
-    public void testGetDueDateAlreadySet() throws ParseException {
+    public void testGetDueDateAlreadySet(){
 
         String newDate = "2019-07-07";
-        testTask.setDueDate(newDate);
+        try {
+            testTask.setDueDate(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         assertTrue(testTask.getDueDate().toString().equals("Sun Jul 07 00:00:00 PDT 2019"));
 
@@ -60,10 +64,14 @@ public abstract class GeneralTaskTest {
     }
 
     @Test
-    public void testSetDueDate() throws ParseException {
+    public void testSetDueDate() {
         // invoke method
         String newDate = "2019-07-07";
-        testTask.setDueDate(newDate);
+        try {
+            testTask.setDueDate(newDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         // check outcome
         assertTrue(testTask.getDueDate().toString().equals("Sun Jul 07 00:00:00 PDT 2019"));
     }
