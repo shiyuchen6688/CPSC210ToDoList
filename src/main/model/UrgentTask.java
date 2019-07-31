@@ -2,12 +2,9 @@ package model;
 
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
-import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +22,7 @@ public class UrgentTask extends GeneralTask {
     // EFFECTS: construct a urgent task with given taskName and dueDate
     public UrgentTask(String taskName, String dueDate) throws ParseException {
         this.name = taskName;
-        this.dueDate = ToDoAppUsage.sdf.parse(dueDate);
+        this.dueDate = GeneralTask.sdf.parse(dueDate);
     }
 
     // EFFECTS: if given task has no due date, throw NoDueDateException

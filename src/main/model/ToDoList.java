@@ -1,7 +1,6 @@
 package model;
 
-import model.exceptions.*;
-import ui.ToDoAppUsage;
+import model.exceptions.TaskNotFoundException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -193,10 +192,10 @@ public class ToDoList {
         result.add("Here is all of your task in list: " + name);
         for (Task t : tasks) {
             if (t.getDueDate() != null) {
-                result.add(ToDoAppUsage.INDENTATION + "Task: " + t.getName()
-                        + " Due Date:" + ToDoAppUsage.sdf.format(t.getDueDate()));
+                result.add(GeneralTask.INDENTATION + "Task: " + t.getName()
+                        + " Due Date:" + GeneralTask.sdf.format(t.getDueDate()));
             } else {
-                result.add(ToDoAppUsage.INDENTATION + "Task: " + t.getName()
+                result.add(GeneralTask.INDENTATION + "Task: " + t.getName()
                         + " with no due date");
             }
         }
@@ -227,8 +226,8 @@ public class ToDoList {
         overDueTasks.add("Here is all of your overdue task in list: " + name);
         for (Task t : tasks) {
             if (t.isOverdue()) {
-                overDueTasks.add(ToDoAppUsage.INDENTATION + "Overdue Task: " + t.getName()
-                        + " Due Date:" + ToDoAppUsage.sdf.format(t.getDueDate()));
+                overDueTasks.add(GeneralTask.INDENTATION + "Overdue Task: " + t.getName()
+                        + " Due Date:" + GeneralTask.sdf.format(t.getDueDate()));
             }
             overDueTasks.add("\nlist: " + name + " is done");
             return overDueTasks;
