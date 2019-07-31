@@ -42,9 +42,9 @@ public class UrgentTask extends GeneralTask {
         }
         Date now = java.sql.Date.valueOf(currentDate);
         long diff = this.dueDate.getTime() - now.getTime();
-        TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        int  day =  (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-        if (diff < 10) {
+        if (day < 10) {
             return true;
         }
         return false;

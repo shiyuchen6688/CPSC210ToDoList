@@ -53,9 +53,9 @@ public class RegularTask extends GeneralTask {
         }
         Date now = java.sql.Date.valueOf(currentDate);
         long diff = this.dueDate.getTime() - now.getTime();
-        TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        int  day =  (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
-        if (diff < 3) {
+        if (day < 3) {
             return true;
         }
         return false;

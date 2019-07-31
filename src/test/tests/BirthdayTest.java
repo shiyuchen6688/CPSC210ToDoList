@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import ui.ToDoAppUsage;
 
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.Date;
 
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
@@ -96,10 +98,29 @@ public class BirthdayTest extends GeneralTaskTest {
     }
 
     @Test
-    public void testCloseToDueBothOk()  {
+    public void testCloseToDueBothOkFalse()  {
         try {
             Birthday b = new Birthday("abby", "2020-12-08");
             assertFalse(b.closeToDue());
+        } catch (ParseException e) {
+            fail();
+        } catch (OverDueException e)  {
+            fail();
+        } catch  (NoDueDateException e) {
+            fail();
+        }
+
+    }
+
+    @Test
+    public void testCloseToDueBothOkTrue()  {
+        try {
+            long dayInMs = 1000 * 60 * 60 * 24;
+            LocalDate currentDate = LocalDate.now();
+            Date now = java.sql.Date.valueOf(currentDate);
+            Date birthDay = new Date(now.getTime() + 2 * dayInMs);
+            Birthday b = new Birthday("abby", ToDoAppUsage.sdf.format(birthDay));
+            assertTrue(b.closeToDue());
         } catch (ParseException e) {
             fail();
         } catch (OverDueException e)  {
