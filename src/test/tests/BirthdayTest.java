@@ -1,12 +1,12 @@
 package tests;
 
 import model.Birthday;
+import model.GeneralTask;
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -36,7 +36,7 @@ public class BirthdayTest extends GeneralTaskTest {
     public void testConstructor() {
         assertEquals("Birthday of shiyu", testBirthday.getName());
         try {
-            assertEquals(ToDoAppUsage.sdf.parse("2019-10-08"), testBirthday.getDueDate());
+            assertEquals(GeneralTask.sdf.parse("2019-10-08"), testBirthday.getDueDate());
         } catch (ParseException e) {
             System.out.println("GOOD, Just as expected");
         }
@@ -119,7 +119,7 @@ public class BirthdayTest extends GeneralTaskTest {
             LocalDate currentDate = LocalDate.now();
             Date now = java.sql.Date.valueOf(currentDate);
             Date birthDay = new Date(now.getTime() + 2 * dayInMs);
-            Birthday b = new Birthday("abby", ToDoAppUsage.sdf.format(birthDay));
+            Birthday b = new Birthday("abby", GeneralTask.sdf.format(birthDay));
             assertTrue(b.closeToDue());
         } catch (ParseException e) {
             fail();

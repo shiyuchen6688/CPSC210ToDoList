@@ -8,7 +8,6 @@ import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -38,7 +37,7 @@ public class UrgentTaskTest extends GeneralTaskTest {
         try {
             Task task = new RegularTask("a", "2019-08-08");
             assertEquals("a", task.getName());
-            assertEquals(ToDoAppUsage.sdf.parse("2019-08-08"), task.getDueDate());
+            assertEquals(GeneralTask.sdf.parse("2019-08-08"), task.getDueDate());
         } catch (ParseException e) {
             System.out.println("caught ParseException");
         }
@@ -67,7 +66,7 @@ public class UrgentTaskTest extends GeneralTaskTest {
             LocalDate currentDate = LocalDate.now();
             Date now = java.sql.Date.valueOf(currentDate);
             Date taskDate = new Date(now.getTime() + 2 * dayInMs);
-            UrgentTask b = new UrgentTask("abby", ToDoAppUsage.sdf.format(taskDate));
+            UrgentTask b = new UrgentTask("abby", GeneralTask.sdf.format(taskDate));
             assertTrue(b.closeToDue());
         } catch (ParseException e) {
             fail();

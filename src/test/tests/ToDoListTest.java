@@ -1,12 +1,10 @@
 package tests;
 
 import model.*;
-import model.exceptions.TaskAlreadyExistException;
 import model.exceptions.TaskNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -246,9 +244,9 @@ public class ToDoListTest {
         List<String> result = testToDoList.returnAllListTasks();
         assertTrue(result.contains("Here is all of your task in list: "
                 + testToDoList.getName()));
-        assertTrue(result.contains(ToDoAppUsage.INDENTATION + "Task: " + "test task"
+        assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "test task"
                 + " with no due date"));
-        assertTrue(result.contains(ToDoAppUsage.INDENTATION + "Task: " + "test task 2"
+        assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "test task 2"
                 + " Due Date:" + "2019-08-08"));
     }
 

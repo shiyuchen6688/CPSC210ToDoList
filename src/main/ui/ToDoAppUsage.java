@@ -188,7 +188,8 @@
 //                errorPage();
 //            }
 //
-//            String confirmMsg = String.format("Are you sure you want to add task: %s \nwith due date: %s \nin list: %s",
+//            String confirmMsg =
+//                    String.format("Are you sure you want to add task: %s \nwith due date: %s \nin list: %s",
 //                    nameInput.getText(), dueDateInput.getText(), listInput.getText());
 //            confirmPage(confirmMsg);
 //        });
