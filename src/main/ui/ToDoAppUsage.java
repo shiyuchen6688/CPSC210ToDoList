@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import model.*;
 import ui.display.ConfirmBox;
 import ui.display.PopupAd;
+import ui.scene.MainScene;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,19 +25,17 @@ import java.util.List;
 import static javafx.application.Application.launch;
 
 // extends Application to use display
-public class ToDoListUsage extends Application {
+public class ToDoAppUsage extends Application {
+    public static final String INDENTATION = "     ";
     public static final int LARGE_SCENE_WIDTH = 300;
     public static final int LARGE_SCENE_HEIGHT = 250;
     public static final int SMALL_SCENE_WIDTH = 200;
     public static final int SMALL_SCENE_HEIGHT = 80;
-    public static final String INDENTATION = "     ";
-    public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
-    public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
-    public static final String BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON = "Overdue Tasks";
-    public static final String CHOOSE_DATE_FORMABUTTONT = "Choose Date Format";
-    public static final String BUTTON_NAME_CLOSE_PROGRAM = "Close Program";
+
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     public static String dateFormat = "yyyy-MM-dd";
+    // TODO: LAB 9 VBox spacing - Create a constant for it
+    public static int VBOC_SPACING = 20;
 
 
     // object from model
@@ -47,17 +46,13 @@ public class ToDoListUsage extends Application {
 
 
     /// Stage and scenes
-    Stage window;
-    Scene sceneMain;
+    static Stage window;
+    static MainScene sceneMain;
     Scene sceneAddTAsk;
-    Scene sceneChooseDateFormat;
-    // Buttons
-    Button addTaskButton;
-    Button printAllTasksButton;
-    Button printAllOverdueTasksButton;
-    Button chooseDateFormateButton;
-    Button quitButton;
+    public static Scene sceneChooseDateFormat;
+    public static Scene sceneAddTask;
 
+    // TODO : LAB9 LOW COHESION, todo app usage class display a lot of different scenes
     public static void main(String[] args) {
         // setups
         toDoMap = new ToDoMap();
@@ -73,39 +68,23 @@ public class ToDoListUsage extends Application {
     public void start(Stage primaryStage) throws Exception {
         tool = new Tool();
 
+        // TODO LAB9 extract method create a lot of helper
         // let window reference primaryStage
         initializeWindow(primaryStage);
 
         // choose file scene
         Scene chooseFileScene = chooseFileScene();
 
-
-        // Button to choose date Format
-        chooseDateFormateButton = setUpChooseDateFormatbutton();
-
-        // Button to print all tasks
-        printAllTasksButton = setUpPrintAllTaskButton();
-
-
-        // Button to add task
-        addTaskButton = setUpAddTaskButton();
-
-        // Button to print all overdue tasks
-        printAllOverdueTasksButton = setUpOverdueButton();
-
-
-        // Button to quit
-        quitButton = setUpQuitButton();
-
         // Set sceneMain
-        sceneMain = setUpMainScene();
+        sceneMain = new MainScene(toDoMap, tool, window);
+
 
 
         sceneChooseDateFormat = chooseDateFormateScene();
 
 
         // scene to add task
-        sceneAddTAsk = setUpAddTaskScene();
+        sceneAddTask = setUpAddTaskScene();
 
 
         window.setScene(chooseFileScene);
@@ -120,11 +99,12 @@ public class ToDoListUsage extends Application {
 
         Label choseDateFormatText = new Label("You can choose your default date format here:");
 
+        // TODO LAB9 REDUCED DUPLICATION
         Button buttonForDate1 = setUpDateFormatChoiceButton("yyyy-MM-dd");
         Button buttonForDate2 = setUpDateFormatChoiceButton("dd-MM-yyyy");
         Button buttonForDate3 = setUpDateFormatChoiceButton("MM-dd-yyyy");
 
-        VBox layoutChooseDateFormat = new VBox(20);
+        VBox layoutChooseDateFormat = new VBox(VBOC_SPACING);
         layoutChooseDateFormat.getChildren().addAll(choseDateFormatText, buttonForDate1,
                 buttonForDate2, buttonForDate3);
         sceneChooseDateFormat = new Scene(layoutChooseDateFormat, LARGE_SCENE_WIDTH, LARGE_SCENE_HEIGHT);
@@ -132,71 +112,18 @@ public class ToDoListUsage extends Application {
         return sceneChooseDateFormat;
     }
 
-    private  Button setUpDateFormatChoiceButton(String dateFormat) {
+    private Button setUpDateFormatChoiceButton(String dateFormat) {
         Button button = new Button(dateFormat);
         button.setOnAction(e -> {
             String msg = tool.handleFormatOptions(dateFormat);
-            displayMessageButtonToMain(msg, "ok");
+            ToDoAppUsage.displayMessageButtonToMain(msg, "ok");
         });
 
         return button;
     }
 
-    public Button setUpChooseDateFormatbutton() {
-        Button chooseDateFormateButton = new Button(CHOOSE_DATE_FORMABUTTONT);
-        chooseDateFormateButton.setOnAction(e ->
-                window.setScene(sceneChooseDateFormat));
-        return chooseDateFormateButton;
-    }
-
-    public Button setUpPrintAllTaskButton() {
-        Button printAllTaskButton = new Button(BUTTON_NAME_PRINTALLTASKSBUTTON);
-        printAllTaskButton.setOnAction(e -> {
-            List<String> tasks = toDoMap.returnAllMapTasks();
-            displayListMessageButtonToMain(tasks, "Back to main");
-        });
-        return printAllTaskButton;
-    }
-
-    public Button setUpAddTaskButton() {
-        Button addTaskButton = new Button(BUTTON_NAME_ADDTASKBUTTON);
-        addTaskButton.setOnAction(e -> {
-            window.setScene(sceneAddTAsk);
-            PopupAd.display("Advertisement", "Nikdas, 50% cheaper than them");
-        });   // switch scene from sceneMain to sceneAddTAsk and pop up ad
-        return addTaskButton;
-
-    }
-
-    public Button setUpOverdueButton() {
-        Button overDueButton = new Button(BUTTON_NAME_PRINTALLOVERDUETASKSBUTTON);
-        overDueButton.setOnAction(e -> {
-            List<String> overDueTasks = toDoMap.returnMapAllOverdueTasks();
-            displayListMessageButtonToMain(overDueTasks, "Back to main");
-        });
-
-        return overDueButton;
-    }
-
-    public Button setUpQuitButton() {
-        Button quitButton = new Button(BUTTON_NAME_CLOSE_PROGRAM);
-        quitButton.setOnAction(e -> closeProgram());
-        return quitButton;
-    }
-
-    public Scene setUpMainScene() {
-        // Main scene components
-        // setup initialText message
-        Label initialText = new Label("Welcome to your ToDoList");
-        VBox layoutScene1 = new VBox(20);   // 20 is the spacing between elements inside the box
-        layoutScene1.getChildren().addAll(initialText, chooseDateFormateButton, printAllTasksButton,
-                addTaskButton, printAllOverdueTasksButton, quitButton);
-        layoutScene1.setAlignment(Pos.CENTER);
-        return new Scene(layoutScene1, LARGE_SCENE_WIDTH, 100 + LARGE_SCENE_HEIGHT);
-    }
-
     public Scene setUpAddTaskScene() {
-        VBox layoutSceneAddTask = new VBox(20);
+        VBox layoutSceneAddTask = new VBox(VBOC_SPACING);
         layoutSceneAddTask.setAlignment(Pos.CENTER);
 
 
@@ -241,8 +168,8 @@ public class ToDoListUsage extends Application {
         return new Scene(layoutSceneAddTask, LARGE_SCENE_WIDTH * 2, LARGE_SCENE_HEIGHT * 2);
     }
 
-    private Button setUpAddButton(TextField listInput, TextField askUrgentInput,
-                                  TextField nameInput, TextField dueDateInput) {
+    private Button setUpAddButton(TextField listInput, TextField nameInput,
+                                  TextField dueDateInput, TextField askUrgentInput) {
         Button buttonAdd = new Button("Add");
         buttonAdd.setOnAction(e -> {
             curList = tool.chooseListFromMapOrCreateList(listInput.getText(), toDoMap);
@@ -271,7 +198,7 @@ public class ToDoListUsage extends Application {
 
     private Scene chooseFileScene() {
         Scene chooseFileScene;
-        VBox chooseFileLayout = new VBox(20);
+        VBox chooseFileLayout = new VBox(VBOC_SPACING);
         Label displayFileText = new Label("Here is all of your current files you can choose");
         chooseFileLayout.getChildren().add(displayFileText);
         for (String s : tool.historyFiles) {
@@ -298,12 +225,12 @@ public class ToDoListUsage extends Application {
         finishedChooseFileButton.setOnAction(e -> {
             try {
                 String fileName = chooseFileInput.getText();
-                fileReaderAndWriter = new FileReaderAndWriter(fileName);
+                fileReaderAndWriter = new FileReaderAndWriter(fileName, "outputfile.txt");
             } catch (IOException exception) {
                 System.out.println("\nSomething is wrong with this file");
                 System.out.println("Use default inputfile.txt instead");
                 try {
-                    fileReaderAndWriter = new FileReaderAndWriter("inputfile.txt");
+                    fileReaderAndWriter = new FileReaderAndWriter("inputfile.txt", "outputfile.txt");
                 } catch (IOException ex) {
                     ex.printStackTrace(); // probably not gonna happen
                 }
@@ -334,29 +261,6 @@ public class ToDoListUsage extends Application {
 
         history = tryAddHistoryAndReturnLoad();
 
-//        try {
-//            history = fileReaderAndWriter.addHistryIntoMapAndReturnLoad(toDoMap);
-////            finishedChooseFileButton.setOnAction(e -> displayListMessageButtonToMain(history, "ok"));
-//        } catch (IOException e) {
-//            System.out.println("Found IOException");
-//        } catch (ParseException e) {
-//            System.out.println("WARNING: Some of old tasks might not show up");
-//        } catch (TaskAlreadyExistException exception) {
-//
-//            System.out.println(exception.getMessage());
-//
-//            Scene errorScene;
-//            VBox errorSceneLayout = new VBox(20);
-//            Label errorMessage = new Label("History files contain error, you might lost all of your history.");
-//            Button startOverButton = buttonToMain("start over");
-//
-//            errorSceneLayout.getChildren().addAll(errorMessage, startOverButton);
-//            errorSceneLayout.setAlignment(Pos.CENTER);
-//
-//            errorScene = new Scene(errorSceneLayout);
-//            history = null;
-////            finishedChooseFileButton.setOnAction( e ->  window.setScene(errorScene));
-//        }
 
         return history;
 
@@ -366,26 +270,24 @@ public class ToDoListUsage extends Application {
         List<String> history = new ArrayList<>();
         try {
             history = fileReaderAndWriter.addHistryIntoMapAndReturnLoad(toDoMap);
-//            finishedChooseFileButton.setOnAction(e -> displayListMessageButtonToMain(history, "ok"));
         } catch (IOException e) {
             System.out.println("Found IOException");
+            Scene errorScene = setUpErrorScene();
+            window.setScene(errorScene);
+            history = null;
         } catch (ParseException e) {
             System.out.println("WARNING: Some of old tasks might not show up");
-        } catch (TaskAlreadyExistException exception) {
-
-            System.out.println(exception.getMessage());
-
             Scene errorScene = setUpErrorScene();
+            window.setScene(errorScene);
 
             history = null;
         }
-
         return history;
 
     }
 
     private Scene setUpErrorScene() {
-        VBox errorSceneLayout = new VBox(20);
+        VBox errorSceneLayout = new VBox(VBOC_SPACING);
         Label errorMessage = new Label("History files contain error, you might lost all of your history.");
         Button startOverButton = buttonToMain("start over");
 
@@ -399,7 +301,7 @@ public class ToDoListUsage extends Application {
         Scene confirmScene;
         Label confirmLabel = new Label(msg);
         Button buttonToMain = buttonToMain("Yes");
-        VBox layout = new VBox(20);
+        VBox layout = new VBox(VBOC_SPACING);
         layout.getChildren().addAll(confirmLabel, buttonToMain);
         layout.setAlignment(Pos.CENTER);
 
@@ -411,7 +313,7 @@ public class ToDoListUsage extends Application {
         Scene errorScene;
         Label errorLabel = new Label("Input is illegal, do you want to go back to main?");
         Button buttonToMain = buttonToMain("Yes");
-        VBox layout = new VBox(20);
+        VBox layout = new VBox(VBOC_SPACING);
         layout.getChildren().addAll(errorLabel, buttonToMain);
         layout.setAlignment(Pos.CENTER);
 
@@ -422,12 +324,12 @@ public class ToDoListUsage extends Application {
 
 
     // EFFECTS: set stage to scene which diplay given msg, ok button to return to main menu
-    public void displayMessageButtonToMain(String msg, String buttonName) {
+    public static void displayMessageButtonToMain(String msg, String buttonName) {
         Scene displayScene;
         Label msgLabel = new Label(msg);
         // click ok and back to main
         Button ok = buttonToMain(buttonName);
-        VBox layout = new VBox(20);
+        VBox layout = new VBox(VBOC_SPACING);
         layout.getChildren().addAll(msgLabel, ok);
 
         displayScene = new Scene(layout, SMALL_SCENE_WIDTH, SMALL_SCENE_HEIGHT);
@@ -435,8 +337,8 @@ public class ToDoListUsage extends Application {
     }
 
     // EFFECTS: set stage to scene which diplay given list of msg, ok button to return to main menu
-    private void displayListMessageButtonToMain(List<String> msgList, String buttonName) {
-        VBox layout = new VBox(20);
+    private static void displayListMessageButtonToMain(List<String> msgList, String buttonName) {
+        VBox layout = new VBox(VBOC_SPACING);
 
 
         // display all msgs
@@ -454,14 +356,14 @@ public class ToDoListUsage extends Application {
     }
 
     // EFFECTS: return a button that can be used to return to main
-    private Button buttonToMain(String name) {
+    private static Button buttonToMain(String name) {
         Button backToMainButton = new Button(name);
-        backToMainButton.setOnAction(e -> window.setScene(sceneMain));
+        backToMainButton.setOnAction(e -> window.setScene(sceneMain.getScene()));
         return backToMainButton;
     }
 
 
-    private void closeProgram() {
+    public static void closeProgram() {
         Boolean confirm = ConfirmBox.display("Confirm", "Are you sure you want to quit?");
         if (fileReaderAndWriter == null) {
             // when they did not even enter fileName
@@ -480,22 +382,22 @@ public class ToDoListUsage extends Application {
                 }
 
             } else {
-                window.setScene(sceneMain);
+                window.setScene(sceneMain.getScene());
             }
         }
     }
 
-    private void stopRunningAndCloseWindow() {
+    private static void stopRunningAndCloseWindow() {
         Tool.isRunning = false;
         window.close();
     }
 
 
-    public void printSavedReportAndButtonToCloseOrToMain() throws IOException {
+    public static void printSavedReportAndButtonToCloseOrToMain() throws IOException {
         List<String> lines = Files.readAllLines(Paths.get("outputfile.txt"));
         displayListMessageButtonToMain(lines, "ok");
 
-        VBox layout = new VBox(20);
+        VBox layout = new VBox(VBOC_SPACING);
 
 
         // display all lines in output
@@ -518,7 +420,8 @@ public class ToDoListUsage extends Application {
         window.setScene(displayScene);
     }
 
-    private void displayListOfString(List<String> lines, VBox layout) {
+    // TODO LAB9 REDUCED DUPLICATION
+    private static void displayListOfString(List<String> lines, VBox layout) {
         for (String msg : lines) {
             Label msgLabel = new Label(msg);
             layout.getChildren().add(msgLabel);

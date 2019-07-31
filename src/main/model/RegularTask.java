@@ -2,7 +2,7 @@ package model;
 
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
-import ui.ToDoListUsage;
+import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -31,7 +31,7 @@ public class RegularTask extends GeneralTask {
         if (dueDate == null) {
             this.dueDate = null;
         } else {
-            this.dueDate = ToDoListUsage.sdf.parse(dueDate);
+            this.dueDate = ToDoAppUsage.sdf.parse(dueDate);
         }
         this.status = false;
     }

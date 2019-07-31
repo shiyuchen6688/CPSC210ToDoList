@@ -29,7 +29,7 @@ public class PopupAd {
         layout.getChildren().addAll(label1, closeButton);
         layout.setAlignment(Pos.CENTER);
 
-        // set Scene up
+        // set scene up
         Scene scene = new Scene(layout);
         window.setScene(scene);
 

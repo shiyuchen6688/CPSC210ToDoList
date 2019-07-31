@@ -1,7 +1,7 @@
 package model;
 
 import model.exceptions.*;
-import ui.ToDoListUsage;
+import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -102,8 +102,6 @@ public class ToDoList {
             tasks.add(newTask);
             newTask.setListBelonged(this);
         }
-
-        throw new TaskAlreadyExistException("Trying to make task: " + taskName + " but it already exist");
     }
 
     // MODIFIES: this
@@ -182,7 +180,7 @@ public class ToDoList {
         for (Task t : tasks) {
             String result = num + " : " + t.getName();
             if (t.getDueDate() != null) {
-                result = result + ", Due Date is " + ToDoListUsage.sdf.format(t.getDueDate());
+                result = result + ", Due Date is " + ToDoAppUsage.sdf.format(t.getDueDate());
             }
             System.out.println(result);
             num = num + 1;
@@ -196,10 +194,10 @@ public class ToDoList {
         result.add("Here is all of your task in list: " + name);
         for (Task t : tasks) {
             if (t.getDueDate() != null) {
-                result.add(ToDoListUsage.INDENTATION + "Task: " + t.getName()
-                        + " Due Date:" + ToDoListUsage.sdf.format(t.getDueDate()));
+                result.add(ToDoAppUsage.INDENTATION + "Task: " + t.getName()
+                        + " Due Date:" + ToDoAppUsage.sdf.format(t.getDueDate()));
             } else {
-                result.add(ToDoListUsage.INDENTATION + "Task: " + t.getName()
+                result.add(ToDoAppUsage.INDENTATION + "Task: " + t.getName()
                         + " with no due date");
             }
         }
@@ -230,8 +228,8 @@ public class ToDoList {
         overDueTasks.add("Here is all of your overdue task in list: " + name);
         for (Task t : tasks) {
             if (t.isOverdue()) {
-                overDueTasks.add(ToDoListUsage.INDENTATION + "Overdue Task: " + t.getName()
-                        + " Due Date:" + ToDoListUsage.sdf.format(t.getDueDate()));
+                overDueTasks.add(ToDoAppUsage.INDENTATION + "Overdue Task: " + t.getName()
+                        + " Due Date:" + ToDoAppUsage.sdf.format(t.getDueDate()));
             }
             overDueTasks.add("\nlist: " + name + " is done");
             return overDueTasks;

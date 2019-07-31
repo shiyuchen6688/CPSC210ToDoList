@@ -25,17 +25,29 @@ public class FileReaderAndWriter {
     private String chosenFile;
 
 
-    public FileReaderAndWriter(String fileName) throws IOException {
-        outputFileWriter = new FileWriter("outputfile.txt", false);
-        inputFileWriter = new FileWriter(fileName, true);
-        this.chosenFile = fileName;
+    public FileReaderAndWriter(String inputFileName, String outputFileName) throws IOException {
+        outputFileWriter = new FileWriter(outputFileName, false);
+        inputFileWriter = new FileWriter(inputFileName, true);
+        this.chosenFile = inputFileName;
+    }
+
+    public FileWriter getOutPutFileWriter() {
+        return outputFileWriter;
+    }
+
+    public FileWriter getInPutFileWriter() {
+        return inputFileWriter;
+    }
+
+    public String getChosenFile() {
+        return chosenFile;
     }
 
 
     // TODO let user decide where to save/addHistryIntoMapAndReturnLoad
 
     public List<String> addHistryIntoMapAndReturnLoad(ToDoMap map)
-            throws IOException, ParseException, TaskAlreadyExistException {
+            throws IOException, ParseException {
         List<String> msgList = new ArrayList<>();
         msgList.add("\n---------- Here is all the task you added Before ----------");
         List<String> lines = Files.readAllLines((Paths.get(chosenFile)));
@@ -64,16 +76,13 @@ public class FileReaderAndWriter {
     }
 
     private void addTaskNoDuplicate(String taskName, String dueDate, ToDoList curList)
-            throws ParseException, TaskAlreadyExistException {
+            throws ParseException {
         List<Task> allOriginalTask = curList.getTasks();
         Task newTask = new RegularTask(taskName, dueDate);
 
         // add this task into this list
         if (!allOriginalTask.contains(newTask)) {
             curList.addTask(newTask);
-        } else {
-            throw new TaskAlreadyExistException("load trying to add task: "
-                    + newTask.getName() + " but it alreadt exist");
         }
     }
 
@@ -85,7 +94,6 @@ public class FileReaderAndWriter {
         return curList;
     }
 
-    // TODO !!! save map history to input, multiple list!!!!
     // save history of a map of list
     public void saveAllHistoryInMapToInput(ToDoMap toDoMap) throws IOException {
         Map<String, ToDoList> map = toDoMap.getMap();
@@ -112,7 +120,7 @@ public class FileReaderAndWriter {
 
             String date = "";
             if (t.getDueDate() != null) {
-                date = ToDoListUsage.sdf.format(t.getDueDate());
+                date = ToDoAppUsage.sdf.format(t.getDueDate());
             } else {
                 date = "None";
             }
@@ -124,7 +132,6 @@ public class FileReaderAndWriter {
 
     }
 
-    // TODO delete this later
     // MODIFIES: outputfile.txt
     // EFFECTS: add things in inputfile.txt to outputfile.txt
     public void copyInputToOutput() throws IOException {
@@ -140,9 +147,9 @@ public class FileReaderAndWriter {
                 ArrayList<String> partsOfLine = splitOnSpace(line);
 
                 // first two is print, the third one is line
-                System.out.print("List: " + partsOfLine.get(0) + " ");
-                System.out.print("Task: " + partsOfLine.get(1) + " ");
-                System.out.println("DueDate: " + partsOfLine.get(2));
+//                System.out.print("List: " + partsOfLine.get(0) + " ");
+//                System.out.print("Task: " + partsOfLine.get(1) + " ");
+//                System.out.println("DueDate: " + partsOfLine.get(2));
                 outputFileWriter.write(line + "\n");
             }
         }
@@ -150,16 +157,12 @@ public class FileReaderAndWriter {
     }
 
 
-    // helper to split words in addHistryIntoMapAndReturnLoad and save. File download from CPSC-210 EDX.
+    // helper to split words in add HistryIntoMapAndReturnLoad and save. File download from CPSC-210 EDX.
     public static ArrayList<String> splitOnSpace(String line) {
         String[] splits = line.split("  ");
         return new ArrayList<>(Arrays.asList(splits));
     }
 
-    // return this inputFileWriter
-    public FileWriter getInputFileWriter() {
-        return this.inputFileWriter;
-    }
 
 
 }

@@ -11,8 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static ui.ToDoListUsage.dateFormat;
-import static ui.ToDoListUsage.sdf;
+import static ui.ToDoAppUsage.dateFormat;
+import static ui.ToDoAppUsage.sdf;
 
 public class Tool {
     private static final String ALLTASKS_COMMAND = "all";
@@ -86,73 +86,6 @@ public class Tool {
     }
 
 
-//    // Entrance to tool
-//    public void handleUserInput(ToDoMap toDoMap) {
-//        System.out.println("How can I help you today?");
-//        printInstruction();
-//        String str;
-//        Boolean foundException = true;
-//
-//        while (isRunning) {
-//            if (input.hasNext()) {
-//                str = input.nextLine();
-//                do {
-//                    try {
-//                        processInput(str, toDoMap);
-//                        foundException = false;
-//                    } catch (TaskNotFoundException e) {
-//                        System.out.println("\nTask can not be found");
-//                        System.out.println("Back to enter task name");
-//                        printInstruction();
-//                    } catch (ParseException p) {
-//                        System.out.println("\nDate added is not in appropriate form");
-//                        System.out.println("please follow: " + dateFormat);
-//                        System.out.println("Back to enter task name");
-//                    }
-//                } while (foundException);
-//            }
-//        }
-//
-//
-//    }
-
-//    public void processInput(String str, ToDoMap toDoMap) throws ParseException, TaskNotFoundException {
-//
-//        switch (str) {
-//            case ALLTASKS_COMMAND:
-//                System.out.println("\n------Here is all of your tasks------");
-//                toDoMap.printAllTasks();
-//                break;
-//            case ALLOVERDUES_COMMAND:
-//                System.out.println("\n------Here is all of your overdue tasks------");
-//                toDoMap.printAllOverdueTasks();
-//                break;
-//            case ADD_TASK_COMMAND:
-//                handleAddTaskToMap(toDoMap);
-//                break;
-//            case EDIT_TASK_COMMAND:
-//                handleEditTask(toDoMap);
-//                break;
-////            case REMINDER_COMMAND:
-////                System.out.println("Here is all your tasks that are close to due");
-////                printReminder(toDoMap);
-////                break;
-//            case QUIT_COMMAND:
-//                isRunning = false;
-//                break;
-//            default:
-//                System.out.println("Wrong command, try again");
-//        }
-//    }
-
-
-//    // EFFECTS: print all close to due tasks
-//    public void printReminder(ToDoMap map) {
-//        for (String name : map.getMap().keySet()) {
-//            map.getList(name).printAllCloseToDueTasks();
-//        }
-//    }
-
     public ToDoList chooseListFromMapOrCreateList(String s, ToDoMap map) {
         ToDoList newList = map.getList(s);
         if (newList == null) {
@@ -162,46 +95,7 @@ public class Tool {
         return newList;
     }
 
-    public String chooseFileToSaveHistory() throws FileNotFoundException {
-        System.out.println("Here is all files you currently have");
-        for (String file : historyFiles) {
-            System.out.println(file);
-        }
 
-        System.out.println("\nPlease enter the name of the file you want to work with");
-        String fileName = input.nextLine();
-        Boolean canFindFile = false;
-        for (String file : historyFiles) {
-            if (file.equals(fileName)) {
-                canFindFile = true;
-                break;
-            }
-        }
-        if (!canFindFile) {
-            throw new FileNotFoundException();
-        }
-        return fileName;
-    }
-
-// GET another method that process input
-
-    public void printInstruction() {
-        System.out.println("\nEnter " + ADD_TASK_COMMAND + " to add new task in to your TODO list");
-        System.out.println("Enter " + ALLTASKS_COMMAND + " to see all of your tasks.");
-        System.out.println("Enter " + ALLOVERDUES_COMMAND + " to see all of your OVERDUE tasks.");
-//        System.out.println("Enter " + SWITCH_LIST_COMMAND + " to work on a different list or create a new one");
-        System.out.println("Enter " + QUIT_COMMAND + " to quit");
-    }
-
-
-    public void handleAddTaskToMap(ToDoMap map) throws ParseException {
-        printAllCurrentList(map);
-        System.out.println("Please choose which list to work on or enter name of the new list");
-        String listName = input.nextLine();
-        ToDoList curList = chooseListFromMapOrCreateList(listName, map);
-        System.out.println("List you are working on is " + curList.getName());
-        handleAddTaskToList(curList);
-    }
 
     // EFFECTS: ask for task name and add the task to given toDoList
     public void handleAddTaskToList(ToDoList toDoList) throws ParseException {
@@ -235,22 +129,23 @@ public class Tool {
         }
         Task newTask = null;
         if (isUrgents) {
-            newTask = createNewUrgentTask(name, dueDate, newTask);
+            newTask = createNewUrgentTask(name, dueDate);
         } else {
-            newTask = createNewRegularTask(name, dueDate, newTask);
+            newTask = createNewRegularTask(name, dueDate);
         }
 
 
         if (newTask != null) {
             toDoList.addTask(newTask);
         } else {
-            System.out.println("When creating task new tasl is null");
+            System.out.println("When creating task new task is null");
         }
 
 
     }
 
-    private Task createNewRegularTask(String name, String dueDate, Task newTask) {
+    private Task createNewRegularTask(String name, String dueDate) {
+        Task newTask = null;
         try {
             if (dueDate != "skip") {
                 newTask = new RegularTask(name, dueDate);
@@ -264,7 +159,8 @@ public class Tool {
         return newTask;
     }
 
-    private Task createNewUrgentTask(String name, String dueDate, Task newTask) {
+    private Task createNewUrgentTask(String name, String dueDate) {
+        Task newTask = null;
         try {
             if (dueDate != "skip") {
                 newTask = new UrgentTask(name, dueDate);
@@ -386,7 +282,7 @@ public class Tool {
     // ui Change Task date
     public void handleChangeDueDate(Task editTask) throws ParseException {
         System.out.println("Enter the new due date you want to change to");
-        String oldDate = ToDoListUsage.sdf.format(editTask.getDueDate());
+        String oldDate = ToDoAppUsage.sdf.format(editTask.getDueDate());
         String newDate = input.nextLine();
         editTask.setDueDate(newDate);
         System.out.println(String.format("Your task's due date changed from %1s to %2s", oldDate, newDate));

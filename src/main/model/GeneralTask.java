@@ -3,7 +3,7 @@ package model;
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
 import model.exceptions.TaskNotFoundException;
-import ui.ToDoListUsage;
+import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -66,7 +66,7 @@ public abstract class GeneralTask implements Task {
     // EFFECTS: set this dueDate to given dueDate in format yyyy-MM-dd
     @Override
     public void setDueDate(String dueDate) throws ParseException {
-        this.dueDate = ToDoListUsage.sdf.parse(dueDate);
+        this.dueDate = ToDoAppUsage.sdf.parse(dueDate);
     }
 
     // MODIFIES: this

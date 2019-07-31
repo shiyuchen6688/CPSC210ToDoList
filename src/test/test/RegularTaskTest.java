@@ -1,11 +1,10 @@
 package test;
 
-import model.GeneralTask;
 import model.RegularTask;
 import model.Task;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import ui.ToDoListUsage;
+import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 
@@ -33,7 +32,7 @@ public class RegularTaskTest extends GeneralTaskTest {
         try {
             Task task = new RegularTask("a", "2019-08-08");
             assertEquals("a", task.getName());
-            assertEquals(ToDoListUsage.sdf.parse("2019-08-08"),task.getDueDate());
+            assertEquals(ToDoAppUsage.sdf.parse("2019-08-08"),task.getDueDate());
         } catch (ParseException e) {
             System.out.println("caught ParseException");
         }

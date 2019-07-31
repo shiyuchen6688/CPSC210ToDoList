@@ -13,7 +13,7 @@ public class ToDoMap {
     public ToDoMap() {
         toDoMap = new HashMap<>();
         String generalName = "general";
-        ToDoList generalList = new ToDoList("General");
+        ToDoList generalList = new ToDoList("general");
         toDoMap.put(generalName, generalList);
     }
 

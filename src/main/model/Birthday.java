@@ -2,12 +2,14 @@ package model;
 
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
-import ui.ToDoListUsage;
+import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class Birthday extends GeneralTask implements Holiday {
 
@@ -21,7 +23,19 @@ public class Birthday extends GeneralTask implements Holiday {
     public Birthday(String name, String date) throws ParseException {
         super();
         this.name = "Birthday of " + name;
-        this.dueDate = ToDoListUsage.sdf.parse(date);
+        this.dueDate = ToDoAppUsage.sdf.parse(date);
+        this.status = false;
+        this.greeting = "Happy Birthday " + name + " !";
+        this.gift = "Birthday card for " + name;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: construct a task object set name to given name,
+    //          set dueDate to null, set overdue to false
+    public Birthday(String name)  {
+        super();
+        this.name = "Birthday of " + name;
+        this.dueDate = null;
         this.status = false;
         this.greeting = "Happy Birthday " + name + " !";
         this.gift = "Birthday card for " + name;
@@ -68,16 +82,17 @@ public class Birthday extends GeneralTask implements Holiday {
     @Override
     public boolean closeToDue() throws OverDueException, NoDueDateException {
         LocalDate currentDate = LocalDate.now();
-        if (!(this.dueDate == null)) {
+        if (this.dueDate == null) {
             throw new NoDueDateException("Due date for task: " + name + " has not been set yet");
         }
         if (isOverdue()) {
             throw new OverDueException("Due date for task: " + name + " has passed");
         }
-        Period period = Period.between(this.dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-                currentDate);
-        int days = period.getDays();
-        if (days < 3) {
+        Date now = java.sql.Date.valueOf(currentDate);
+        long diff = this.dueDate.getTime() - now.getTime();
+        TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+        if (diff < 3) {
             return true;
         }
         return false;

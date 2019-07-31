@@ -1,14 +1,17 @@
 package test;
 
 import model.Birthday;
+import model.exceptions.NoDueDateException;
+import model.exceptions.OverDueException;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ui.ToDoListUsage;
+import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 
 import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -26,7 +29,7 @@ public class BirthdayTest extends GeneralTaskTest {
     public void testConstructor() {
         assertEquals("Birthday of shiyu", testBirthday.getName());
         try {
-            assertEquals(ToDoListUsage.sdf.parse("2019-10-08"), testBirthday.getDueDate());
+            assertEquals(ToDoAppUsage.sdf.parse("2019-10-08"), testBirthday.getDueDate());
         } catch (ParseException e) {
             System.out.println("GOOD, Just as expected");
         }
@@ -87,6 +90,53 @@ public class BirthdayTest extends GeneralTaskTest {
         assertTrue(testBirthday.getGift().equals(newGift));
     }
 
+    @Test
+    public void testCloseToDueBothOk()  {
+        try {
+            Birthday b = new Birthday("abby", "2020-12-08");
+            assertFalse(b.closeToDue());
+        } catch (ParseException e) {
+            fail();
+        } catch (OverDueException e)  {
+            fail();
+        } catch  (NoDueDateException e) {
+            fail();
+        }
+
+    }
+    @Test
+    public void testCloseToDueNoDueDate() {
+        Birthday b = new Birthday("abby");
+        try {
+            b.closeToDue();
+            fail();
+        } catch (OverDueException e)  {
+            fail();
+        } catch  (NoDueDateException e) {
+            System.out.println("expected NoDueDateException");
+        }
+    }
+
+
+    @Test
+    public void testCloseToDueOverDue() {
+        Birthday b = null;
+        try {
+            b = new Birthday("abby", "2016-08-08");
+        } catch (ParseException e) {
+            fail();
+        }
+        try {
+            b.closeToDue();
+            fail();
+        } catch (OverDueException e)  {
+            System.out.println("expected NoDueDateException");
+        } catch  (NoDueDateException e) {
+            fail();
+        }
+    }
+
+
 
     @Test
     @Override
@@ -95,6 +145,7 @@ public class BirthdayTest extends GeneralTaskTest {
         testTask.setName("changed");
         Assert.assertEquals("changed", testTask.getName());
     }
+
 
     @Override
     @Test
