@@ -3,17 +3,17 @@ package model;
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
 import model.exceptions.TaskNotFoundException;
-import ui.ToDoAppUsage;
+
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public abstract class GeneralTask implements Task {
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     protected String name;
     protected Date dueDate;
@@ -67,7 +67,7 @@ public abstract class GeneralTask implements Task {
     // EFFECTS: set this dueDate to given dueDate in format yyyy-MM-dd
     @Override
     public void setDueDate(String dueDate) throws ParseException {
-        this.dueDate = ToDoAppUsage.sdf.parse(dueDate);
+        this.dueDate = sdf.parse(dueDate);
     }
 
     // MODIFIES: this

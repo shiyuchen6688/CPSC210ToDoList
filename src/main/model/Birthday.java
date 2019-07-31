@@ -2,12 +2,9 @@ package model;
 
 import model.exceptions.NoDueDateException;
 import model.exceptions.OverDueException;
-import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -23,7 +20,7 @@ public class Birthday extends GeneralTask implements Holiday {
     public Birthday(String name, String date) throws ParseException {
         super();
         this.name = "Birthday of " + name;
-        this.dueDate = ToDoAppUsage.sdf.parse(date);
+        this.dueDate = sdf.parse(date);
         this.status = false;
         this.greeting = "Happy Birthday " + name + " !";
         this.gift = "Birthday card for " + name;
