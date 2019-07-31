@@ -1,4 +1,4 @@
-package model.exceptions;
+package model;
 
 public class TaskAlreadyExistException extends Exception {
     public TaskAlreadyExistException() {}

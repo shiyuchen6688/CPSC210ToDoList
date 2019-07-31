@@ -1,13 +1,9 @@
 package model;
 
-import model.exceptions.NoDueDateException;
-import model.exceptions.OverDueException;
 import ui.ToDoAppUsage;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -30,11 +26,7 @@ public class RegularTask extends GeneralTask {
     //          set dueDate to gicen dueDate, set overdue to false
     public RegularTask(String taskName, String dueDate) throws ParseException {
         this.name = taskName;
-        if (dueDate == null) {
-            this.dueDate = null;
-        } else {
-            this.dueDate = ToDoAppUsage.sdf.parse(dueDate);
-        }
+        this.dueDate = ToDoAppUsage.sdf.parse(dueDate);
         this.status = false;
     }
 
@@ -53,7 +45,7 @@ public class RegularTask extends GeneralTask {
         }
         Date now = java.sql.Date.valueOf(currentDate);
         long diff = this.dueDate.getTime() - now.getTime();
-        int  day =  (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        int day = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 
         if (day < 3) {
             return true;

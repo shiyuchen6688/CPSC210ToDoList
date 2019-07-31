@@ -1,10 +1,9 @@
 package tests;
 
-import model.Birthday;
 import model.RegularTask;
 import model.Task;
-import model.exceptions.NoDueDateException;
-import model.exceptions.OverDueException;
+import model.NoDueDateException;
+import model.OverDueException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import ui.ToDoAppUsage;
@@ -44,6 +43,7 @@ public class RegularTaskTest extends GeneralTaskTest {
         }
 
     }
+
 
     @Test
     public void testCloseToDueBothOkFalse() {

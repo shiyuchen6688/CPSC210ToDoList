@@ -1,7 +1,7 @@
 package tests;
 
 import model.RegularTask;
-import model.exceptions.TaskNotFoundException;
+import model.TaskNotFoundException;
 import model.GeneralTask;
 import model.ToDoList;
 import org.junit.Assert;
@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public abstract class GeneralTaskTest {
     protected GeneralTask testTask;
+
 
 
 
@@ -136,6 +137,13 @@ public abstract class GeneralTaskTest {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void testEquals() {
+        GeneralTask t1 = new RegularTask("t");
+        Date d2 = new Date();
+        t1.equals(d2);
     }
 
     @Test

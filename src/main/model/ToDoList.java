@@ -1,6 +1,5 @@
 package model;
 
-import model.exceptions.*;
 import ui.ToDoAppUsage;
 
 import java.text.ParseException;
@@ -107,14 +106,13 @@ public class ToDoList {
     // MODIFIES: this
     // EFFECTS:  if task already exist, throw TaskAlreadyExistException
     //           otherwise, add a task with given name and given due date in to ToDoList
-    public void addTask(String taskName, String dueDate) throws ParseException, TaskAlreadyExistException {
+    public void addTask(String taskName, String dueDate) throws ParseException {
         if (!contains(taskName)) {
             Task newTask = new RegularTask(taskName, dueDate);
             tasks.add(newTask);
             newTask.setListBelonged(this);
         }
 
-        throw new TaskAlreadyExistException("Trying to make task: " + taskName + " but it already exist");
     }
 
     // MODIFIES: this
@@ -173,21 +171,21 @@ public class ToDoList {
     }
 
 
-    // EFFECTS: print all task inside todolist in format: Number : task name
-    public void printAllTasks() {
-        System.out.println();
-        int num = 1;
-        for (Task t : tasks) {
-            String result = num + " : " + t.getName();
-            if (t.getDueDate() != null) {
-                result = result + ", Due Date is " + ToDoAppUsage.sdf.format(t.getDueDate());
-            }
-            System.out.println(result);
-            num = num + 1;
-        }
-        System.out.println("Done, you have " + tasks.size() + " task in " + name);
-        System.out.println();
-    }
+//    // EFFECTS: print all task inside todolist in format: Number : task name
+//    public void printAllTasks() {
+//        System.out.println();
+//        int num = 1;
+//        for (Task t : tasks) {
+//            String result = num + " : " + t.getName();
+//            if (t.getDueDate() != null) {
+//                result = result + ", Due Date is " + ToDoAppUsage.sdf.format(t.getDueDate());
+//            }
+//            System.out.println(result);
+//            num = num + 1;
+//        }
+//        System.out.println("Done, you have " + tasks.size() + " task in " + name);
+//        System.out.println();
+//    }
 
     public List<String> returnAllListTasks() {
         List<String> result = new ArrayList<>();
@@ -206,21 +204,21 @@ public class ToDoList {
     }
 
 
-    // EFFECTS: print all overdue tasks inside todolist in format:
-    //          OVERDUE Task num : task name
-    // TODO old version don't need anymore
-    public void printAllOverdueTasks() {
-        System.out.println();
-        int num = 1;
-        for (Task t : tasks) {
-            if (t.isOverdue()) {
-                System.out.println("OVERDUE Task " + num + " : " + t.getName());
-                num = num + 1;
-            }
-        }
-        System.out.println("Done, you have " + tasks.size() + " OVERDUE task in total!!!");
-        System.out.println();
-    }
+//    // EFFECTS: print all overdue tasks inside todolist in format:
+//    //          OVERDUE Task num : task name
+//    // TODO old version don't need anymore
+//    public void printAllOverdueTasks() {
+//        System.out.println();
+//        int num = 1;
+//        for (Task t : tasks) {
+//            if (t.isOverdue()) {
+//                System.out.println("OVERDUE Task " + num + " : " + t.getName());
+//                num = num + 1;
+//            }
+//        }
+//        System.out.println("Done, you have " + tasks.size() + " OVERDUE task in total!!!");
+//        System.out.println();
+//    }
 
 
     public List<String> returnListAllOverdueTasks() {

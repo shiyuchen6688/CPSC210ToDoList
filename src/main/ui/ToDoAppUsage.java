@@ -1,6 +1,6 @@
 package ui;
 
-import model.exceptions.TaskAlreadyExistException;
+import model.TaskAlreadyExistException;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import model.*;
 import ui.display.CloseConfirm;
 import ui.display.ConfirmBox;
-import ui.display.PopupAd;
 import ui.scene.MainScene;
 
 import java.io.IOException;

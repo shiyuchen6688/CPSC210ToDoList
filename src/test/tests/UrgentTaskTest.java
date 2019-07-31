@@ -1,11 +1,10 @@
 package tests;
 
-import model.GeneralTask;
 import model.RegularTask;
 import model.Task;
 import model.UrgentTask;
-import model.exceptions.NoDueDateException;
-import model.exceptions.OverDueException;
+import model.NoDueDateException;
+import model.OverDueException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ui.ToDoAppUsage;

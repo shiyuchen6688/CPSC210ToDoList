@@ -1,6 +1,5 @@
 package ui;
 
-import model.exceptions.TaskAlreadyExistException;
 import model.RegularTask;
 import model.Task;
 import model.ToDoList;

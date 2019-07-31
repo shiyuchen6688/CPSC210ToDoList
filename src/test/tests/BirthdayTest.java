@@ -1,8 +1,8 @@
 package tests;
 
 import model.Birthday;
-import model.exceptions.NoDueDateException;
-import model.exceptions.OverDueException;
+import model.NoDueDateException;
+import model.OverDueException;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
