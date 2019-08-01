@@ -39,10 +39,10 @@ public class RegularTask extends GeneralTask {
     public boolean closeToDue() throws OverDueException, NoDueDateException {
         LocalDate currentDate = LocalDate.now();
         if (this.dueDate == null) {
-            throw new NoDueDateException("Due date for task: " + name + " has not been set yet");
+            throw new NoDueDateException();
         }
         if (isOverdue()) {
-            throw new OverDueException("Due date for task: " + name + " has passed");
+            throw new OverDueException();
         }
         Date now = java.sql.Date.valueOf(currentDate);
         long diff = this.dueDate.getTime() - now.getTime();

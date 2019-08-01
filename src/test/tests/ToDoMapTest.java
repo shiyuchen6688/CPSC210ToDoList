@@ -28,7 +28,7 @@ public class ToDoMapTest {
 
 
     @Test
-    public void testAddToDoListAsString() {
+    public void testAddToDoListAsStringDoesntExist() {
         String listName = "list 1";
         map.addToDoList(listName);
 
@@ -37,12 +37,37 @@ public class ToDoMapTest {
     }
 
     @Test
-    public void testAddToDoListAsList() {
+    public void testAddToDoListAsStringExist() {
+        String listName = "list 1";
+        map.addToDoList(listName);
+        assertEquals(2, map.size());
+
+        assertTrue(map.contains(listName));
+        assertEquals(new ToDoList(listName), map.getList(listName));
+
+        map.addToDoList(listName);
+        assertEquals(2, map.size());
+    }
+
+    @Test
+    public void testAddToDoListAsListDoesntExist() {
 
         map.addToDoList(l1);
 
         assertTrue(map.contains(l1.getName()));
         assertEquals(new ToDoList("l1"), map.getList(l1.getName()));
+    }
+
+    @Test
+    public void testAddToDoListAsListExist() {
+
+        map.addToDoList(l1);
+        assertEquals(2, map.size());
+        assertTrue(map.contains(l1.getName()));
+        assertEquals(new ToDoList("l1"), map.getList(l1.getName()));
+
+        map.addToDoList(l1);
+        assertEquals(2, map.size());
     }
 
     @Test

@@ -147,9 +147,8 @@ public class ToDoList {
     //          if cannot find, throw TaskNotFound exception
     public Task findTask(String taskName) throws TaskNotFoundException {
         Task taskRegular = new RegularTask(taskName);
-        Task taskUrgent = new UrgentTask(taskName);
         for (Task t : tasks) {
-            if (taskRegular.equals(t) || taskUrgent.equals(t)) {
+            if (taskRegular.equals(t)) {
                 return t;
             }
         }
@@ -160,9 +159,8 @@ public class ToDoList {
     // EFFECTS: return true if todoList contain task with given name, false otherwise
     public boolean contains(String taskName) {
         Task taskRegular = new RegularTask(taskName);
-        Task taskUrgent = new UrgentTask(taskName);
         for (Task t : tasks) {
-            if (taskRegular.equals(t) || taskUrgent.equals(t)) {
+            if (taskRegular.equals(t)) {
                 return true;
             }
         }

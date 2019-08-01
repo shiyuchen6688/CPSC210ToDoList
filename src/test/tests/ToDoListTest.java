@@ -46,6 +46,14 @@ public class ToDoListTest {
         assertEquals(map, testToDoList.getMap());
     }
 
+    @Test
+    public void testSetMapBelonged() {
+        ToDoMap map = new ToDoMap();
+        testToDoList.setMapBelonged(map);
+        assertEquals(map, testToDoList.getMap());
+        assertEquals(testToDoList, map.getList(testToDoList.getName()));
+    }
+
 
     @Test
     public void testGetTasks() {
@@ -81,15 +89,29 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testAddTaskWithTaskName() {
+    public void testAddTaskWithTaskNameDoesntExist() {
         checkToDoEmptyDoesntContain(testToDoList);
+        testToDoList.addTask("tests task");
+
+        checkToDoContainOnce();
+
+
+    }
+
+    @Test
+    public void testAddTaskWithTaskNameExist() {
+        checkToDoEmptyDoesntContain(testToDoList);
+        testToDoList.addTask("tests task");
+
+        checkToDoContainOnce();
+
         testToDoList.addTask("tests task");
 
         checkToDoContainOnce();
     }
 
     @Test
-    public void testAddTwoTaskWithTaskName() {
+    public void testAddTwoTaskWithTaskNameDoesntExist() {
         checkToDoEmptyDoesntContain(testToDoList);
         testToDoList.addTask("tests task");
         testToDoList.addTask("tests task 2");
@@ -101,7 +123,26 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testTwoParamAddTaskWithNewTask() {
+    public void testAddTwoTaskWithTaskNameExist() {
+        checkToDoEmptyDoesntContain(testToDoList);
+        testToDoList.addTask("tests task");
+        testToDoList.addTask("tests task 2");
+
+
+        assertTrue(testToDoList.contains("tests task"));
+        assertTrue(testToDoList.contains("tests task 2"));
+        assertEquals(testToDoList.size(), 2);
+        testToDoList.addTask("tests task");
+        testToDoList.addTask("tests task 2");
+
+
+        assertTrue(testToDoList.contains("tests task"));
+        assertTrue(testToDoList.contains("tests task 2"));
+        assertEquals(testToDoList.size(), 2);
+    }
+
+    @Test
+    public void testTwoParamAddTaskWithNewTaskDoesntExist() {
         checkToDoEmptyDoesntContain(testToDoList);
         try {
             testToDoList.addTask(new RegularTask("tests task", "2019-08-08"));
@@ -112,8 +153,45 @@ public class ToDoListTest {
     }
 
     @Test
-    public void testTwoParamAddTaskWithTaskName() {
+    public void testTwoParamAddTaskWithNewTaskExist() {
         checkToDoEmptyDoesntContain(testToDoList);
+        try {
+            testToDoList.addTask(new RegularTask("tests task", "2019-08-08"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        checkToDoContainOnce();
+
+        try {
+            testToDoList.addTask(new RegularTask("tests task", "2019-08-08"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        checkToDoContainOnce();
+    }
+
+    @Test
+    public void testTwoParamAddTaskWithTaskNameDoesntExist() {
+        checkToDoEmptyDoesntContain(testToDoList);
+        try {
+            testToDoList.addTask("tests task", "2019-08-08");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        checkToDoContainOnce();
+    }
+
+    @Test
+    public void testTwoParamAddTaskWithTaskNameExist() {
+        checkToDoEmptyDoesntContain(testToDoList);
+        try {
+            testToDoList.addTask("tests task", "2019-08-08");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        checkToDoContainOnce();
         try {
             testToDoList.addTask("tests task", "2019-08-08");
         } catch (ParseException e) {
@@ -134,15 +212,24 @@ public class ToDoListTest {
         }
 
 
-
         assertTrue(testToDoList.contains("tests task"));
         assertTrue(testToDoList.contains("tests task 2"));
         assertEquals(testToDoList.size(), 2);
     }
 
     @Test
-    public void testAddTaskWithNewTask() {
+    public void testAddTaskWithNewTaskDoesntExist() {
         checkToDoEmptyDoesntContain(testToDoList);
+        testToDoList.addTask(new RegularTask("tests task"));
+        checkToDoContainOnce();
+    }
+
+    @Test
+    public void testAddTaskWithNewTaskExist() {
+        checkToDoEmptyDoesntContain(testToDoList);
+        testToDoList.addTask(new RegularTask("tests task"));
+        checkToDoContainOnce();
+
         testToDoList.addTask(new RegularTask("tests task"));
         checkToDoContainOnce();
     }
@@ -209,7 +296,7 @@ public class ToDoListTest {
 
 
     @Test
-    public void testFindTaskDoesntExist() {
+    public void testFindRegularTaskDoesntExist() {
         checkToDoEmptyDoesntContain(testToDoList);
         try {
             Task t = testToDoList.findTask("tests task");
@@ -218,6 +305,23 @@ public class ToDoListTest {
             // expected
         }
     }
+
+    @Test
+    public void testFindRegularTaskHaveOneDoesntExist() {
+        checkToDoEmptyDoesntContain(testToDoList);
+        testToDoList.addTask("tests task");
+
+        checkToDoContainOnce();
+        try {
+            Task t = testToDoList.findTask("tests task 2");
+            fail();
+        } catch (TaskNotFoundException e) {
+            // expected
+        }
+
+        checkToDoContainOnce();
+    }
+
 
     @Test
     public void testFindUrgentTasDoesntkExist() {
@@ -230,6 +334,8 @@ public class ToDoListTest {
         } catch (TaskNotFoundException e) {
             // expected
         }
+
+        checkToDoContainOnce();
 
     }
 
@@ -345,6 +451,14 @@ public class ToDoListTest {
     }
 
     @Test
+    public void testEqualsNull() {
+        ToDoList l1 = new ToDoList("a");
+        ToDoList l2 = null;
+        assertFalse(l1.equals(l2));
+
+    }
+
+    @Test
     public void testHashCode() {
         ToDoList l1 = new ToDoList("a");
         ToDoList l2 = new ToDoList("a");
@@ -360,7 +474,6 @@ public class ToDoListTest {
         assertEquals(list.size(), 0);
         assertFalse(list.contains("tests task"));
     }
-
 
 
 }

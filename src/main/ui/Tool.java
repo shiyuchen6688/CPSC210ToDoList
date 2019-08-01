@@ -124,7 +124,7 @@
 //            throws TaskAlreadyExistException {
 //        // check if task already exist
 //        if (toDoList.contains(name)) {
-//            throw new TaskAlreadyExistException("Trying to add a duplicate task");
+//            throw new TaskAlreadyExistException();
 //        }
 //        Task newTask = null;
 //        if (isUrgents) {
@@ -222,7 +222,7 @@
 //        String name = input.nextLine();
 //        System.out.println("Name of the tests is: " + name);
 //        if (toDoList.contains(name)) {
-//            throw new TaskAlreadyExistException("Task: " + name + " already exist");
+//            throw new TaskAlreadyExistException();
 //        }
 //        return name;
 //    }
