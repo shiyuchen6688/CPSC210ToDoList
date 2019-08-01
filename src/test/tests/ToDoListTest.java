@@ -244,10 +244,25 @@ public class ToDoListTest {
         List<String> result = testToDoList.returnAllListTasks();
         assertTrue(result.contains("Here is all of your task in list: "
                 + testToDoList.getName()));
-        assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "test task"
+        assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "tests task"
                 + " with no due date"));
-        assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "test task 2"
+        assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "tests task 2"
                 + " Due Date:" + "2019-08-08"));
+    }
+
+    @Test
+    public void testReturnAllListOverdueTasks() {
+        testToDoList.addTask("tests task");
+        try {
+            testToDoList.addTask("tests task 2", "2018-07-08");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<String> result = testToDoList.returnListAllOverdueTasks();
+        assertTrue(result.contains("Here is all of your overdue task in list: " + testToDoList.getName()));
+        assertTrue(result.contains(GeneralTask.INDENTATION + "Overdue Task: " + "tests task 2"
+                + " Due Date: " + "2018-07-08"));
+        assertTrue(result.contains("\nlist: " + testToDoList.getName() + " is done"));
     }
 
     @Test
@@ -322,6 +337,20 @@ public class ToDoListTest {
         }
     }
 
+    @Test
+    public void testEquals() {
+        ToDoList l1 = new ToDoList("a");
+        assertFalse(l1.equals("a"));
+
+    }
+
+    @Test
+    public void testHashCode() {
+        ToDoList l1 = new ToDoList("a");
+        ToDoList l2 = new ToDoList("a");
+        assertEquals(l1.hashCode(), l2.hashCode());
+    }
+
     private void checkToDoContainOnce() {
         assertEquals(testToDoList.size(), 1);
         assertTrue(testToDoList.contains("tests task"));
@@ -331,5 +360,7 @@ public class ToDoListTest {
         assertEquals(list.size(), 0);
         assertFalse(list.contains("tests task"));
     }
+
+
 
 }

@@ -204,35 +204,18 @@ public class ToDoList {
     }
 
 
-//    // EFFECTS: print all overdue tasks inside todolist in format:
-//    //          OVERDUE Task num : task name
-//    // TODO old version don't need anymore
-//    public void printAllOverdueTasks() {
-//        System.out.println();
-//        int num = 1;
-//        for (Task t : tasks) {
-//            if (t.isOverdue()) {
-//                System.out.println("OVERDUE Task " + num + " : " + t.getName());
-//                num = num + 1;
-//            }
-//        }
-//        System.out.println("Done, you have " + tasks.size() + " OVERDUE task in total!!!");
-//        System.out.println();
-//    }
-
-
     public List<String> returnListAllOverdueTasks() {
         List<String> overDueTasks = new ArrayList<>();
         overDueTasks.add("Here is all of your overdue task in list: " + name);
         for (Task t : tasks) {
             if (t.isOverdue()) {
                 overDueTasks.add(GeneralTask.INDENTATION + "Overdue Task: " + t.getName()
-                        + " Due Date:" + GeneralTask.sdf.format(t.getDueDate()));
+                        + " Due Date: " + GeneralTask.sdf.format(t.getDueDate()));
             }
-            overDueTasks.add("\nlist: " + name + " is done");
-            return overDueTasks;
         }
+        overDueTasks.add("\nlist: " + name + " is done");
         return overDueTasks;
+
     }
 
 
@@ -242,14 +225,6 @@ public class ToDoList {
     }
 
 
-    // EFFECTS: return list of string names of tasks in the list
-    public List<String> getAllTaskAsListOfString() {
-        List<String> ls = new ArrayList<String>();
-        for (Task t : tasks) {
-            ls.add(t.getName());
-        }
-        return ls;
-    }
 
 
     @Override

@@ -72,18 +72,17 @@ public class ToDoMap {
 //    }
 
     public Boolean contains(String toDoListName) {
-        if (toDoMap.get(toDoListName) != null) {
-            return true;
-        }
-        return false;
+        return  toDoMap.keySet().contains(toDoListName);
+//        if (toDoMap.get(toDoListName) != null) {
+//            return true;
+//        }
+//        return false;
     }
 
-    // TODO need tests
     public int size() {
         return toDoMap.size();
     }
 
-    // TODO return num list inside the map
     public Map<String, ToDoList> getMap() {
         return toDoMap;
     }
