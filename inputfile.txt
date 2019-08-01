@@ -1,2 +1,2 @@
-l1  t1  2019-08-08
-l2  t2  2019-09-09
+general  t1  year: 2019-month: 10-day: 8
+general  t2  year: 2019-month: 10-day: 8

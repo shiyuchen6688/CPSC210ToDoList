@@ -26,12 +26,11 @@
 //// extends Application to use display
 //public class ToDoAppUsage extends Application {
 //    public static final String INDENTATION = "     ";
-//    public static final int LARGE_SCENE_WIDTH = 300;
-//    public static final int LARGE_SCENE_HEIGHT = 250;
+//    public static final int LARGE_SCENE_WIDTH = 600;
+//    public static final int LARGE_SCENE_HEIGHT = 500;
 //    public static final int SMALL_SCENE_WIDTH = 200;
 //    public static final int SMALL_SCENE_HEIGHT = 80;
 //
-//    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //    public static String dateFormat = "yyyy-MM-dd";
 //    // TODO: LAB 9 VBox spacing - Create a constant for it
 //    public static int VBOC_SPACING = 20;
@@ -47,7 +46,6 @@
 //    /// Stage and scenes
 //    static Stage window;
 //    static MainScene sceneMain;
-//    Scene sceneAddTAsk;
 //    public static Scene sceneChooseDateFormat;
 //    public static Scene sceneAddTask;
 //
@@ -55,7 +53,6 @@
 //    public static void main(String[] args) {
 //        // setups
 //        toDoMap = new ToDoMap();
-//        toDoMap.addToDoList("school");
 //        launch(args);
 //
 //
@@ -112,7 +109,7 @@
 //        VBox layoutChooseDateFormat = new VBox(VBOC_SPACING);
 //        layoutChooseDateFormat.getChildren().addAll(choseDateFormatText, buttonForDate1,
 //                buttonForDate2, buttonForDate3);
-//        sceneChooseDateFormat = new Scene(layoutChooseDateFormat, LARGE_SCENE_WIDTH, LARGE_SCENE_HEIGHT);
+//        sceneChooseDateFormat = new Scene(layoutChooseDateFormat);
 //
 //        return sceneChooseDateFormat;
 //    }
@@ -323,6 +320,7 @@
 //    }
 //
 //
+//    // TODO Lab9 helper method that display message
 //    // EFFECTS: set stage to scene which diplay given msg, ok button to return to main menu
 //    public static void displayMessageButtonToMain(String msg, String buttonName) {
 //        Scene displayScene;
@@ -336,6 +334,8 @@
 //        window.setScene(displayScene);
 //    }
 //
+//
+//    // TODO Lab9 helper method that display list of message
 //    // EFFECTS: set stage to scene which diplay given list of msg, ok button to return to main menu
 //    private static void displayListMessageButtonToMain(List<String> msgList, String buttonName) {
 //        VBox layout = new VBox(VBOC_SPACING);
@@ -355,6 +355,7 @@
 //
 //    }
 //
+//    // TODO Lab9 helper method that return a button
 //    // EFFECTS: return a button that can be used to return to main
 //    private static Button buttonToMain(String name) {
 //        Button backToMainButton = new Button(name);

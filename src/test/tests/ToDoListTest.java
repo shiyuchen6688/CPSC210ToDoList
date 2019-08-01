@@ -54,6 +54,18 @@ public class ToDoListTest {
         assertEquals(testToDoList, map.getList(testToDoList.getName()));
     }
 
+    @Test
+    public void testSetMapBelongedAlreadySet() {
+        ToDoMap map = new ToDoMap();
+        testToDoList.setMapBelonged(map);
+        assertEquals(map, testToDoList.getMap());
+        assertEquals(testToDoList, map.getList(testToDoList.getName()));
+
+        testToDoList.setMapBelonged(map);
+        assertEquals(map, testToDoList.getMap());
+        assertEquals(testToDoList, map.getList(testToDoList.getName()));
+    }
+
 
     @Test
     public void testGetTasks() {

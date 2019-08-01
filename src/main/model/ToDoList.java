@@ -185,16 +185,16 @@ public class ToDoList {
 //        System.out.println();
 //    }
 
+    // TODO: Lab9 Coupling here introduced a new class
     public List<String> returnAllListTasks() {
         List<String> result = new ArrayList<>();
         result.add("Here is all of your task in list: " + name);
         for (Task t : tasks) {
             if (t.getDueDate() != null) {
-                result.add(GeneralTask.INDENTATION + "Task: " + t.getName()
-                        + " Due Date:" + GeneralTask.sdf.format(t.getDueDate()));
+                String date = GeneralTask.sdf.format(t.getDueDate());
+                result.add(ReturnTask.formatOneNormalTaskWithDuedate(t.getName(), date));
             } else {
-                result.add(GeneralTask.INDENTATION + "Task: " + t.getName()
-                        + " with no due date");
+                result.add(ReturnTask.formatOneNormalTaskWithNoDuedate(t.getName()));
             }
         }
         result.add("\nlist: " + name + " is done");
@@ -207,8 +207,8 @@ public class ToDoList {
         overDueTasks.add("Here is all of your overdue task in list: " + name);
         for (Task t : tasks) {
             if (t.isOverdue()) {
-                overDueTasks.add(GeneralTask.INDENTATION + "Overdue Task: " + t.getName()
-                        + " Due Date: " + GeneralTask.sdf.format(t.getDueDate()));
+                String date = GeneralTask.sdf.format(t.getDueDate());
+                overDueTasks.add(ReturnTask.formatOneOverdueTaskWithDuedate(t.getName(), date));
             }
         }
         overDueTasks.add("\nlist: " + name + " is done");

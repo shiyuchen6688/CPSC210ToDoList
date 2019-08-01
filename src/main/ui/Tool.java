@@ -11,16 +11,9 @@
 //import java.util.Scanner;
 //
 //import static ui.ToDoAppUsage.dateFormat;
-//import static ui.ToDoAppUsage.sdf;
+//import static ui.ToDoAppUsage.sceneMain;
 //
 //public class Tool {
-//    private static final String ALLTASKS_COMMAND = "all";
-//    private static final String ALLOVERDUES_COMMAND = "overdue";
-//    private static final String ADD_TASK_COMMAND = "add";
-//    private static final String EDIT_TASK_COMMAND = "edit";
-//    private static final String QUIT_COMMAND = "quit";
-//    private static final String REMINDER_COMMAND = "reminder";
-//    private static final String SWITCH_LIST_COMMAND = "change";
 //    private static final String CHANGE_NAME_COMMAND = "1";
 //    private static final String CHANGE_DUEDATE_COMMAND = "2";
 //    private static final String DELETE_COMMAND = "3";
@@ -67,19 +60,23 @@
 //        switch (formatChoice) {
 //            case "yyyy-MM-dd":
 //                dateFormat = "yyyy-MM-dd";
-//                sdf = new SimpleDateFormat(dateFormat);
+//                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
+//                sceneMain.updateDateFormatLabel(dateFormat);
 //                return "choosed yyyy-MM-dd";
 //            case "dd-MM-yyyy":
 //                dateFormat = "dd-MM-yyyy";
-//                sdf = new SimpleDateFormat(dateFormat);
+//                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
+//                sceneMain.updateDateFormatLabel(dateFormat);
 //                return "choosed dd-MM-yyyy";
 //            case "MM-dd-yyyy":
 //                dateFormat = "MM-dd-yyyy";
-//                sdf = new SimpleDateFormat(dateFormat);
+//                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
+//                sceneMain.updateDateFormatLabel(dateFormat);
 //                return "choosed MM-dd-yyyy";
 //            default:
 //                dateFormat = "yyyy-MM-dd";
-//                sdf = new SimpleDateFormat(dateFormat);
+//                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
+//                sceneMain.updateDateFormatLabel(dateFormat);
 //                return "option is incorrect, set to default yyyy-MM-dd";
 //        }
 //    }
@@ -281,7 +278,7 @@
 //    // ui Change Task date
 //    public void handleChangeDueDate(Task editTask) throws ParseException {
 //        System.out.println("Enter the new due date you want to change to");
-//        String oldDate = ToDoAppUsage.sdf.format(editTask.getDueDate());
+//        String oldDate = GeneralTask.sdf.format(editTask.getDueDate());
 //        String newDate = input.nextLine();
 //        editTask.setDueDate(newDate);
 //        System.out.println(String.format("Your task's due date changed from %1s to %2s", oldDate, newDate));

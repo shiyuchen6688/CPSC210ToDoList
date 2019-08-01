@@ -1,9 +1,6 @@
 //package ui;
 //
-//import model.RegularTask;
-//import model.Task;
-//import model.ToDoList;
-//import model.ToDoMap;
+//import model.*;
 //
 //import java.io.FileWriter;
 //import java.io.IOException;
@@ -11,10 +8,9 @@
 //import java.nio.file.Files;
 //import java.nio.file.Paths;
 //import java.text.ParseException;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//import java.util.Map;
+//import java.time.LocalDate;
+//import java.time.ZoneId;
+//import java.util.*;
 //
 //public class FileReaderAndWriter {
 //
@@ -54,12 +50,36 @@
 //        List<String> lines = Files.readAllLines((Paths.get(chosenFile)));
 //
 //        for (String line : lines) {
-//            ArrayList<String> partsOfLine = splitOnSpace(line);
+//            ArrayList<String> partsOfLine = splitOnTwoSpace(line);
 //            String listName = partsOfLine.get(0);
 //            String taskName = partsOfLine.get(1);
 //            String dueDate = partsOfLine.get(2);
+//            String dueYearString;
+//            String dueMonthString;
+//            String dueDayString;
+//            String dueYear;
+//            String dueMonth;
+//            String dueDay;
+//            String dueDateAsString;
 //            if (dueDate.equals("None")) {
 //                dueDate = null;
+//                dueDateAsString = null;
+//            } else {
+//                List<String> dueDateStrings = splitOnLine(dueDate);
+//                dueYearString = dueDateStrings.get(0);
+//                dueMonthString = dueDateStrings.get(1);
+//                dueDayString = dueDateStrings.get(2);
+//
+//                List<String> dueYearStrings = splitOnColonSpace(dueYearString);
+//                List<String> dueMonthStrings = splitOnColonSpace(dueMonthString);
+//                List<String> dueDayStrings = splitOnColonSpace(dueDayString);
+//
+//                dueYear = dueYearStrings.get(1);
+//                dueMonth = dueMonthStrings.get(1);
+//                dueDay = dueDayStrings.get(1);
+//
+//                dueDateAsString = dueYear + "-" + dueMonth + "-" + dueDay;
+//
 //            }
 //            msgList.add("List: " + listName + " " + "| Task: " + taskName + " " + "| Duedate: " + dueDate);
 //            // get the the list from the map
@@ -68,7 +88,7 @@
 //            // if this list is not already in, create and add it
 //            curList = ifCurLIstNullCreateNew(map, listName, curList);
 //
-//            addTaskNoDuplicate(taskName, dueDate, curList);
+//            addTaskNoDuplicate(taskName, dueDateAsString, curList);
 //
 //
 //        }
@@ -121,7 +141,12 @@
 //
 //            String date = "";
 //            if (t.getDueDate() != null) {
-//                date = ToDoAppUsage.sdf.format(t.getDueDate());
+//                // date = GeneralTask.sdf.format(t.getDueDate());
+//                LocalDate localDate = t.getDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//                int year  = localDate.getYear();
+//                int month = localDate.getMonthValue();
+//                int day   = localDate.getDayOfMonth();
+//                date = "year: " + year + "-" + "month: " + month + "-" + "day: " + day;
 //            } else {
 //                date = "None";
 //            }
@@ -145,7 +170,7 @@
 //                System.out.println(MESSAGE_END_OUTPUT);
 //                outputFileWriter.write(line + "\n");
 //            } else {
-//                ArrayList<String> partsOfLine = splitOnSpace(line);
+//                ArrayList<String> partsOfLine = splitOnTwoSpace(line);
 //
 //                // first two is print, the third one is line
 ////                System.out.print("List: " + partsOfLine.get(0) + " ");
@@ -159,8 +184,18 @@
 //
 //
 //    // helper to split words in add HistryIntoMapAndReturnLoad and save. File download from CPSC-210 EDX.
-//    public static ArrayList<String> splitOnSpace(String line) {
+//    public static ArrayList<String> splitOnTwoSpace(String line) {
 //        String[] splits = line.split("  ");
+//        return new ArrayList<>(Arrays.asList(splits));
+//    }
+//
+//    public static ArrayList<String> splitOnLine(String line) {
+//        String[] splits = line.split("-");
+//        return new ArrayList<>(Arrays.asList(splits));
+//    }
+//
+//    public static ArrayList<String> splitOnColonSpace(String line) {
+//        String[] splits = line.split(": ");
 //        return new ArrayList<>(Arrays.asList(splits));
 //    }
 //

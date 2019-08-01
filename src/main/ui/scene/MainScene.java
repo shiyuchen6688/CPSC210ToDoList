@@ -24,6 +24,7 @@
 //
 //    private static Scene sceneMain;
 //    private static Label initialText;
+//    private static Label dateFormatText;
 //    private static VBox layout;
 //    private static Button dateFormatChoiceButton;
 //    private static Button printAllTaskButton;
@@ -36,6 +37,7 @@
 //
 //
 //    public MainScene(ToDoMap toDoMap, Tool tool, Stage window) {
+//        this.dateFormatText = new Label("Current date format is: " + ToDoAppUsage.dateFormat);
 //        this.toDoMap = toDoMap;
 //        this.tool = tool;
 //        this.window = window;
@@ -46,8 +48,15 @@
 //        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
 //    }
 //
+//    public void updateDateFormatLabel(String dateFormat) {
+//        this.dateFormatText = new Label("Current date format is: " + dateFormat);
+//        this.layout = new VBox(ToDoAppUsage.VBOC_SPACING);
+//        setLayout();
+//        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
+//    }
+//
 //    private static void setLayout() {
-//        layout.getChildren().addAll(initialText, dateFormatChoiceButton, printAllTaskButton,
+//        layout.getChildren().addAll(initialText, dateFormatText, dateFormatChoiceButton, printAllTaskButton,
 //                addTasksButton, overDueTasksButton, quitButton);
 //        layout.setAlignment(Pos.CENTER);
 //    }
@@ -55,7 +64,7 @@
 //    private void initializeButtons() {
 //        dateFormatChoiceButton = setUpChooseDateFormatbutton();
 //        addTasksButton = setUpAddTaskButton();
-//        printAllTaskButton  = setUpPrintAllTaskButton();
+//        printAllTaskButton = setUpPrintAllTaskButton();
 //        overDueTasksButton = setUpOverdueButton();
 //        quitButton = setUpQuitButton();
 //
@@ -64,7 +73,6 @@
 //    public Scene getScene() {
 //        return sceneMain;
 //    }
-//
 //
 //
 //    public Button setUpChooseDateFormatbutton() {
@@ -110,14 +118,14 @@
 //    }
 //
 //
-//    public Scene setUpMainScene() {
-//        // Main scene components
-//        // setup initialText message
-//        layout.getChildren().addAll(initialText, dateFormatChoiceButton, printAllTaskButton,
-//                addTasksButton, overDueTasksButton, quitButton);
-//        layout.setAlignment(Pos.CENTER);
-//        return new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, 100 + ToDoAppUsage.LARGE_SCENE_HEIGHT);
-//    }
+////    public Scene setUpMainScene() {
+////        // Main scene components
+////        // setup initialText message
+////        layout.getChildren().addAll(initialText, dateFormatChoiceButton, printAllTaskButton,
+////                addTasksButton, overDueTasksButton, quitButton);
+////        layout.setAlignment(Pos.CENTER);
+////        return new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, 100 + ToDoAppUsage.LARGE_SCENE_HEIGHT);
+////    }
 //
 //    // EFFECTS: set stage to scene which diplay given list of msg, ok button to return to main menu
 //    private void displayListMessageButtonToMain(List<String> msgList, String buttonName) {
