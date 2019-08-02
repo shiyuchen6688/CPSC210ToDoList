@@ -8,11 +8,13 @@ import model.exceptions.TaskNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public abstract class GeneralTask implements Task {
+public abstract class GeneralTask extends Element implements Task {
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     // TODO LAB9 declare a constant to reduce semantic coupling
     public static final String INDENTATION = "     ";
@@ -21,11 +23,13 @@ public abstract class GeneralTask implements Task {
     protected Date dueDate;
     protected boolean status;
     protected ToDoList listBelonged;
+    protected List<Element> elements;
 
     // constructor
     public GeneralTask() {
         this.status = false;
         this.dueDate = null;
+        this.elements = new ArrayList<>();
     }
 
 
@@ -55,6 +59,9 @@ public abstract class GeneralTask implements Task {
         return this.listBelonged;
     }
 
+    public List<Element> getElements() {
+        return this.elements;
+    }
 
     // setters
 
@@ -139,6 +146,18 @@ public abstract class GeneralTask implements Task {
     @Override
     public int hashCode() {
         return Objects.hash(name);
+    }
+
+    @Override
+    public void display(String indentLevel) {
+        System.out.println(indentLevel + name);
+        for (Element element : elements) {
+            element.display(indentLevel + indentLevel);
+        }
+    }
+
+    public void addElement(Element e) {
+        elements.add(e);
     }
 
     public abstract boolean closeToDue() throws OverDueException, NoDueDateException;

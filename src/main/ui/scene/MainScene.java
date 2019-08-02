@@ -7,14 +7,16 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.ToDoMap;
+import ui.AddTaskCounter;
 import ui.ToDoAppUsage;
 import ui.Tool;
 import ui.display.PopupAd;
 
 import java.util.List;
+import java.util.Observable;
 
 //TODO LAB9 moved functions related to main scene to this class
-public class MainScene {
+public class MainScene extends Observable {
 
     public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
     public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
@@ -37,6 +39,7 @@ public class MainScene {
 
 
     public MainScene(ToDoMap toDoMap, Tool tool, Stage window) {
+        addObserver(new AddTaskCounter());
         this.dateFormatText = new Label("Current date format is: " + ToDoAppUsage.dateFormat);
         this.toDoMap = toDoMap;
         this.tool = tool;
@@ -94,6 +97,8 @@ public class MainScene {
     public Button setUpAddTaskButton() {
         Button addTaskButton = new Button(BUTTON_NAME_ADDTASKBUTTON);
         addTaskButton.setOnAction(e -> {
+            setChanged();
+            notifyObservers("User clicked the new task button");
             window.setScene(ToDoAppUsage.sceneAddTask);
             PopupAd.display("Advertisement", "Nikdas, 50% cheaper than them");
         });   // switch scene from sceneMain to sceneAddTAsk and pop up ad

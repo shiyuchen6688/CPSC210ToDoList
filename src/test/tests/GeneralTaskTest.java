@@ -1,9 +1,7 @@
 package tests;
 
-import model.RegularTask;
+import model.*;
 import model.exceptions.TaskNotFoundException;
-import model.GeneralTask;
-import model.ToDoList;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
@@ -21,8 +19,6 @@ public abstract class GeneralTaskTest {
     protected GeneralTask testTask;
 
 
-
-
     @Test
     public void testGetName() {
         assertEquals("testTask", testTask.getName());
@@ -34,7 +30,7 @@ public abstract class GeneralTaskTest {
     }
 
     @Test
-    public void testGetDueDateAlreadySet(){
+    public void testGetDueDateAlreadySet() {
 
         String newDate = "2019-07-07";
         try {
@@ -128,9 +124,9 @@ public abstract class GeneralTaskTest {
         LocalDate currentDate = LocalDate.now();
         Date now = java.sql.Date.valueOf(currentDate);
         try {
-            GeneralTask t  = new RegularTask("t", "2020-10-02");
+            GeneralTask t = new RegularTask("t", "2020-10-02");
             long diff = t.getDueDate().getTime() - now.getTime();
-            int day =  (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+            int day = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
             assertEquals(day, t.getDayUntilDue());
 
         } catch (ParseException e) {
@@ -165,6 +161,55 @@ public abstract class GeneralTaskTest {
         }
 
         assertEquals(null, testTask.getListBelonged());
+
+    }
+
+    @Test
+    public void testGetElements() {
+        GeneralTask innerTask = new RegularTask("inner task");
+        GeneralTask innerTask2 = new RegularTask("inner task2");
+        Note note1 = new Note("Note 1 for test task");
+        testTask.addElement(innerTask);
+        testTask.addElement(innerTask2);
+        testTask.addElement(note1);
+
+        assertTrue(testTask.getElements().contains(innerTask));
+        assertTrue(testTask.getElements().contains(innerTask2));
+        assertTrue(testTask.getElements().contains(note1));
+    }
+
+
+    @Test
+    public void testAddElement() {
+        GeneralTask innerTask = new RegularTask("inner task");
+        GeneralTask innerTask2 = new RegularTask("inner task2");
+        Note note1 = new Note("Note 1 for test task");
+        testTask.addElement(innerTask);
+        testTask.addElement(innerTask2);
+        testTask.addElement(note1);
+
+        assertTrue(testTask.getElements().contains(innerTask));
+        assertTrue(testTask.getElements().contains(innerTask2));
+        assertTrue(testTask.getElements().contains(note1));
+
+    }
+
+    @Test
+    public void testDisplay() {
+        GeneralTask innerTask = new RegularTask("inner task");
+        GeneralTask innerTask2 = new RegularTask("inner task2");
+        GeneralTask innerInnerTask = new RegularTask("inner inner task");
+        innerTask.addElement(new Note("Note 1 for inner test"));
+        innerTask.addElement(new Note("Note 2 for inner test"));
+        innerTask.addElement(innerInnerTask);
+        innerTask2.addElement(new Note("Note 1 for inner test"));
+        innerTask2.addElement(new Note("Note 2 for inner test"));
+        testTask.addElement(new Note("Note 1 for test task"));
+        testTask.addElement(innerTask);
+        testTask.addElement(innerTask2);
+        testTask.addElement(new Note("Note 2 for test task"));
+
+        testTask.display("     ");
 
     }
 }

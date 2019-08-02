@@ -8,18 +8,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.ToDoList;
-import model.ToDoMap;
+import model.*;
 import model.exceptions.TaskAlreadyExistException;
 import ui.display.CloseConfirm;
 import ui.display.ConfirmBox;
 import ui.scene.MainScene;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,8 +50,51 @@ public class ToDoAppUsage extends Application {
     public static Scene sceneChooseDateFormat;
     public static Scene sceneAddTask;
 
-    // TODO : LAB9 LOW COHESION, todo app usage class display a lot of different scenes
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        // TODO LAB10: Composite pattern is here
+        GeneralTask outerTest = new RegularTask("The outer task");
+        GeneralTask innerTask = new RegularTask("inner task");
+        GeneralTask innerTask2 = new RegularTask("inner task2");
+        GeneralTask innerInnerTask = new RegularTask("inner inner task");
+        innerTask.addElement(new Note("Note 1 for inner test"));
+        innerTask.addElement(new Note("Note 2 for inner test"));
+        innerTask.addElement(innerInnerTask);
+        innerTask2.addElement(new Note("Note 1 for inner test"));
+        innerTask2.addElement(new Note("Note 2 for inner test"));
+        outerTest.addElement(new Note("Note 1 for outer task"));
+        outerTest.addElement(innerTask);
+        outerTest.addElement(innerTask2);
+        outerTest.addElement(new Note("Note 2 for outer task"));
+
+        outerTest.display("     ");
+
+
+        BufferedReader br = null;
+
+        try {
+            String theURL = "https://www.ugrad.cs.ubc.ca/~cs210/2018w1/welcomemsg.html"; //this can point to any URL
+            URL url = new URL(theURL);
+            br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+            String line;
+
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+
+                sb.append(line);
+                sb.append(System.lineSeparator());
+            }
+
+            System.out.println(sb);
+        } finally {
+
+            if (br != null) {
+                br.close();
+            }
+        }
+
+
         // setups
         toDoMap = new ToDoMap();
         launch(args);
@@ -64,7 +108,6 @@ public class ToDoAppUsage extends Application {
     public void start(Stage primaryStage) throws Exception {
         tool = new Tool();
 
-        // TODO LAB9 extract method create a lot of helper
         // let window reference primaryStage
         initializeWindow(primaryStage);
 
@@ -101,7 +144,6 @@ public class ToDoAppUsage extends Application {
 
         Label choseDateFormatText = new Label("You can choose your default date format here:");
 
-        // TODO LAB9 REDUCED DUPLICATION
         Button buttonForDate1 = setUpDateFormatChoiceButton("yyyy-MM-dd");
         Button buttonForDate2 = setUpDateFormatChoiceButton("dd-MM-yyyy");
         Button buttonForDate3 = setUpDateFormatChoiceButton("MM-dd-yyyy");
@@ -320,7 +362,6 @@ public class ToDoAppUsage extends Application {
     }
 
 
-    // TODO Lab9 helper method that display message
     // EFFECTS: set stage to scene which diplay given msg, ok button to return to main menu
     public static void displayMessageButtonToMain(String msg, String buttonName) {
         Scene displayScene;
@@ -335,7 +376,6 @@ public class ToDoAppUsage extends Application {
     }
 
 
-    // TODO Lab9 helper method that display list of message
     // EFFECTS: set stage to scene which diplay given list of msg, ok button to return to main menu
     private static void displayListMessageButtonToMain(List<String> msgList, String buttonName) {
         VBox layout = new VBox(VBOC_SPACING);
@@ -355,7 +395,6 @@ public class ToDoAppUsage extends Application {
 
     }
 
-    // TODO Lab9 helper method that return a button
     // EFFECTS: return a button that can be used to return to main
     private static Button buttonToMain(String name) {
         Button backToMainButton = new Button(name);

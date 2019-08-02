@@ -1,11 +1,8 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class ToDoMap {
+public class ToDoMap extends Observable {
     private Map<String, ToDoList> toDoMap;
 
     // MODIFIES: this
