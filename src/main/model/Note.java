@@ -4,6 +4,7 @@ package model;
 public class Note extends Element {
     String content;
 
+
     public Note(String content) {
         this.content = content;
     }

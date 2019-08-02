@@ -7,16 +7,15 @@
 //import javafx.scene.layout.VBox;
 //import javafx.stage.Stage;
 //import model.ToDoMap;
-//import ui.AddTaskCounter;
 //import ui.ToDoAppUsage;
 //import ui.Tool;
 //import ui.display.PopupAd;
 //
 //import java.util.List;
 //import java.util.Observable;
+//import java.util.Observer;
 //
-////TODO LAB9 moved functions related to main scene to this class
-//public class MainScene extends Observable {
+//public class MainScene implements Observer {
 //
 //    public static final String BUTTON_NAME_ADDTASKBUTTON = "New Task";
 //    public static final String BUTTON_NAME_PRINTALLTASKSBUTTON = "All Tasks";
@@ -39,7 +38,6 @@
 //
 //
 //    public MainScene(ToDoMap toDoMap, Tool tool, Stage window) {
-//        addObserver(new AddTaskCounter());
 //        this.dateFormatText = new Label("Current date format is: " + ToDoAppUsage.dateFormat);
 //        this.toDoMap = toDoMap;
 //        this.tool = tool;
@@ -51,12 +49,6 @@
 //        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
 //    }
 //
-//    public void updateDateFormatLabel(String dateFormat) {
-//        this.dateFormatText = new Label("Current date format is: " + dateFormat);
-//        this.layout = new VBox(ToDoAppUsage.VBOC_SPACING);
-//        setLayout();
-//        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
-//    }
 //
 //    private static void setLayout() {
 //        layout.getChildren().addAll(initialText, dateFormatText, dateFormatChoiceButton, printAllTaskButton,
@@ -81,7 +73,7 @@
 //    public Button setUpChooseDateFormatbutton() {
 //        Button chooseDateFormateButton = new Button(CHOOSE_DATE_FORMABUTTONT);
 //        chooseDateFormateButton.setOnAction(e ->
-//                window.setScene(ToDoAppUsage.sceneChooseDateFormat));
+//                window.setScene(ToDoAppUsage.chooseDateFormatScene.getChooseScene()));
 //        return chooseDateFormateButton;
 //    }
 //
@@ -97,8 +89,6 @@
 //    public Button setUpAddTaskButton() {
 //        Button addTaskButton = new Button(BUTTON_NAME_ADDTASKBUTTON);
 //        addTaskButton.setOnAction(e -> {
-//            setChanged();
-//            notifyObservers("User clicked the new task button");
 //            window.setScene(ToDoAppUsage.sceneAddTask);
 //            PopupAd.display("Advertisement", "Nikdas, 50% cheaper than them");
 //        });   // switch scene from sceneMain to sceneAddTAsk and pop up ad
@@ -165,5 +155,22 @@
 //        }
 //    }
 //
+//
+//    /**
+//     * This method is called whenever the observed object is changed. An
+//     * application calls an <tt>Observable</tt> object's
+//     * <code>notifyObservers</code> method to have all the object's
+//     * observers notified of the change.
+//     *
+//     * @param o   the observable object.
+//     * @param arg an argument passed to the <code>notifyObservers</code>
+//     */
+//    @Override
+//    public void update(Observable o, Object arg) {
+//        this.dateFormatText = new Label("Current date format is: " + arg);
+//        this.layout = new VBox(ToDoAppUsage.VBOC_SPACING);
+//        setLayout();
+//        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
+//    }
 //
 //}

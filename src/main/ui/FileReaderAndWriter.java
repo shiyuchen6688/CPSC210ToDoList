@@ -2,6 +2,7 @@
 //
 //import model.*;
 //
+//import java.io.FileNotFoundException;
 //import java.io.FileWriter;
 //import java.io.IOException;
 //import java.io.PrintWriter;
@@ -41,8 +42,7 @@
 //    }
 //
 //
-//    // TODO let user decide where to save/addHistryIntoMapAndReturnLoad
-//
+//    // TODO: THIS IS TOO LONG FIX THIS PROBLEM
 //    public List<String> addHistryIntoMapAndReturnLoad(ToDoMap map)
 //            throws IOException, ParseException {
 //        List<String> msgList = new ArrayList<>();
@@ -53,35 +53,20 @@
 //            ArrayList<String> partsOfLine = splitOnTwoSpace(line);
 //            String listName = partsOfLine.get(0);
 //            String taskName = partsOfLine.get(1);
-//            String dueDate = partsOfLine.get(2);
-//            String dueYearString;
-//            String dueMonthString;
-//            String dueDayString;
-//            String dueYear;
-//            String dueMonth;
-//            String dueDay;
 //            String dueDateAsString;
-//            if (dueDate.equals("None")) {
-//                dueDate = null;
-//                dueDateAsString = null;
+//            if (partsOfLine.get(2).equals("None")) {
+//                dueDateAsString = "no due date";
 //            } else {
-//                List<String> dueDateStrings = splitOnLine(dueDate);
-//                dueYearString = dueDateStrings.get(0);
-//                dueMonthString = dueDateStrings.get(1);
-//                dueDayString = dueDateStrings.get(2);
-//
-//                List<String> dueYearStrings = splitOnColonSpace(dueYearString);
-//                List<String> dueMonthStrings = splitOnColonSpace(dueMonthString);
-//                List<String> dueDayStrings = splitOnColonSpace(dueDayString);
-//
-//                dueYear = dueYearStrings.get(1);
-//                dueMonth = dueMonthStrings.get(1);
-//                dueDay = dueDayStrings.get(1);
-//
-//                dueDateAsString = dueYear + "-" + dueMonth + "-" + dueDay;
+//                List<String> dueDateStrings = splitOnLine(partsOfLine.get(2));
+//                String dueYearString = dueDateStrings.get(0);
+//                String dueMonthString = dueDateStrings.get(1);
+//                String dueDayString = dueDateStrings.get(2);
+//// TODO use one method to do all of this work
+//                dueDateAsString = formatDueDateFileLineToString(dueYearString, dueMonthString, dueDayString);
 //
 //            }
-//            msgList.add("List: " + listName + " " + "| Task: " + taskName + " " + "| Duedate: " + dueDate);
+//            msgList.add("List: " + listName + " " + "| Task: " + taskName + " "
+//                    + "| Duedate(yyyy-MM-dd): " + dueDateAsString);
 //            // get the the list from the map
 //            ToDoList curList = map.getList(listName);
 //
@@ -96,10 +81,25 @@
 //        return msgList;
 //    }
 //
+//    private String formatDueDateFileLineToString(String dueYearString, String dueMonthString, String dueDayString) {
+//        String dueDateAsString;
+//        String dueYear = splitOnColonSpace(dueYearString).get(1);
+//        String dueMonth = splitOnColonSpace(dueMonthString).get(1);
+//        String dueDay = splitOnColonSpace(dueDayString).get(1);
+//
+//        dueDateAsString = dueYear + "-" + dueMonth + "-" + dueDay;
+//        return dueDateAsString;
+//    }
+//
 //    private void addTaskNoDuplicate(String taskName, String dueDate, ToDoList curList)
 //            throws ParseException {
 //        List<Task> allOriginalTask = curList.getTasks();
-//        Task newTask = new RegularTask(taskName, dueDate);
+//        Task newTask;
+//        if (!dueDate.equals("no due date")) {
+//            newTask = new RegularTask(taskName, dueDate);
+//        } else {
+//            newTask = new RegularTask(taskName);
+//        }
 //
 //        // add this task into this list
 //        if (!allOriginalTask.contains(newTask)) {
@@ -130,9 +130,7 @@
 //    // MODIFIES: inputfile.txt
 //    // EFFECTS: save all tasks in s single list to inputfile.txt
 //    public static void saveAllHistoryInListToInput(String listName, ToDoList toDoList) throws IOException {
-//        PrintWriter writer = new PrintWriter(chosenFile);
-//        writer.print("");
-//        writer.close();
+//        cleanInputFile();
 //
 //        List<Task> tasks = toDoList.getTasks();
 //        for (int i = 0; i < tasks.size(); i++) {
@@ -143,9 +141,9 @@
 //            if (t.getDueDate() != null) {
 //                // date = GeneralTask.sdf.format(t.getDueDate());
 //                LocalDate localDate = t.getDueDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-//                int year  = localDate.getYear();
+//                int year = localDate.getYear();
 //                int month = localDate.getMonthValue();
-//                int day   = localDate.getDayOfMonth();
+//                int day = localDate.getDayOfMonth();
 //                date = "year: " + year + "-" + "month: " + month + "-" + "day: " + day;
 //            } else {
 //                date = "None";
@@ -156,6 +154,12 @@
 //            inputFileWriter.write(stringToAdd);
 //        }
 //
+//    }
+//
+//    private static void cleanInputFile() throws FileNotFoundException {
+//        PrintWriter writer = new PrintWriter(chosenFile);
+//        writer.print("");
+//        writer.close();
 //    }
 //
 //    // MODIFIES: outputfile.txt
@@ -198,7 +202,6 @@
 //        String[] splits = line.split(": ");
 //        return new ArrayList<>(Arrays.asList(splits));
 //    }
-//
 //
 //
 //}

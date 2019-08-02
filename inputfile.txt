@@ -1,2 +1,2 @@
-general  t1  year: 2019-month: 10-day: 8
-general  t2  year: 2019-month: 10-day: 8
+general  t1  year: 2019-month: 8-day: 8
+general  t2  None

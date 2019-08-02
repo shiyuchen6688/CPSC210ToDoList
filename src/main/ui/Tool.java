@@ -11,7 +11,7 @@
 //import java.util.Scanner;
 //
 //import static ui.ToDoAppUsage.dateFormat;
-//import static ui.ToDoAppUsage.sceneMain;
+//import static ui.ToDoAppUsage.mainScene;
 //
 //public class Tool {
 //    private static final String CHANGE_NAME_COMMAND = "1";
@@ -67,7 +67,6 @@
 //            default:
 //                dateFormat = "yyyy-MM-dd";
 //                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
-//                sceneMain.updateDateFormatLabel(dateFormat);
 //                return "option is incorrect, set to default yyyy-MM-dd";
 //        }
 //    }
@@ -76,7 +75,7 @@
 //    private String handleOneFormatOption(String format) {
 //        dateFormat = format;
 //        GeneralTask.sdf = new SimpleDateFormat(format);
-//        sceneMain.updateDateFormatLabel(format);
+////        mainScene.updateDateFormatLabel(format);
 //        return "choosed " + format;
 //    }
 //
@@ -123,8 +122,10 @@
 //        }
 //        Task newTask = null;
 //        if (isUrgents) {
+//
 //            newTask = createNewUrgentTask(name, dueDate);
 //        } else {
+//
 //            newTask = createNewRegularTask(name, dueDate);
 //        }
 //
@@ -141,7 +142,8 @@
 //    private Task createNewRegularTask(String name, String dueDate) {
 //        Task newTask = null;
 //        try {
-//            if (dueDate != "skip") {
+//
+//            if (!dueDate.equals("skip")) {
 //                newTask = new RegularTask(name, dueDate);
 //            } else {
 //                newTask = new RegularTask(name);
@@ -156,7 +158,7 @@
 //    private Task createNewUrgentTask(String name, String dueDate) {
 //        Task newTask = null;
 //        try {
-//            if (dueDate != "skip") {
+//            if (!dueDate.equals("skip")) {
 //                newTask = new UrgentTask(name, dueDate);
 //            } else {
 //                newTask = new UrgentTask(name);
@@ -193,12 +195,12 @@
 //
 //    }
 //
-//    private void printAllCurrentList(ToDoMap map) {
-//        System.out.println("Here is all to do list you have");
-//        for (String name : map.getMap().keySet()) {
-//            System.out.println(name);
-//        }
-//    }
+////    private void printAllCurrentList(ToDoMap map) {
+////        System.out.println("Here is all to do list you have");
+////        for (String name : map.getMap().keySet()) {
+////            System.out.println(name);
+////        }
+////    }
 //
 //    private String handleDuedate() {
 //        System.out.println("\nEnter dueDate in format " + dateFormat + " or Enter skip if no dueDate");

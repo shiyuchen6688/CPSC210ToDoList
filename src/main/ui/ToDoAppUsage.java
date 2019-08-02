@@ -12,6 +12,7 @@
 //import model.exceptions.TaskAlreadyExistException;
 //import ui.display.CloseConfirm;
 //import ui.display.ConfirmBox;
+//import ui.scene.ChooseDateFormatScene;
 //import ui.scene.MainScene;
 //
 //import java.io.BufferedReader;
@@ -46,15 +47,13 @@
 //
 //    /// Stage and scenes
 //    static Stage window;
-//    static MainScene sceneMain;
-//    public static Scene sceneChooseDateFormat;
+//    static MainScene mainScene;
+//    public static ChooseDateFormatScene chooseDateFormatScene;
 //    public static Scene sceneAddTask;
 //
 //    public static void main(String[] args) throws IOException {
 //        // TODO LAB10: Composite pattern is here
 //        compositePattern();
-//
-//
 //        dataFromWeb();
 //
 //
@@ -115,18 +114,15 @@
 //    @Override
 //    public void start(Stage primaryStage) throws Exception {
 //        tool = new Tool();
-//
 //        // let window reference primaryStage
 //        initializeWindow(primaryStage);
 //
 //        // choose file scene
 //        Scene chooseFileScene = chooseFileScene();
 //
-//        // Set sceneMain
-//        sceneMain = new MainScene(toDoMap, tool, window);
-//
-//
-//        sceneChooseDateFormat = chooseDateFormateScene();
+//        // Set mainScene
+//        mainScene = new MainScene(toDoMap, tool, window);
+//        chooseDateFormatScene = new ChooseDateFormatScene(tool, mainScene);
 //
 //
 //        // scene to add task
@@ -147,32 +143,6 @@
 //        window.setOnCloseRequest(e -> closeProgramNoBack());
 //    }
 //
-//    private Scene chooseDateFormateScene() {
-//        // scene to choose date format
-//
-//        Label choseDateFormatText = new Label("You can choose your default date format here:");
-//
-//        Button buttonForDate1 = setUpDateFormatChoiceButton("yyyy-MM-dd");
-//        Button buttonForDate2 = setUpDateFormatChoiceButton("dd-MM-yyyy");
-//        Button buttonForDate3 = setUpDateFormatChoiceButton("MM-dd-yyyy");
-//
-//        VBox layoutChooseDateFormat = new VBox(VBOC_SPACING);
-//        layoutChooseDateFormat.getChildren().addAll(choseDateFormatText, buttonForDate1,
-//                buttonForDate2, buttonForDate3);
-//        sceneChooseDateFormat = new Scene(layoutChooseDateFormat);
-//
-//        return sceneChooseDateFormat;
-//    }
-//
-//    private Button setUpDateFormatChoiceButton(String dateFormat) {
-//        Button button = new Button(dateFormat);
-//        button.setOnAction(e -> {
-//            String msg = tool.handleFormatOptions(dateFormat);
-//            ToDoAppUsage.displayMessageButtonToMain(msg, "ok");
-//        });
-//
-//        return button;
-//    }
 //
 //    public Scene setUpAddTaskScene() {
 //        VBox layoutSceneAddTask = new VBox(VBOC_SPACING);
@@ -207,7 +177,7 @@
 //        Button buttonAdd = setUpAddButton(listInput, nameInput, dueDateInput, askUrgentInput);
 //
 //
-//        // back to sceneMain
+//        // back to mainScene
 //        Button buttonHome = buttonToMain("Back to home");
 //
 //
@@ -237,7 +207,7 @@
 //
 //            String confirmMsg =
 //                    String.format("Are you sure you want to add task: %s \nwith due date: %s \nin list: %s",
-//                    nameInput.getText(), dueDateInput.getText(), listInput.getText());
+//                            nameInput.getText(), dueDateInput.getText(), listInput.getText());
 //            confirmPage(confirmMsg);
 //        });
 //        return buttonAdd;
@@ -252,7 +222,8 @@
 //    private Scene chooseFileScene() {
 //        Scene chooseFileScene;
 //        VBox chooseFileLayout = new VBox(VBOC_SPACING);
-//        Label displayFileText = new Label("Here is all of your current files you can choose");
+//        Label displayFileText = new Label("Here is all of your current files you can choose \n "
+//                + "you can also enter name of new file you want to add and use");
 //        chooseFileLayout.getChildren().add(displayFileText);
 //        for (String s : tool.historyFiles) {
 //            Label l = new Label(INDENTATION + s);
@@ -279,6 +250,7 @@
 //            try {
 //                String fileName = chooseFileInput.getText();
 //                fileReaderAndWriter = new FileReaderAndWriter(fileName, "outputfile.txt");
+//                IfCreateANewFileAddToToolHistoryFiles(fileName);
 //            } catch (IOException exception) {
 //                System.out.println("\nSomething is wrong with this file");
 //                System.out.println("Use default inputfile.txt instead");
@@ -293,6 +265,12 @@
 //            List<String> historyAsListOfString = loadHistoryIAndReturnHistoryAsListOfString();
 //            displayListMessageButtonToMain(historyAsListOfString, "ok");
 //        });
+//    }
+//
+//    private void IfCreateANewFileAddToToolHistoryFiles(String fileName) {
+//        if (tool.historyFiles.contains(fileName)) {
+//            tool.historyFiles.add(fileName);
+//        }
 //    }
 //
 //    private void addHistoryFileLabelToChooseFileScene(VBox chooseFileLayout) {
@@ -406,7 +384,7 @@
 //    // EFFECTS: return a button that can be used to return to main
 //    private static Button buttonToMain(String name) {
 //        Button backToMainButton = new Button(name);
-//        backToMainButton.setOnAction(e -> window.setScene(sceneMain.getScene()));
+//        backToMainButton.setOnAction(e -> window.setScene(mainScene.getScene()));
 //        return backToMainButton;
 //    }
 //
@@ -458,7 +436,7 @@
 //                }
 //
 //            } else {
-//                window.setScene(sceneMain.getScene());
+//                window.setScene(mainScene.getScene());
 //            }
 //        }
 //    }

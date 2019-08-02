@@ -1,7 +1,7 @@
 package tests;
 
 import model.GeneralTask;
-import model.ReturnTask;
+import ui.ReturnTask;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
