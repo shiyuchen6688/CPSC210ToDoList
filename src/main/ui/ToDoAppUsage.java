@@ -52,28 +52,25 @@ public class ToDoAppUsage extends Application {
 
     public static void main(String[] args) throws IOException {
         // TODO LAB10: Composite pattern is here
-        GeneralTask outerTest = new RegularTask("The outer task");
-        GeneralTask innerTask = new RegularTask("inner task");
-        GeneralTask innerTask2 = new RegularTask("inner task2");
-        GeneralTask innerInnerTask = new RegularTask("inner inner task");
-        innerTask.addElement(new Note("Note 1 for inner test"));
-        innerTask.addElement(new Note("Note 2 for inner test"));
-        innerTask.addElement(innerInnerTask);
-        innerTask2.addElement(new Note("Note 1 for inner test"));
-        innerTask2.addElement(new Note("Note 2 for inner test"));
-        outerTest.addElement(new Note("Note 1 for outer task"));
-        outerTest.addElement(innerTask);
-        outerTest.addElement(innerTask2);
-        outerTest.addElement(new Note("Note 2 for outer task"));
-
-        outerTest.display("     ");
+        compositePattern();
 
 
+        dataFromWeb();
+
+
+        // setups
+        toDoMap = new ToDoMap();
+        launch(args);
+
+
+    }
+
+    private static void dataFromWeb() throws IOException {
         BufferedReader br = null;
 
         try {
-            String theURL = "https://www.ugrad.cs.ubc.ca/~cs210/2018w1/welcomemsg.html"; //this can point to any URL
-            URL url = new URL(theURL);
+            String theUrL = "https://www.ugrad.cs.ubc.ca/~cs210/2018w1/welcomemsg.html"; //this can point to any URL
+            URL url = new URL(theUrL);
             br = new BufferedReader(new InputStreamReader(url.openStream()));
 
             String line;
@@ -93,13 +90,24 @@ public class ToDoAppUsage extends Application {
                 br.close();
             }
         }
+    }
 
+    private static void compositePattern() {
+        GeneralTask outerTest = new RegularTask("The outer task");
+        GeneralTask innerTask = new RegularTask("inner task");
+        GeneralTask innerTask2 = new RegularTask("inner task2");
+        GeneralTask innerInnerTask = new RegularTask("inner inner task");
+        innerTask.addElement(new Note("Note 1 for inner test"));
+        innerTask.addElement(new Note("Note 2 for inner test"));
+        innerTask.addElement(innerInnerTask);
+        innerTask2.addElement(new Note("Note 1 for inner test"));
+        innerTask2.addElement(new Note("Note 2 for inner test"));
+        outerTest.addElement(new Note("Note 1 for outer task"));
+        outerTest.addElement(innerTask);
+        outerTest.addElement(innerTask2);
+        outerTest.addElement(new Note("Note 2 for outer task"));
 
-        // setups
-        toDoMap = new ToDoMap();
-        launch(args);
-
-
+        outerTest.display("     ");
     }
 
 

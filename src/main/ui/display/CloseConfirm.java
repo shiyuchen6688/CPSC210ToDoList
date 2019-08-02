@@ -22,10 +22,7 @@ public class CloseConfirm {
 
 
         // block event to other window
-        window.initModality(Modality.APPLICATION_MODAL);
-
-        window.setTitle(title);
-        window.setMinWidth(250);
+        setUpWindow(title, window);
         VBox layout = new VBox(10);
 
         try {
@@ -38,22 +35,10 @@ public class CloseConfirm {
         Label label = new Label();
         label.setText(message);
 
-        try {
-            List<String> history = Files.readAllLines(Paths.get("outputfile.txt"));
-            for (String s: history) {
-                layout.getChildren().add(new  Label(s));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        addHistoryToLayout(layout);
 
         // create 2 buttons
-        Button yesButton = new Button("ok");
-
-        yesButton.setOnAction(e -> {
-            window.close();
-
-        });
+        Button yesButton = setYesButton(window);
 
 
         layout.getChildren().addAll(label, yesButton);
@@ -65,6 +50,33 @@ public class CloseConfirm {
         window.showAndWait();
 
 
+    }
+
+    private static Button setYesButton(Stage window) {
+        Button yesButton = new Button("ok");
+
+        yesButton.setOnAction(e -> {
+            window.close();
+        });
+        return yesButton;
+    }
+
+    private static void addHistoryToLayout(VBox layout) {
+        try {
+            List<String> history = Files.readAllLines(Paths.get("outputfile.txt"));
+            for (String s: history) {
+                layout.getChildren().add(new Label(s));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void setUpWindow(String title, Stage window) {
+        window.initModality(Modality.APPLICATION_MODAL);
+
+        window.setTitle(title);
+        window.setMinWidth(250);
     }
 }
 

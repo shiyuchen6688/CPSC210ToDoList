@@ -185,7 +185,6 @@ public class ToDoList {
 //        System.out.println();
 //    }
 
-    // TODO: Lab9 Coupling here introduced a new class
     public List<String> returnAllListTasks() {
         List<String> result = new ArrayList<>();
         result.add("Here is all of your task in list: " + name);

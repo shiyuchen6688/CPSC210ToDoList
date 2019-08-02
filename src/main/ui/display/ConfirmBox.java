@@ -18,27 +18,15 @@ public class ConfirmBox {
 
 
         // block event to other window
-        window.initModality(Modality.APPLICATION_MODAL);
-
-        window.setTitle(title);
-        window.setMinWidth(250);
+        setUpWindow(title, window);
 
         Label label = new Label();
         label.setText(message);
 
         // create 2 buttons
-        Button yesButton = new Button("yes");
-        Button noButton = new Button("no");
+        Button yesButton = setUpYesButton(window);
 
-        yesButton.setOnAction(e -> {
-            answer = true;
-            window.close();
-        });
-
-        noButton.setOnAction(e -> {
-            answer = false;
-            window.close();
-        });
+        Button noButton = setUpNoButton(window);
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label, yesButton, noButton);
@@ -51,5 +39,32 @@ public class ConfirmBox {
 
         return answer;
 
+    }
+
+    private static Button setUpNoButton(Stage window) {
+        Button noButton = new Button("no");
+
+
+        noButton.setOnAction(e -> {
+            answer = false;
+            window.close();
+        });
+        return noButton;
+    }
+
+    private static Button setUpYesButton(Stage window) {
+        Button yesButton = new Button("yes");
+        yesButton.setOnAction(e -> {
+            answer = true;
+            window.close();
+        });
+        return yesButton;
+    }
+
+    private static void setUpWindow(String title, Stage window) {
+        window.initModality(Modality.APPLICATION_MODAL);
+
+        window.setTitle(title);
+        window.setMinWidth(250);
     }
 }

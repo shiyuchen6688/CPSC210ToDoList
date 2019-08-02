@@ -9,6 +9,7 @@ public class AddTaskCounter implements Observer {
     public AddTaskCounter() {
         this.addTaskButtonCounter = 0;
     }
+
     /**
      * This method is called whenever the observed object is changed. An
      * application calls an <tt>Observable</tt> object's

@@ -59,26 +59,25 @@ public class Tool {
     public String handleFormatOptions(String formatChoice) {
         switch (formatChoice) {
             case "yyyy-MM-dd":
-                dateFormat = "yyyy-MM-dd";
-                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
-                sceneMain.updateDateFormatLabel(dateFormat);
-                return "choosed yyyy-MM-dd";
+                return handleOneFormatOption("yyyy-MM-dd");
             case "dd-MM-yyyy":
-                dateFormat = "dd-MM-yyyy";
-                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
-                sceneMain.updateDateFormatLabel(dateFormat);
-                return "choosed dd-MM-yyyy";
+                return handleOneFormatOption("dd-MM-yyyy");
             case "MM-dd-yyyy":
-                dateFormat = "MM-dd-yyyy";
-                GeneralTask.sdf = new SimpleDateFormat(dateFormat);
-                sceneMain.updateDateFormatLabel(dateFormat);
-                return "choosed MM-dd-yyyy";
+                return handleOneFormatOption("MM-dd-yyyy");
             default:
                 dateFormat = "yyyy-MM-dd";
                 GeneralTask.sdf = new SimpleDateFormat(dateFormat);
                 sceneMain.updateDateFormatLabel(dateFormat);
                 return "option is incorrect, set to default yyyy-MM-dd";
         }
+    }
+
+
+    private String handleOneFormatOption(String format) {
+        dateFormat = format;
+        GeneralTask.sdf = new SimpleDateFormat(format);
+        sceneMain.updateDateFormatLabel(format);
+        return "choosed " + format;
     }
 
 
@@ -90,7 +89,6 @@ public class Tool {
         }
         return newList;
     }
-
 
 
     // EFFECTS: ask for task name and add the task to given toDoList
