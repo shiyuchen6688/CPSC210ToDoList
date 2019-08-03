@@ -204,7 +204,7 @@ public class FileReaderAndWriter {
 
     public static void addNewFileNameToFileNames(String fileName) {
         try {
-            fileNamesWriter.write("\n" + fileName );
+            fileNamesWriter.write("\n" + fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }

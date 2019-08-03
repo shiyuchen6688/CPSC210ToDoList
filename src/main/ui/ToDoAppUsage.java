@@ -271,9 +271,6 @@ public class ToDoAppUsage extends Application {
         if (!tool.historyFiles.contains(fileName)) {
             fileReaderAndWriter.addNewFileNameToFileNames(fileName);
             tool.historyFiles.add(fileName);
-
-            // TODO remove this later
-            System.out.println(fileName + " added");
         }
     }
 
