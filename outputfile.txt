@@ -1,2 +1,6 @@
-general  t1  None
+general  t1  year: 2019-month: 8-day: 8
+general  t2  None
+TestDateOptionsList  option1 task  year: 2018-month: 6-day: 24
+TestDateOptionsList  option2 task  year: 2018-month: 6-day: 24
+TestDateOptionsList  option3 task  year: 2019-month: 12-day: 6
 Goodbye, your tasks have been saved
