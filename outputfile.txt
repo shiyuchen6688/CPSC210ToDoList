@@ -1,2 +1,2 @@
-grocery  t1  year: 2019-month: 8-day: 8
+general  t1  None
 Goodbye, your tasks have been saved
