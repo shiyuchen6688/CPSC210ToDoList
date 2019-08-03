@@ -130,6 +130,7 @@ public class BirthdayTest extends GeneralTaskTest {
         }
 
     }
+
     @Test
     public void testCloseToDueNoDueDate() {
         Birthday b = new Birthday("abby");
