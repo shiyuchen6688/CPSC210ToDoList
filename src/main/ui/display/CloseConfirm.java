@@ -25,17 +25,12 @@ public class CloseConfirm {
         setUpWindow(title, window);
         VBox layout = new VBox(10);
 
-        try {
-            FileReaderAndWriter.saveAllHistoryInMapToInput(map);
-            FileReaderAndWriter.copyInputToOutput();
+        tryToShowHistoryOrNoFileChoosed(map, layout);
 
-        } catch (IOException ioe) {
-            System.out.println("Caught unexpected IOException when closing");
-        }
         Label label = new Label();
         label.setText(message);
 
-        addHistoryToLayout(layout);
+
 
         // create 2 buttons
         Button yesButton = setYesButton(window);
@@ -50,6 +45,19 @@ public class CloseConfirm {
         window.showAndWait();
 
 
+    }
+
+    private static void tryToShowHistoryOrNoFileChoosed(ToDoMap map, VBox layout) {
+        try {
+            FileReaderAndWriter.saveAllHistoryInMapToInput(map);
+            FileReaderAndWriter.copyInputToOutput();
+            addHistoryToLayout(layout);
+
+        } catch (IOException ioe) {
+            System.out.println("Caught unexpected IOException when closing");
+        } catch (Exception e) {
+            layout.getChildren().add(new Label("Did not choose any file"));
+        }
     }
 
     private static Button setYesButton(Stage window) {

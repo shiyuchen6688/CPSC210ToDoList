@@ -55,6 +55,12 @@ public class ToDoAppUsage extends Application {
         dataFromWeb();
 
 
+        // TODO LAB10: DID NOT PARSE JSON
+//        String apikey = "c94e3798ff3727faefc4963184add64d";
+//        String londonweatherquery = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=";
+//        String theURL=londonweatherquery+apikey;
+
+
         // setups
         toDoMap = new ToDoMap();
         launch(args);
@@ -62,6 +68,7 @@ public class ToDoAppUsage extends Application {
 
     }
 
+    // TODO: lab10 date from web
     private static void dataFromWeb() throws IOException {
         BufferedReader br = null;
 
@@ -110,7 +117,7 @@ public class ToDoAppUsage extends Application {
 
     // This method is for javaFX
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         tool = new Tool();
         // let window reference primaryStage
         initializeWindow(primaryStage);
@@ -193,7 +200,7 @@ public class ToDoAppUsage extends Application {
         Button buttonAdd = new Button("Add");
         buttonAdd.setOnAction(e -> {
             curList = tool.chooseListFromMapOrCreateList(listInput.getText(), toDoMap);
-            Boolean isUrgent = false;
+            boolean isUrgent = false;
             if (askUrgentInput.getText() == "true") {
                 isUrgent = true;
             }
