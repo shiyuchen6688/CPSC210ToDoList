@@ -33,7 +33,7 @@
 //
 //
 //
-//        // create 2 buttons
+//        // create 1 buttons
 //        Button yesButton = setYesButton(window);
 //
 //
