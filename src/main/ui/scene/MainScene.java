@@ -4,13 +4,19 @@
 //import javafx.scene.Scene;
 //import javafx.scene.control.Button;
 //import javafx.scene.control.Label;
+//import javafx.scene.image.Image;
+//import javafx.scene.image.ImageView;
 //import javafx.scene.layout.VBox;
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
 //import javafx.stage.Stage;
 //import model.ToDoMap;
 //import ui.ToDoAppUsage;
 //import ui.Tool;
 //import ui.display.PopupAd;
 //
+//import java.io.File;
+//import java.nio.file.Paths;
 //import java.util.List;
 //import java.util.Observable;
 //import java.util.Observer;
@@ -35,6 +41,7 @@
 //    private static ToDoMap toDoMap;
 //    private static Tool tool;
 //    private static Stage window;
+//    private static ImageView backgoundView;
 //
 //
 //    public MainScene(ToDoMap toDoMap, Tool tool, Stage window) {
@@ -44,9 +51,15 @@
 //        this.window = window;
 //        initialText = new Label("Welcome to your ToDoList");
 //        this.layout = new VBox(ToDoAppUsage.VBOC_SPACING);
+//        this.backgoundView =
+//                new ImageView(new File("welcome_in_main.png").toURI().toString());
+//        this.layout.getChildren().addAll(backgoundView);
+//
 //        initializeButtons();
 //        setLayout();
 //        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
+//
+//
 //    }
 //
 //    private static void setLayout() {

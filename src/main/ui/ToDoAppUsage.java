@@ -1,12 +1,10 @@
 //package ui;
 //
 //import javafx.application.Application;
-//import javafx.collections.ObservableList;
-//import javafx.event.ActionEvent;
-//import javafx.event.EventHandler;
 //import javafx.geometry.Pos;
 //import javafx.scene.Scene;
 //import javafx.scene.control.Button;
+//import javafx.scene.control.ChoiceBox;
 //import javafx.scene.control.Label;
 //import javafx.scene.control.TextField;
 //import javafx.scene.layout.VBox;
@@ -16,13 +14,11 @@
 //import model.*;
 //import ui.display.CloseConfirm;
 //import ui.display.ConfirmBox;
+//import ui.display.ErrorNotice;
 //import ui.scene.ChooseDateFormatScene;
 //import ui.scene.MainScene;
 //
-//import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
+//import java.io.*;
 //import java.net.URL;
 //import java.nio.file.Files;
 //import java.nio.file.Paths;
@@ -55,6 +51,7 @@
 //    static MainScene mainScene;
 //    public static ChooseDateFormatScene chooseDateFormatScene;
 //    public static Scene sceneAddTask;
+//    public static Scene chooseFileScene;
 //    public static MediaPlayer mediaPlayer;
 //
 //    public static void main(String[] args) throws IOException {
@@ -134,7 +131,7 @@
 //
 //
 //        // choose file scene
-//        Scene chooseFileScene = chooseFileScene();
+//        chooseFileScene = chooseFileScene();
 //
 //        // Set mainScene
 //        mainScene = new MainScene(toDoMap, tool, window);
@@ -222,9 +219,9 @@
 //                isUrgent = true;
 //            }
 //            if (curList.contains(nameInput.getText())) {
-//                errorPage();
+//                errorPage("task already exist");
 //            } else {
-//                confirmPageForAddingTask(listInput, nameInput, dueDateInput, isUrgent);
+//                addTaskToListAndShowConfirmPage(listInput, nameInput, dueDateInput, isUrgent);
 //            }
 //
 //
@@ -232,18 +229,8 @@
 //        return buttonAdd;
 //    }
 //
-//    public static void playButtonSound() {
-//        new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent e) {
-//                //first stop a playing sound, then start the sound
-//                stopAndPlayButtonSound();
-//            }
-//        };
-//    }
-//
-//    private void confirmPageForAddingTask(TextField listInput, TextField nameInput,
-//                                          TextField dueDateInput, boolean isUrgent) {
+//    private void addTaskToListAndShowConfirmPage(TextField listInput, TextField nameInput,
+//                                                 TextField dueDateInput, boolean isUrgent) {
 //        tool.handleAddTaskToList(curList, nameInput.getText(), dueDateInput.getText(), isUrgent);
 //        String confirmMsg =
 //                String.format("Are you sure you want to add task: %s \nwith due date: %s \nin list: %s",
@@ -263,17 +250,20 @@
 //        Label displayFileText = new Label("Here is all of your current files you can choose \n "
 //                + "you can also enter name of new file you want to add and use");
 //        chooseFileLayout.getChildren().add(displayFileText);
-//        for (String s : tool.historyFiles) {
-//            Label l = new Label(INDENTATION + s);
-//            chooseFileLayout.getChildren().add(l);
-//        }
-//        Label chooseFileText = new Label("Please Enter the name of the file you want to use");
+//        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+//        chooseFileLayout.getChildren().add(choiceBox);
+//        choiceBox.getItems().addAll(tool.historyFiles);
+//        // default choice
+//        choiceBox.setValue("none, add new");
+//
+//
+//        Label chooseFileText = new Label("Please Enter the name of the file you want to add");
 //        TextField chooseFileInput = new TextField();
 //        chooseFileInput.setPromptText("Name of the file");
 //
 //        Button finishedChooseFileButton = new Button("ok");
 //
-//        setFuncitonOfFinishedChooseFilesButton(chooseFileInput, finishedChooseFileButton);
+//        setFuncitonOfFinishedChooseFilesButton(chooseFileInput, finishedChooseFileButton, choiceBox);
 //
 //
 //        chooseFileLayout.getChildren().addAll(chooseFileText, chooseFileInput, finishedChooseFileButton);
@@ -283,32 +273,73 @@
 //        return chooseFileScene;
 //    }
 //
-//    private void setFuncitonOfFinishedChooseFilesButton(TextField chooseFileInput, Button finishedChooseFileButton) {
+//    private void setFuncitonOfFinishedChooseFilesButton(TextField chooseFileInput, Button finishedChooseFileButton,
+//                                                        ChoiceBox<String> choiceBox) {
 //        finishedChooseFileButton.setOnAction(e -> {
 //            stopAndPlayButtonSound();
+//            String choiceBoxValue = choiceBox.getValue();
 //
+//            // if use choose a file already exist
 //
 //            try {
-//                String fileName = chooseFileInput.getText();
-//                fileReaderAndWriter = new FileReaderAndWriter(fileName, "outputfile.txt");
-//                ifCreateANewFileAddToToolHistoryFiles(fileName);
-//            } catch (IOException exception) {
-//                System.out.println("\nSomething is wrong with this file");
-//                System.out.println("Use default inputfile.txt instead");
-//                try {
-//                    fileReaderAndWriter = new FileReaderAndWriter("inputfile.txt", "outputfile.txt");
-//                } catch (IOException ex) {
-//                    ex.printStackTrace(); // probably not gonna happen
+//                if (!choiceBoxValue.equals("none, add new")) {
+//                    useExistFileAndLoadHistoryAndDisplay(choiceBoxValue);
+//                } else {
+//                    // user want to create a new file
+//                    try {
+//                        handleAddNewFile(chooseFileInput);
+//                        loadHistoryAndDisplay();
+//                    } catch (FileNotFoundException fileNotFoundException) {
+//                        invalidNewFileNameErrorPage();
+//                    }
 //                }
-//
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
 //            }
 //
-//            List<String> historyAsListOfString = loadHistoryIAndReturnHistoryAsListOfString();
-//            displayListMessageButtonToMain(historyAsListOfString, "ok");
 //        });
 //    }
 //
-//    private void ifCreateANewFileAddToToolHistoryFiles(String fileName) {
+//    private void useExistFileAndLoadHistoryAndDisplay(String choiceBoxValue) throws IOException {
+//        handleUseExistFile(choiceBoxValue);
+//        loadHistoryAndDisplay();
+//    }
+//
+//    private void invalidNewFileNameErrorPage() {
+//        ErrorNotice.display("Error",
+//                "Invalid new file name, try again", chooseFileScene);
+//    }
+//
+//    private void loadHistoryAndDisplay() {
+//        List<String> historyAsListOfString = loadHistoryIAndReturnHistoryAsListOfString();
+//        displayListMessageButtonToMain(historyAsListOfString, "ok");
+//    }
+//
+//    private void handleUseExistFile(String choiceBoxValue) throws IOException {
+//        try {
+//            fileReaderAndWriter = new FileReaderAndWriter(choiceBoxValue, "outputfile.txt");
+//        } catch (IOException exception) {
+//            fileInvalidUseDefaultInputFile();
+//        }
+//    }
+//
+//    private void handleAddNewFile(TextField chooseFileInput) throws IOException {
+//        String fileName = chooseFileInput.getText();
+//
+//        fileReaderAndWriter = new FileReaderAndWriter(fileName, "outputfile.txt");
+//        createANewFileAddToToolHistoryFiles(fileName);
+//
+//
+//    }
+//
+//    private void fileInvalidUseDefaultInputFile() throws IOException {
+//        System.out.println("\nSomething is wrong with this file");
+//        System.out.println("Use default inputfile.txt instead");
+//        fileReaderAndWriter = new FileReaderAndWriter("inputfile.txt", "outputfile.txt");
+//    }
+//
+//
+//    private void createANewFileAddToToolHistoryFiles(String fileName) {
 //        if (!tool.historyFiles.contains(fileName)) {
 //            fileReaderAndWriter.addNewFileNameToFileNames(fileName);
 //            tool.historyFiles.add(fileName);
@@ -316,6 +347,7 @@
 //    }
 //
 //    private void addHistoryFileLabelToChooseFileScene(VBox chooseFileLayout) {
+//
 //        for (String s : tool.getHistoryFiles()) {
 //            Label l = new Label(INDENTATION + s);
 //            chooseFileLayout.getChildren().add(l);
@@ -376,12 +408,18 @@
 //        window.setScene(confirmScene);
 //    }
 //
-//    private void errorPage() {
+//    private void errorPage(String reason) {
 //        Scene errorScene;
 //        Label errorLabel = new Label("Input is illegal, do you want to go back to main?");
+//        Label reasonLabel;
+//        if (reason != null) {
+//            reasonLabel = new Label(reason);
+//        } else {
+//            reasonLabel = new Label("Unknown reason");
+//        }
 //        Button buttonToMain = buttonToMain("Yes");
 //        VBox layout = new VBox(VBOC_SPACING);
-//        layout.getChildren().addAll(errorLabel, buttonToMain);
+//        layout.getChildren().addAll(errorLabel, reasonLabel, buttonToMain);
 //        layout.setAlignment(Pos.CENTER);
 //
 //        errorScene = new Scene(layout, LARGE_SCENE_WIDTH, SMALL_SCENE_HEIGHT);
