@@ -377,7 +377,8 @@ public class ToDoListTest {
             e.printStackTrace();
         }
         List<String> result = testToDoList.returnListAllOverdueTasks();
-        assertTrue(result.contains("-----Here is all of your overdue task in list: " + testToDoList.getName() + "-----"));
+        assertTrue(result.contains("-----Here is all of your overdue task in list: "
+                + testToDoList.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Overdue Task: " + "tests task 2"
                 + " Due Date: " + "2018-07-08"));
         assertTrue(result.contains("\n-----list: " + testToDoList.getName() + " is done-----"));
