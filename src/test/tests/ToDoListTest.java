@@ -360,8 +360,8 @@ public class ToDoListTest {
             e.printStackTrace();
         }
         List<String> result = testToDoList.returnAllListTasks();
-        assertTrue(result.contains("Here is all of your task in list: "
-                + testToDoList.getName()));
+        assertTrue(result.contains("-----Here is all of your task in list: "
+                + testToDoList.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "tests task"
                 + " with no due date"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + "tests task 2"
@@ -377,10 +377,10 @@ public class ToDoListTest {
             e.printStackTrace();
         }
         List<String> result = testToDoList.returnListAllOverdueTasks();
-        assertTrue(result.contains("Here is all of your overdue task in list: " + testToDoList.getName()));
+        assertTrue(result.contains("-----Here is all of your overdue task in list: " + testToDoList.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Overdue Task: " + "tests task 2"
                 + " Due Date: " + "2018-07-08"));
-        assertTrue(result.contains("\nlist: " + testToDoList.getName() + " is done"));
+        assertTrue(result.contains("\n-----list: " + testToDoList.getName() + " is done-----"));
     }
 
     @Test

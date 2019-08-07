@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class GeneralTask extends Element implements Task {
     public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    // TODO LAB9 declare a constant to reduce semantic coupling
     public static final String INDENTATION = "     ";
 
     protected String name;

@@ -81,16 +81,16 @@ public class ToDoMapTest {
         addL1L2ToMap();
 
         List<String> result = map.returnAllMapTasks();
-        assertTrue(result.contains("Here is all of your task in list: " + l1.getName()));
+        assertTrue(result.contains("-----Here is all of your task in list: " + l1.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + t1.getName()
                 + " with no due date"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + t2.getName()
                 + " with no due date"));
-        assertTrue(result.contains("\nlist: " + l1.getName() + " is done"));
-        assertTrue(result.contains("Here is all of your task in list: " + l2.getName()));
+        assertTrue(result.contains("\n-----list: " + l1.getName() + " is done-----"));
+        assertTrue(result.contains("-----Here is all of your task in list: " + l2.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Task: " + t3.getName()
                 + " with no due date"));
-        assertTrue(result.contains("\nlist: " + l2.getName() + " is done"));
+        assertTrue(result.contains("\n-----list: " + l2.getName() + " is done-----"));
     }
 
     @Test
@@ -109,14 +109,14 @@ public class ToDoMapTest {
         addL1L2ToMap();
 
         List<String> result = map.returnMapAllOverdueTasks();
-        assertTrue(result.contains("Here is all of your overdue task in list: " + l1.getName()));
+        assertTrue(result.contains("-----Here is all of your overdue task in list: " + l1.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Overdue Task: " + t2.getName()
                 + " Due Date: " + GeneralTask.sdf.format(t2.getDueDate())));
-        assertTrue(result.contains("\nlist: " + l1.getName() + " is done"));
-        assertTrue(result.contains("Here is all of your overdue task in list: " + l2.getName()));
+        assertTrue(result.contains("\n-----list: " + l1.getName() + " is done-----"));
+        assertTrue(result.contains("-----Here is all of your overdue task in list: " + l2.getName() + "-----"));
         assertTrue(result.contains(GeneralTask.INDENTATION + "Overdue Task: " + t3.getName()
                 + " Due Date: " + GeneralTask.sdf.format(t2.getDueDate())));
-        assertTrue(result.contains("\nlist: " + l2.getName() + " is done"));
+        assertTrue(result.contains("\n-----list: " + l2.getName() + " is done-----"));
     }
 
     @Test

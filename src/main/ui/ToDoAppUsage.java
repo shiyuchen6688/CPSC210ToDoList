@@ -55,12 +55,11 @@
 //    public static MediaPlayer mediaPlayer;
 //
 //    public static void main(String[] args) throws IOException {
-//        // TODO LAB10: Composite pattern is here
 //        compositePattern();
 //        dataFromWeb();
 //
 //
-//        // TODO LAB10: DID NOT PARSE JSON
+//        // DID NOT PARSE JSON
 ////        String apikey = "c94e3798ff3727faefc4963184add64d";
 ////        String londonweatherquery = "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=";
 ////        String theURL=londonweatherquery+apikey;
@@ -73,7 +72,7 @@
 //
 //    }
 //
-//    // TODO: lab10 date from web
+//    // data from web
 //    private static void dataFromWeb() throws IOException {
 //        BufferedReader br = null;
 //
@@ -521,8 +520,6 @@
 //        // display all lines in output
 //        displayListOfString(lines, layout);
 //
-//        // keepWorking button to get back to main
-//        Button keppWorkingButton = buttonToMain("keep working");
 //
 //        // close button to quit program
 //        Button closeButton = new Button("close");
@@ -531,7 +528,7 @@
 //            stopRunningAndCloseWindow();
 //        });
 //
-//        layout.getChildren().addAll(keppWorkingButton, closeButton);
+//        layout.getChildren().addAll(closeButton);
 //        layout.setAlignment(Pos.CENTER);
 //
 //

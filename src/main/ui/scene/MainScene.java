@@ -192,8 +192,12 @@
 //    public void update(Observable o, Object arg) {
 //        this.dateFormatText = new Label("Current date format is: " + arg);
 //        this.layout = new VBox(ToDoAppUsage.VBOC_SPACING);
+//        layout.getChildren().add(backgoundView);
 //        setLayout();
 //        this.sceneMain = new Scene(layout, ToDoAppUsage.LARGE_SCENE_WIDTH, ToDoAppUsage.LARGE_SCENE_HEIGHT * 2);
+//
+//
+//
 //    }
 //
 //}

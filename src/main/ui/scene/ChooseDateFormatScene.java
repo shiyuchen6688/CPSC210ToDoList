@@ -10,7 +10,6 @@
 //
 //import java.util.Observable;
 //
-//// TODO LAB10 ObserverPattern
 //public class ChooseDateFormatScene extends Observable {
 //    private static Scene chooseScene;
 //    private Tool tool;

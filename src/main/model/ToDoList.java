@@ -188,7 +188,7 @@ public class ToDoList {
 
     public List<String> returnAllListTasks() {
         List<String> result = new ArrayList<>();
-        result.add("Here is all of your task in list: " + name);
+        result.add("-----Here is all of your task in list: " + name + "-----");
         for (Task t : tasks) {
             if (t.getDueDate() != null) {
                 String date = GeneralTask.sdf.format(t.getDueDate());
@@ -197,21 +197,21 @@ public class ToDoList {
                 result.add(ReturnTask.formatOneNormalTaskWithNoDuedate(t.getName()));
             }
         }
-        result.add("\nlist: " + name + " is done");
+        result.add("\n-----list: " + name + " is done-----");
         return result;
     }
 
 
     public List<String> returnListAllOverdueTasks() {
         List<String> overDueTasks = new ArrayList<>();
-        overDueTasks.add("Here is all of your overdue task in list: " + name);
+        overDueTasks.add("-----Here is all of your overdue task in list: " + name + "-----");
         for (Task t : tasks) {
             if (t.isOverdue()) {
                 String date = GeneralTask.sdf.format(t.getDueDate());
                 overDueTasks.add(ReturnTask.formatOneOverdueTaskWithDuedate(t.getName(), date));
             }
         }
-        overDueTasks.add("\nlist: " + name + " is done");
+        overDueTasks.add("\n-----list: " + name + " is done-----");
         return overDueTasks;
 
     }
