@@ -2,4 +2,3 @@ none, add new
 inputfile.txt
 file1.txt
 file2.txt
-newfile.txt
