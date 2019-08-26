@@ -19,7 +19,7 @@ public abstract class GeneralTaskTest {
     protected GeneralTask testTask;
 
 
-    
+
 
     @Test
     public void testGetName() {
