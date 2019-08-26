@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public abstract class GeneralTaskTest {
     protected GeneralTask testTask;
 
-    
+
 
     @Test
     public void testGetName() {
